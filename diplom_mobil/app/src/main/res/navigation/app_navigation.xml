@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/app_navigation"
+    app:startDestination="@id/fragmentBlog">
+
+    <fragment
+        android:id="@+id/fragmentBlog"
+        android:name="com.example.mydiplom.FragmentBlog"
+        android:label="@string/str_menu_see_blog"
+        tools:layout="@layout/fragment_blog" />
+    <fragment
+        android:id="@+id/fragmentListFiles"
+        android:name="com.example.mydiplom.FragmentListFiles"
+        android:label="@string/str_menu_see_files"
+        tools:layout="@layout/fragment_list_files" />
+    <fragment
+        android:id="@+id/fragmentListAddMarks"
+        android:name="com.example.mydiplom.FragmentListAddMarks"
+        android:label="@string/str_menu_add_mark"
+        tools:layout="@layout/fragment_list_add_marks" />
+    <fragment
+        android:id="@+id/fragmentListStatisticMark"
+        android:name="com.example.mydiplom.FragmentListStatisticMark"
+        android:label="@string/str_menu_see_statistic"
+        tools:layout="@layout/fragment_list_statistic_mark" />
+    <fragment
+        android:id="@+id/fragmentListReminders"
+        android:name="com.example.mydiplom.FragmentListReminders"
+        android:label="@string/str_menu_see_reminder"
+        tools:layout="@layout/fragment_list_reminders" />
+    <fragment
+        android:id="@+id/fragmentProfile"
+        android:name="com.example.mydiplom.FragmentProfile"
+        android:label="@string/str_menu_see_profile"
+        tools:layout="@layout/fragment_profile" />
+    <fragment
+        android:id="@+id/fragmentAddNewRecordMark"
+        android:name="com.example.mydiplom.FragmentAddNewRecordMark"
+        android:label="Добавьте запись"
+        tools:layout="@layout/fragment_add_new_record_mark" />
+</navigation>

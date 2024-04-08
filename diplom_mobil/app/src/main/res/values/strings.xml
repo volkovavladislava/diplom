@@ -1,0 +1,13 @@
+<resources>
+    <string name="app_name">MyDiplom</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="str_menu_add_mark">Добавить показатель</string>
+    <string name="str_menu_see_statistic">Посмотреть статистику</string>
+    <string name="str_menu_see_files">Мои файлы</string>
+    <string name="str_menu_see_reminder">Мои записи</string>
+    <string name="str_menu_see_profile">Профиль</string>
+    <string name="str_menu_see_blog">Статьи</string>
+
+
+</resources>

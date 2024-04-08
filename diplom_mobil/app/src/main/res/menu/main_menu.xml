@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/fragmentListAddMarks"
+            android:title="@string/str_menu_add_mark">
+        </item>
+
+        <item
+            android:id="@+id/fragmentListStatisticMark"
+            android:title="@string/str_menu_see_statistic">
+        </item>
+
+        <item
+            android:id="@+id/fragmentListFiles"
+            android:title="@string/str_menu_see_files">
+        </item>
+
+        <item
+            android:id="@+id/fragmentListReminders"
+            android:title="@string/str_menu_see_reminder">
+        </item>
+
+        <item
+            android:id="@+id/fragmentProfile"
+            android:title="@string/str_menu_see_profile">
+        </item>
+
+    </group>
+</menu>
