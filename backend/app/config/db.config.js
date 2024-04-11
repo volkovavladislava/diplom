@@ -41,11 +41,17 @@ db.Sequelize = Sequelize;
 db.sequelize = sequelize;
 
 // Подключение моделей
-// db.user = require('../model/user.model.js')(sequelize, Sequelize);
-// db.category = require('../model/category.model.js')(sequelize, Sequelize);
-// db.user_category = require('../model/user_category.model.js')(sequelize, Sequelize);
-// db.spending = require('../model/spending.model.js')(sequelize, Sequelize);
 db.kind_of_mark = require('../model/kind_of_mark.model.js')(sequelize, Sequelize);
+db.enum_kind_of_mark = require('../model/enum_kind_of_mark.model.js')(sequelize, Sequelize);
+db.user = require('../model/user.model.js')(sequelize, Sequelize);
+db.prompt = require('../model/prompt.model.js')(sequelize, Sequelize);
+db.file = require('../model/file.model.js')(sequelize, Sequelize);
+db.blog = require('../model/blog.model.js')(sequelize, Sequelize);
+db.base_operating_value_of_mark = require('../model/base_operating_value_of_mark.model.js')(sequelize, Sequelize);
+db.user_operating_value_of_mark = require('../model/user_operating_value_of_mark.model.js')(sequelize, Sequelize);
+db.enumeration_value = require('../model/enumeration_value.model.js')(sequelize, Sequelize);
+db.favorite_mark = require('../model/favorite_mark.model.js')(sequelize, Sequelize);
+db.mark_value = require('../model/mark_value.model.js')(sequelize, Sequelize);
 
 // Связывание моделей без импорта файлов (то есть, чтобы в файле описания любой модели можно было
 // обращаться к другим моделям по имени без необходимости импорта в виде require(...))

@@ -1,10 +1,10 @@
 var db = require('../config/db.config.js');
-var KindOfMark = db.kind_of_mark;
+var UserOperatingValueOfMark = db.user_operating_value_of_mark;
 var globalFunctions = require('../config/global.functions.js');
 
 
 exports.findAll = (req, res) => {
-    KindOfMark.findAll()
+    UserOperatingValueOfMark.findAll()
         .then(objects => {
             // возврат найденных записей
             // console.log("objects ")

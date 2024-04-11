@@ -1,10 +1,10 @@
 var db = require('../config/db.config.js');
-var KindOfMark = db.kind_of_mark;
+var File = db.file;
 var globalFunctions = require('../config/global.functions.js');
 
 
 exports.findAll = (req, res) => {
-    KindOfMark.findAll()
+    File.findAll()
         .then(objects => {
             // возврат найденных записей
             // console.log("objects ")

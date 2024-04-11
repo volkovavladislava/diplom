@@ -18,16 +18,46 @@ module.exports = (sequelize, Sequelize) => {
             }
         });
 
-    // // Определяем связи таблицы category с другими таблицами
-    // KindOfMark.associate = (models) => {
-    //     // Определение связи один-ко-многим с таблицей user_category. Это определение связи с одной стороны.
-    //     // Связь также определена со второй стороны (со стороны таблицы user_category): в файле user_category.model.js
-    //     KindOfMark.hasMany(models.user_category, {
-    //         foreignKey: 'category_id',
-    //         onDelete: 'CASCADE',
-    //         onUpdate: 'CASCADE',
-    //         sourceKey: 'id'
-    //     });
-    // };
+    KindOfMark.associate = (models) => {
+
+        KindOfMark.belongsTo(models.enum_kind_of_mark, {
+            foreignKey: 'enum_kind_of_mark_id'
+        });
+
+        KindOfMark.hasMany(models.user_operating_value_of_mark, {
+            foreignKey: 'kind_of_mark_id',
+            onDelete: 'RESTRICT',
+            onUpdate: 'CASCADE',
+            sourceKey: 'id'
+        });
+
+        KindOfMark.hasMany(models.base_operating_value_of_mark, {
+            foreignKey: 'kind_of_mark_id',
+            onDelete: 'RESTRICT',
+            onUpdate: 'CASCADE',
+            sourceKey: 'id'
+        });
+
+        KindOfMark.hasMany(models.enumeration_value, {
+            foreignKey: 'kind_of_mark_id',
+            onDelete: 'RESTRICT',
+            onUpdate: 'CASCADE',
+            sourceKey: 'id'
+        });
+
+        KindOfMark.hasMany(models.favorite_mark, {
+            foreignKey: 'kind_of_mark_id',
+            onDelete: 'RESTRICT',
+            onUpdate: 'CASCADE',
+            sourceKey: 'id'
+        });
+
+        KindOfMark.hasMany(models.mark_value, {
+            foreignKey: 'kind_of_mark_id',
+            onDelete: 'RESTRICT',
+            onUpdate: 'CASCADE',
+            sourceKey: 'id'
+        });
+    };
     return KindOfMark;
 };

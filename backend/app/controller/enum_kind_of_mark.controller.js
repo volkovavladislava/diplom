@@ -1,10 +1,10 @@
 var db = require('../config/db.config.js');
-var KindOfMark = db.kind_of_mark;
+var EnumKindOfMark = db.enum_kind_of_mark;
 var globalFunctions = require('../config/global.functions.js');
 
-
+// Получение всех показателей
 exports.findAll = (req, res) => {
-    KindOfMark.findAll()
+    EnumKindOfMark.findAll()
         .then(objects => {
             // возврат найденных записей
             // console.log("objects ")
@@ -12,7 +12,6 @@ exports.findAll = (req, res) => {
             // console.log("res ")
             // console.log( res)
             globalFunctions.sendResult(res, objects);
-            
         })
         .catch(err => {
             // возврат найденной ошибки
