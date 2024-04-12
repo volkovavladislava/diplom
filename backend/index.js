@@ -21,6 +21,9 @@ db.sequelize.sync({force: false});
 // };
 // app.use(cors(corsOptions));
 
+app.use('/files', express.static('files'));
+
+
 var kind_of_mark = require('./app/route/kind_of_mark.route.js');
 kind_of_mark(app);
 

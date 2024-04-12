@@ -1,59 +1,95 @@
 package com.example.mydiplom
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
+import com.example.mydiplom.data.User
+import com.example.mydiplom.data.UserUpdate
+import com.example.mydiplom.databinding.FragmentProfileBinding
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
+import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
 
-/**
- * A simple [Fragment] subclass.
- * Use the [FragmentProfile.newInstance] factory method to
- * create an instance of this fragment.
- */
 class FragmentProfile : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
 
+    private var binding: FragmentProfileBinding? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
+
     }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_profile, container, false)
-    }
 
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment FragmentProfile.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            FragmentProfile().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
+        binding = FragmentProfileBinding.inflate(inflater, container, false)
+
+
+        val retrofit = Retrofit.Builder()
+            .baseUrl("http://192.168.0.32:3000")
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
+        val service: ApiController = retrofit.create(ApiController::class.java)
+
+        val call: Call<User> = service.getUser(1)
+        call.enqueue(object : Callback<User> {
+            override fun onResponse(call: Call<User>, response: Response<User>) {
+                if (response.isSuccessful) {
+                    var userData = response.body()
+                    userData?.let {
+                        binding!!.profileWeight.setText(it.weight.toString())
+                        binding!!.profileHeight.setText(it.height.toString())
+                        binding!!.profiletDate.setText(it.date_birth)
+                    }
+                }
+                else{
+
                 }
             }
+            override fun onFailure(call: Call<User>, t: Throwable) {
+                Log.d("RetrofitClient","Receive user from server problem " + t)
+            }
+        })
+
+
+
+        binding!!.bthUpdateProfile.setOnClickListener {
+            val weight = binding!!.profileWeight.text.toString().toInt()
+            val height = binding!!.profileHeight.text.toString().toInt()
+            val date = binding!!.profiletDate.text.toString()
+
+            val userUpdate = UserUpdate(userId = 1, name = "3", height = height, weight = weight)
+
+            val call: Call<Void> = service.updateUser(userUpdate. userId, userUpdate)
+
+            call.enqueue(object : Callback<Void> {
+                override fun onResponse(call: Call<Void>, response: Response<Void>) {
+                    if (response.isSuccessful) {
+                        Toast.makeText(context, "Данные успешно обновлены", Toast.LENGTH_SHORT).show()
+                    }
+                    else{
+                        Toast.makeText(context, "Что-то пошло не так", Toast.LENGTH_SHORT).show()
+                    }
+                }
+                override fun onFailure(call: Call<Void>, t: Throwable) {
+                    Log.d("RetrofitClient","Receive user from server problem " + t)
+                    Toast.makeText(context, "Ошибка", Toast.LENGTH_SHORT).show()
+                }
+            })
+        }
+
+
+
+        return binding!!.root
     }
+
+
 }

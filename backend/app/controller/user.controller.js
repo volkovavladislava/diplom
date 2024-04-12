@@ -19,3 +19,39 @@ exports.findAll = (req, res) => {
             globalFunctions.sendError(res, err);
         })
 };
+
+
+
+
+// Обновление данных пользователя по id
+exports.update = (req, res) => {
+    User.update({
+            name: req.body.name,
+            height: req.body.height,
+            weight: req.body.weight,
+            // date_birth: req.body.dateBirth
+        },
+        {
+            where: {
+                id: req.params.userId
+            }
+        }
+    ).then(object => {
+        console.log( object)
+        globalFunctions.sendResult(res, object);
+    }).catch(err => {
+        globalFunctions.sendError(res, err);
+    })
+};
+
+
+// Получение данных пользователя по id
+exports.findById = (req, res) => {
+    User.findByPk(req.params.id)
+        .then(object => {
+            globalFunctions.sendResult(res, object);
+        })
+        .catch(err => {
+            globalFunctions.sendError(res, err);
+        })
+};
