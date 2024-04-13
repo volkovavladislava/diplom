@@ -22,7 +22,6 @@ class FragmentProfile : Fragment() {
     private var binding: FragmentProfileBinding? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
     }
 
     override fun onCreateView(
@@ -32,9 +31,9 @@ class FragmentProfile : Fragment() {
 
         binding = FragmentProfileBinding.inflate(inflater, container, false)
 
-
+//        baseUrl("http://192.168.0.32:3000")
         val retrofit = Retrofit.Builder()
-            .baseUrl("http://192.168.0.32:3000")
+            .baseUrl("http://10.0.2.2:3000")
             .addConverterFactory(GsonConverterFactory.create())
             .build()
         val service: ApiController = retrofit.create(ApiController::class.java)
@@ -45,14 +44,13 @@ class FragmentProfile : Fragment() {
                 if (response.isSuccessful) {
                     var userData = response.body()
                     userData?.let {
+                        binding!!.profileName.setText(it.weight.toString())
                         binding!!.profileWeight.setText(it.weight.toString())
                         binding!!.profileHeight.setText(it.height.toString())
-                        binding!!.profiletDate.setText(it.date_birth)
+                        binding!!.profileDate.setText(it.date_birth)
                     }
                 }
-                else{
-
-                }
+                else{}
             }
             override fun onFailure(call: Call<User>, t: Throwable) {
                 Log.d("RetrofitClient","Receive user from server problem " + t)
@@ -62,11 +60,12 @@ class FragmentProfile : Fragment() {
 
 
         binding!!.bthUpdateProfile.setOnClickListener {
+            val name = binding!!.profileName.text.toString()
             val weight = binding!!.profileWeight.text.toString().toInt()
             val height = binding!!.profileHeight.text.toString().toInt()
-            val date = binding!!.profiletDate.text.toString()
+            val date = binding!!.profileDate.text.toString()
 
-            val userUpdate = UserUpdate(userId = 1, name = "3", height = height, weight = weight)
+            val userUpdate = UserUpdate(userId = 1, name = name, height = height, weight = weight, date_birth = date)
 
             val call: Call<Void> = service.updateUser(userUpdate. userId, userUpdate)
 

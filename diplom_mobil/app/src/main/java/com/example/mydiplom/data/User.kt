@@ -9,5 +9,6 @@ data class User(
     val weight: Int,
     val date_birth: String,
     val gender: Int,
-    val password: String
+    val password: String,
+    val login: String
 )

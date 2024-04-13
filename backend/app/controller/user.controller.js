@@ -29,7 +29,7 @@ exports.update = (req, res) => {
             name: req.body.name,
             height: req.body.height,
             weight: req.body.weight,
-            // date_birth: req.body.dateBirth
+            date_birth: req.body.date_birth
         },
         {
             where: {
@@ -37,7 +37,7 @@ exports.update = (req, res) => {
             }
         }
     ).then(object => {
-        console.log( object)
+        // console.log( object)
         globalFunctions.sendResult(res, object);
     }).catch(err => {
         globalFunctions.sendError(res, err);

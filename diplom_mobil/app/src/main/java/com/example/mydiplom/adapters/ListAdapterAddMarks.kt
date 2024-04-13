@@ -1,4 +1,4 @@
-package com.example.mydiplom
+package com.example.mydiplom.adapters
 
 import android.content.Context
 import android.view.LayoutInflater
@@ -7,8 +7,11 @@ import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.Button
 import androidx.navigation.Navigation
+import com.example.mydiplom.data.MarksData
+import com.example.mydiplom.R
 
-class ListAdapterAddMarks(context: Context, dataArrayList: ArrayList<MarksData?>?):ArrayAdapter<MarksData?>(context, R.layout.list_item_marks, dataArrayList!!) {
+class ListAdapterAddMarks(context: Context, dataArrayList: ArrayList<MarksData?>?):ArrayAdapter<MarksData?>(context,
+    R.layout.list_item_marks, dataArrayList!!) {
 
     override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
         var view = convertView

@@ -6,7 +6,9 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.example.mydiplom.adapters.ListAdapterAddMarks
 import com.example.mydiplom.data.KindOfMark
+import com.example.mydiplom.data.MarksData
 import com.example.mydiplom.databinding.FragmentListAddMarksBinding
 import retrofit2.Call
 import retrofit2.Callback
@@ -37,7 +39,7 @@ class FragmentListAddMarks : Fragment() {
 
 
         val retrofit = Retrofit.Builder()
-            .baseUrl("http://192.168.0.32:3000")
+            .baseUrl("http://10.0.2.2:3000")
             .addConverterFactory(GsonConverterFactory.create())
             .build()
         val service: ApiController = retrofit.create(ApiController::class.java)

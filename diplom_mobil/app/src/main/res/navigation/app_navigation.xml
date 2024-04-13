@@ -40,4 +40,8 @@
         android:name="com.example.mydiplom.FragmentAddNewRecordMark"
         android:label="Добавьте запись"
         tools:layout="@layout/fragment_add_new_record_mark" />
+    <fragment
+        android:id="@+id/fragmentArticleOfBlog"
+        android:name="com.example.mydiplom.FragmentArticleOfBlog"
+        android:label="FragmentArticleOfBlog" />
 </navigation>

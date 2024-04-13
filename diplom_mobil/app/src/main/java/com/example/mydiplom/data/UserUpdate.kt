@@ -5,5 +5,5 @@ data class UserUpdate(
     val name: String,
     val height: Int,
     val weight: Int,
-//    val dateBirth: LocalDate,
+    val date_birth: String
 )
