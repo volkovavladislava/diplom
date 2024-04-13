@@ -16,12 +16,26 @@ interface ApiController {
     @GET("/api/listKindOfMark")
     fun getListKindOfMark(): Call<List<KindOfMark>>
 
+
+
+
+
+
+
     @PUT("/api/updateUser/{userId}")
     fun updateUser(@Path("userId") userId: Int, @Body userUpdate: UserUpdate): Call<Void> //Call<Void>
 
     @GET("/api/user/{userId}")
     fun getUser(@Path("userId") userId: Int): Call<User>
 
+
+
+
+
+
     @GET("/api/listBlog")
     fun getlistBlog(): Call<List<Blog>>
+
+    @GET("/api/blog/{blogId}")
+    fun getBlog(@Path("blogId") blogId: Int): Call<Blog>
 }

@@ -6,11 +6,14 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
 import com.example.mydiplom.adapters.ListAdapterAddMarks
 import com.example.mydiplom.adapters.ListAdapterBlog
 import com.example.mydiplom.data.Blog
 import com.example.mydiplom.data.KindOfMark
 import com.example.mydiplom.databinding.FragmentBlogBinding
+import com.example.mydiplom.viewmodel.SharedViewModel
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -27,6 +30,8 @@ class FragmentBlog : Fragment() {
     private lateinit var listData: Blog
     var dataArrayList = ArrayList<Blog?>()
 
+    private val viewModel: SharedViewModel by activityViewModels()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
     }
@@ -35,7 +40,6 @@ class FragmentBlog : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
 
         binding = FragmentBlogBinding.inflate(inflater, container, false)
 
@@ -51,7 +55,6 @@ class FragmentBlog : Fragment() {
         call.enqueue(object : Callback<List<Blog>> {
             override fun onResponse(call: Call<List<Blog>>, response: Response<List<Blog>>) {
                 if (response.isSuccessful) {
-                    Log.d("RetrofitClient","response " + response.body() )
 
                     var blogs = response.body() ?: emptyList()
                     dataArrayList.clear()
@@ -62,7 +65,7 @@ class FragmentBlog : Fragment() {
 
                     val a = binding!!.listBlog
                     a.apply {
-                        adapter =  ListAdapterBlog(this.context, dataArrayList)
+                        adapter =  ListAdapterBlog(this.context, dataArrayList, viewModel)
                         isClickable = true}
 
                 }

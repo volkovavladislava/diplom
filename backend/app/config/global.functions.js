@@ -1,5 +1,5 @@
 function sendResult(res, result){
-    console.log(result)
+    // console.log(result)
     res.status(200).send(result);
 }
 

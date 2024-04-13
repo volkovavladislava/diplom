@@ -5,4 +5,6 @@ module.exports = (app) => {
 
     app.get('/api/listBlog', blog.findAll);
 
+    app.get('/api/blog/:blogId', blog.findById);
+
 };

@@ -1,23 +1,29 @@
 package com.example.mydiplom.adapters
 
 import android.content.Context
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.RelativeLayout
 import android.widget.TextView
+import androidx.compose.runtime.Composable
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.Navigation
 import com.example.mydiplom.R
 import com.example.mydiplom.data.Blog
+import com.example.mydiplom.viewmodel.SharedViewModel
 import com.google.android.material.imageview.ShapeableImageView
 import com.squareup.picasso.Picasso
 
-class ListAdapterBlog(context: Context, dataArrayList: ArrayList<Blog?>?) :
-    ArrayAdapter<Blog?>(context,
-    R.layout.list_item_blog, dataArrayList!!){
+class ListAdapterBlog(context: Context, dataArrayList: ArrayList<Blog?>?, private val viewModel: SharedViewModel ) :
+    ArrayAdapter<Blog?>(context, R.layout.list_item_blog, dataArrayList!!){
 
-    override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
+
+        override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
+
         var view = convertView
         val listData = getItem(position)
 
@@ -41,7 +47,11 @@ class ListAdapterBlog(context: Context, dataArrayList: ArrayList<Blog?>?) :
 
         listTitle.text = listData!!.title
         containerBlog.setOnClickListener{
-                view: View ->
+
+        viewModel.articleId.value = listData!!.id
+//        Log.d("RetrofitClient","viewModel1 " +  viewModel.articleId.value)
+
+//                view: View ->
             Navigation.findNavController(view).navigate(R.id.fragmentArticleOfBlog)
         }
 

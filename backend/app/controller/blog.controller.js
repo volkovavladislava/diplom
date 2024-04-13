@@ -19,3 +19,17 @@ exports.findAll = (req, res) => {
             globalFunctions.sendError(res, err);
         })
 };
+
+
+
+// Получение данных пользователя по id
+exports.findById = (req, res) => {
+    Blog.findByPk(req.params.blogId)
+        .then(object => {
+            
+            globalFunctions.sendResult(res, object);
+        })
+        .catch(err => {
+            globalFunctions.sendError(res, err);
+        })
+};
