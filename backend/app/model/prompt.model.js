@@ -1,3 +1,4 @@
+const { DataTypes } = require('sequelize')
 module.exports = (sequelize, Sequelize) => {
     var Prompt = sequelize.define(
         'prompt', // определяем имя таблицы
@@ -21,7 +22,8 @@ module.exports = (sequelize, Sequelize) => {
                 allowNull: true
             },
             date: {
-                type: Sequelize.DATE,
+                // type: Sequelize.DATE,
+                type:DataTypes.DATE,
                 allowNull: false
             }
             

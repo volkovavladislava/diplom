@@ -43,5 +43,10 @@
     <fragment
         android:id="@+id/fragmentArticleOfBlog"
         android:name="com.example.mydiplom.FragmentArticleOfBlog"
-        android:label="FragmentArticleOfBlog" />
+        android:label="Статья" />
+    <fragment
+        android:id="@+id/fragmentAddPrompt"
+        android:name="com.example.mydiplom.FragmentAddPrompt"
+        android:label="Добавление записи"
+        tools:layout="@layout/fragment_add_prompt" />
 </navigation>

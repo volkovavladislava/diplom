@@ -65,7 +65,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
-        android:text="Дата и время"
+        android:text="Дата "
         app:layout_constraintEnd_toStartOf="@+id/guideline8"
         app:layout_constraintStart_toStartOf="@+id/guideline7"
         app:layout_constraintTop_toBottomOf="@+id/addpromptDescription" />
@@ -81,14 +81,56 @@
         app:layout_constraintTop_toBottomOf="@+id/addpromptDateLabel" />
 
     <Button
-        android:id="@+id/bthAddPrompt"
+        android:id="@+id/bthAddDatePrompt"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:text="Внести запись"
+        android:layout_marginTop="10dp"
+        android:text="Добавить дату"
         app:layout_constraintEnd_toStartOf="@+id/guideline8"
         app:layout_constraintStart_toStartOf="@+id/guideline7"
         app:layout_constraintTop_toBottomOf="@+id/addpromptDate" />
+
+<!--    <TextView-->
+<!--        android:id="@+id/addpromptTimeLabel"-->
+<!--        android:layout_width="0dp"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_marginTop="20dp"-->
+<!--        android:text="Время "-->
+<!--        app:layout_constraintEnd_toStartOf="@+id/guideline8"-->
+<!--        app:layout_constraintStart_toStartOf="@+id/guideline7"-->
+<!--        app:layout_constraintTop_toBottomOf="@+id/bthAddDatePrompt" />-->
+
+<!--    <EditText-->
+<!--        android:id="@+id/addpromptTime"-->
+<!--        android:layout_width="0dp"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:ems="10"-->
+<!--        android:inputType="datetime"-->
+<!--        app:layout_constraintEnd_toStartOf="@+id/guideline8"-->
+<!--        app:layout_constraintStart_toStartOf="@+id/guideline7"-->
+<!--        app:layout_constraintTop_toBottomOf="@+id/addpromptTimeLabel" />-->
+
+<!--    <Button-->
+<!--        android:id="@+id/bthAddTimePrompt"-->
+<!--        android:layout_width="0dp"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_marginTop="10dp"-->
+<!--        android:text="Добавить дату"-->
+<!--        app:layout_constraintEnd_toStartOf="@+id/guideline8"-->
+<!--        app:layout_constraintStart_toStartOf="@+id/guideline7"-->
+<!--        app:layout_constraintTop_toBottomOf="@+id/addpromptTime" />-->
+
+    <Button
+        android:id="@+id/bthAddPromptToBD"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="40dp"
+        android:text="Внести запись"
+        app:layout_constraintEnd_toStartOf="@+id/guideline8"
+        app:layout_constraintStart_toStartOf="@+id/guideline7"
+        app:layout_constraintTop_toBottomOf="@+id/bthAddDatePrompt" />
+
+
 
 
 

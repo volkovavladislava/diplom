@@ -5,6 +5,8 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
+import androidx.navigation.Navigation
 
 import com.example.mydiplom.databinding.FragmentListRemindersBinding
 
@@ -24,6 +26,14 @@ class FragmentListReminders : Fragment() {
     ): View? {
         // Inflate the layout for this fragment
         binding = FragmentListRemindersBinding.inflate(inflater, container, false)
+
+        binding!!.bthAddPrompt.setOnClickListener {
+                view: View->
+            Navigation.findNavController(view).navigate(R.id.fragmentAddPrompt)
+        }
+
+
+
         return binding!!.root
     }
 

@@ -1,6 +1,7 @@
 package com.example.mydiplom
 
 
+import com.example.mydiplom.data.AddPrompt
 import com.example.mydiplom.data.Blog
 import com.example.mydiplom.data.KindOfMark
 import com.example.mydiplom.data.User
@@ -38,4 +39,10 @@ interface ApiController {
 
     @GET("/api/blog/{blogId}")
     fun getBlog(@Path("blogId") blogId: Int): Call<Blog>
+
+
+
+
+    @PUT("/api/addPrompt/{userId}")
+    fun addPrompt(@Path("userId") userId: Int, @Body addPrompt: AddPrompt): Call<Void> //Call<Void>
 }

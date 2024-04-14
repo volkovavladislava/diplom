@@ -5,6 +5,9 @@ const app = express()
 
 const port = 3000
 
+// Устанавливаем часовой пояс для приложения
+process.env.TZ = 'UTC+8';
+
 var bodyParser = require('body-parser');
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));

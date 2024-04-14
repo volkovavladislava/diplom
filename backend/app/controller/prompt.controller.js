@@ -1,4 +1,5 @@
 var db = require('../config/db.config.js');
+
 var Prompt = db.prompt;
 var globalFunctions = require('../config/global.functions.js');
 
@@ -18,4 +19,19 @@ exports.findAll = (req, res) => {
             // возврат найденной ошибки
             globalFunctions.sendError(res, err);
         })
+};
+
+// Добавление пользователя
+exports.create = (req, res) => {
+    console.log( req.body.date) 
+    Prompt.create({
+        user_id:req.body.userId,
+        name: req.body.name,
+        description: req.body.description,
+        date: req.body.date,
+    }).then(object => {
+        globalFunctions.sendResult(res, object);
+    }).catch(err => {
+        globalFunctions.sendError(res, err);
+    })
 };

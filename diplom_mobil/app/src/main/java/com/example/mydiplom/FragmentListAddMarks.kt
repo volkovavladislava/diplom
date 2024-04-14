@@ -23,8 +23,8 @@ class FragmentListAddMarks : Fragment() {
     private var binding: FragmentListAddMarksBinding? = null
 
     private lateinit var listAdapterAddMarks: ListAdapterAddMarks
-    private lateinit var listData: MarksData
-    var dataArrayList = ArrayList<MarksData?>()
+    private lateinit var listData: KindOfMark
+    var dataArrayList = ArrayList<KindOfMark?>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -53,7 +53,7 @@ class FragmentListAddMarks : Fragment() {
 
                     dataArrayList.clear()
                     for(i in kindOfMarks.indices){
-                        listData = MarksData(kindOfMarks[i].name)
+                        listData = KindOfMark(kindOfMarks[i].id, kindOfMarks[i].name, kindOfMarks[i].enum_kind_of_mark_id)
                         dataArrayList.add(listData)
                     }
 

@@ -8,7 +8,7 @@ exports.findAll = (req, res) => {
         .then(objects => {
             // возврат найденных записей
             // console.log("objects ")
-            // console.log(objects)
+            console.log(objects)
             // console.log("res ")
             // console.log( res)
             globalFunctions.sendResult(res, objects);
