@@ -35,3 +35,19 @@ exports.create = (req, res) => {
         globalFunctions.sendError(res, err);
     })
 };
+
+
+// Получение данных пользователя по id
+exports.findByUserId = (req, res) => {
+    Prompt.findAll({
+        where: {
+            user_id: req.params.userId
+        }
+    }).then(object => {
+            
+            globalFunctions.sendResult(res, object);
+        })
+        .catch(err => {
+            globalFunctions.sendError(res, err);
+        })
+};

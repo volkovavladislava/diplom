@@ -48,7 +48,7 @@ class ListAdapterBlog(context: Context, dataArrayList: ArrayList<Blog?>?, privat
         listTitle.text = listData!!.title
         containerBlog.setOnClickListener{
 
-        viewModel.articleId.value = listData!!.id
+        this.viewModel.articleId.value = listData!!.id
 //        Log.d("RetrofitClient","viewModel1 " +  viewModel.articleId.value)
 
 //                view: View ->

@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel
 class SharedViewModel : ViewModel() {
 //    var kindOfMarkIdFromAddMark: Int = 1
     var articleId = MutableLiveData<Int>()
+    var promptId = MutableLiveData<Int>()
 
 //    var articleId: Int = 1
 //

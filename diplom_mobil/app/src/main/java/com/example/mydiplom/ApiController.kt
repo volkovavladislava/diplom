@@ -4,6 +4,7 @@ package com.example.mydiplom
 import com.example.mydiplom.data.AddPrompt
 import com.example.mydiplom.data.Blog
 import com.example.mydiplom.data.KindOfMark
+import com.example.mydiplom.data.Prompt
 import com.example.mydiplom.data.User
 import com.example.mydiplom.data.UserUpdate
 import retrofit2.Call
@@ -45,4 +46,7 @@ interface ApiController {
 
     @PUT("/api/addPrompt/{userId}")
     fun addPrompt(@Path("userId") userId: Int, @Body addPrompt: AddPrompt): Call<Void> //Call<Void>
+
+    @GET("/api/prompt/{userId}")
+    fun getPrompt(@Path("userId") userId: Int): Call<List<Prompt>>
 }

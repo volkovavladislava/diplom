@@ -49,4 +49,9 @@
         android:name="com.example.mydiplom.FragmentAddPrompt"
         android:label="Добавление записи"
         tools:layout="@layout/fragment_add_prompt" />
+    <fragment
+        android:id="@+id/fragmentDetailedPrompt"
+        android:name="com.example.mydiplom.FragmentDetailedPrompt"
+        android:label="fragment_detailed_prompt"
+        tools:layout="@layout/fragment_detailed_prompt" />
 </navigation>

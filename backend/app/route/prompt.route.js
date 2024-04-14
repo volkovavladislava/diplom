@@ -8,4 +8,7 @@ module.exports = (app) => {
     // Обновление данных пользователя по id
     app.put('/api/addPrompt/:userId', prompt.create);
 
+
+    app.get('/api/prompt/:userId', prompt.findByUserId);
+
 };
