@@ -48,11 +48,11 @@ class ListAdapterBlog(context: Context, dataArrayList: ArrayList<Blog?>?, privat
         listTitle.text = listData!!.title
         containerBlog.setOnClickListener{
 
-        this.viewModel.articleId.value = listData!!.id
-//        Log.d("RetrofitClient","viewModel1 " +  viewModel.articleId.value)
+//            viewModel.articleId.value = listData.id
+        viewModel.articleId.value = listData.id
 
 //                view: View ->
-            Navigation.findNavController(view).navigate(R.id.fragmentArticleOfBlog)
+        Navigation.findNavController(view).navigate(R.id.fragmentArticleOfBlog)
         }
 
         return view

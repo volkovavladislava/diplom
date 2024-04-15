@@ -6,10 +6,11 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.activityViewModels
 import com.example.mydiplom.adapters.ListAdapterAddMarks
 import com.example.mydiplom.data.KindOfMark
-import com.example.mydiplom.data.MarksData
 import com.example.mydiplom.databinding.FragmentListAddMarksBinding
+import com.example.mydiplom.viewmodel.SharedViewModel
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -25,6 +26,8 @@ class FragmentListAddMarks : Fragment() {
     private lateinit var listAdapterAddMarks: ListAdapterAddMarks
     private lateinit var listData: KindOfMark
     var dataArrayList = ArrayList<KindOfMark?>()
+
+    private val viewModel: SharedViewModel by activityViewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -59,7 +62,7 @@ class FragmentListAddMarks : Fragment() {
 
                     val a = binding!!.listviewMarks
                     a.apply {
-                        adapter =  ListAdapterAddMarks(this.context, dataArrayList)
+                        adapter =  ListAdapterAddMarks(this.context, dataArrayList,viewModel)
                         isClickable = true}
 
                 }

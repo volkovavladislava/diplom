@@ -5,10 +5,14 @@
     android:layout_height="match_parent"
     tools:context=".FragmentListStatisticMark">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+
+    <ListView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:id="@+id/listviewMarksStatistic"
+        android:scrollbars="vertical"
+        android:layout_marginTop="12dp"
+        tools:listitem="@layout/list_item_addmarks"
+        android:divider="@android:color/white" />
 
 </FrameLayout>

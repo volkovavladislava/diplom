@@ -5,4 +5,6 @@ module.exports = (app) => {
 
     app.get('/api/listMarkValue', mark_value.findAll);
 
+    app.put('/api/addMark/:kind_of_mark_id', mark_value.create);
+
 };

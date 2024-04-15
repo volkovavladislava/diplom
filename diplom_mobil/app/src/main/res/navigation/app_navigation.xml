@@ -36,11 +36,6 @@
         android:label="@string/str_menu_see_profile"
         tools:layout="@layout/fragment_profile" />
     <fragment
-        android:id="@+id/fragmentAddNewRecordMark"
-        android:name="com.example.mydiplom.FragmentAddNewRecordMark"
-        android:label="Добавьте запись"
-        tools:layout="@layout/fragment_add_new_record_mark" />
-    <fragment
         android:id="@+id/fragmentArticleOfBlog"
         android:name="com.example.mydiplom.FragmentArticleOfBlog"
         android:label="Статья" />
@@ -52,6 +47,21 @@
     <fragment
         android:id="@+id/fragmentDetailedPrompt"
         android:name="com.example.mydiplom.FragmentDetailedPrompt"
-        android:label="fragment_detailed_prompt"
+        android:label="Просмотр записи"
         tools:layout="@layout/fragment_detailed_prompt" />
+    <fragment
+        android:id="@+id/fragmentAddNewRecordMark1number"
+        android:name="com.example.mydiplom.FragmentAddNewRecordMark1number"
+        android:label="fragment_add_new_record_mark_1number"
+        tools:layout="@layout/fragment_add_new_record_mark_1number" />
+    <fragment
+        android:id="@+id/fragmentAddNewRecordMark2number"
+        android:name="com.example.mydiplom.FragmentAddNewRecordMark2number"
+        android:label="fragment_add_new_record_mark2number"
+        tools:layout="@layout/fragment_add_new_record_mark2number" />
+    <fragment
+        android:id="@+id/fragmentAddNewRecordMarkEnum"
+        android:name="com.example.mydiplom.FragmentAddNewRecordMarkEnum"
+        android:label="fragment_add_new_record_mark_enum"
+        tools:layout="@layout/fragment_add_new_record_mark_enum" />
 </navigation>

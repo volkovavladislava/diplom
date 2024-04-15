@@ -4,7 +4,10 @@ package com.example.mydiplom
 import com.example.mydiplom.data.AddPrompt
 import com.example.mydiplom.data.Blog
 import com.example.mydiplom.data.KindOfMark
+import com.example.mydiplom.data.KindOfMarkValues
+import com.example.mydiplom.data.Mark
 import com.example.mydiplom.data.Prompt
+import com.example.mydiplom.data.PromptUpdate
 import com.example.mydiplom.data.User
 import com.example.mydiplom.data.UserUpdate
 import retrofit2.Call
@@ -47,6 +50,22 @@ interface ApiController {
     @PUT("/api/addPrompt/{userId}")
     fun addPrompt(@Path("userId") userId: Int, @Body addPrompt: AddPrompt): Call<Void> //Call<Void>
 
-    @GET("/api/prompt/{userId}")
+    @GET("/api/promptByUser/{userId}")
     fun getPrompt(@Path("userId") userId: Int): Call<List<Prompt>>
+
+    @GET("/api/promptById/{promptId}")
+    fun getPromptById(@Path("promptId") promptId: Int): Call<Prompt>
+
+    @PUT("/api/updatePrompt/{promptId}")
+    fun updatePrompt(@Path("promptId") promptId: Int, @Body promptUpdate: PromptUpdate): Call<Void> //Call<Void>
+
+
+
+
+
+
+    @PUT("/api/addMark/{kindOfMarkId}")
+    fun addMark(@Path("kindOfMarkId") kindOfMarkId: Int, @Body addMark: Mark): Call<Void> //Call<Void>
+    @GET("/api/kindOfMarkValues/{kindOfMarkId}")
+    fun getKindOfMarkValues(@Path("kindOfMarkId") kindOfMarkId: Int): Call<List<KindOfMarkValues>>
 }

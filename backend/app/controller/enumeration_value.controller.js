@@ -19,3 +19,18 @@ exports.findAll = (req, res) => {
             globalFunctions.sendError(res, err);
         })
 };
+
+
+exports.findByKindOfMarkId = (req, res) => {
+    EnumerationValue.findAll({
+        where: {
+            kind_of_mark_id: req.params.kindOfMarkId
+        }
+    }).then(object => {
+            
+            globalFunctions.sendResult(res, object);
+        })
+        .catch(err => {
+            globalFunctions.sendError(res, err);
+        })
+};

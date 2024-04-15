@@ -12,7 +12,7 @@
         android:id="@+id/listviewMarks"
         android:scrollbars="vertical"
         android:layout_marginTop="12dp"
-        tools:listitem="@layout/list_item_marks"
+        tools:listitem="@layout/list_item_addmarks"
         android:divider="@android:color/white" />
 
 

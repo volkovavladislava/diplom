@@ -1,14 +1,108 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".FragmentDetailedPrompt">
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+xmlns:app="http://schemas.android.com/apk/res-auto"
+xmlns:tools="http://schemas.android.com/tools"
+android:layout_width="match_parent"
+android:layout_height="match_parent"
+tools:context=".FragmentDetailedPrompt">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
 
-</FrameLayout>
+<androidx.constraintlayout.widget.Guideline
+    android:id="@+id/guideline7"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    app:layout_constraintGuide_begin="20dp" />
+
+<androidx.constraintlayout.widget.Guideline
+    android:id="@+id/guideline8"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    app:layout_constraintGuide_begin="377dp" />
+
+<TextView
+    android:id="@+id/detailedPromptNameLabel"
+    android:layout_width="0dp"
+    android:layout_height="wrap_content"
+    android:text="Название"
+    android:layout_marginTop="40dp"
+    app:layout_constraintEnd_toStartOf="@+id/guideline8"
+    app:layout_constraintStart_toStartOf="@+id/guideline7"
+    app:layout_constraintTop_toTopOf="parent" />
+
+<EditText
+    android:id="@+id/detailedPromptName"
+    android:layout_width="0dp"
+    android:layout_height="wrap_content"
+    android:inputType="textPersonName"
+    app:layout_constraintEnd_toStartOf="@+id/guideline8"
+    app:layout_constraintStart_toStartOf="@+id/guideline7"
+    app:layout_constraintTop_toBottomOf="@+id/detailedPromptNameLabel" />
+
+<TextView
+    android:id="@+id/detailedPromptDescriptionLabel"
+    android:layout_width="0dp"
+    android:layout_height="wrap_content"
+    android:text="Описание"
+    android:layout_marginTop="40dp"
+    app:layout_constraintEnd_toStartOf="@+id/guideline8"
+    app:layout_constraintStart_toStartOf="@+id/guideline7"
+    app:layout_constraintTop_toBottomOf="@+id/detailedPromptName" />
+
+<EditText
+    android:id="@+id/detailedPromptDescription"
+    android:layout_width="0dp"
+    android:layout_height="wrap_content"
+    android:inputType="textPersonName"
+    app:layout_constraintEnd_toStartOf="@+id/guideline8"
+    app:layout_constraintStart_toStartOf="@+id/guideline7"
+    app:layout_constraintTop_toBottomOf="@+id/detailedPromptDescriptionLabel" />
+
+
+<TextView
+    android:id="@+id/detailedPromptDateLabel"
+    android:layout_width="0dp"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="20dp"
+    android:text="Дата "
+    app:layout_constraintEnd_toStartOf="@+id/guideline8"
+    app:layout_constraintStart_toStartOf="@+id/guideline7"
+    app:layout_constraintTop_toBottomOf="@+id/detailedPromptDescription" />
+
+<EditText
+    android:id="@+id/detailedPromptDate"
+    android:layout_width="0dp"
+    android:layout_height="wrap_content"
+    android:ems="10"
+    android:inputType="datetime"
+    app:layout_constraintEnd_toStartOf="@+id/guideline8"
+    app:layout_constraintStart_toStartOf="@+id/guideline7"
+    app:layout_constraintTop_toBottomOf="@+id/detailedPromptDateLabel" />
+
+<Button
+    android:id="@+id/bthAddDateDetailedPrompt"
+    android:layout_width="0dp"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="10dp"
+    android:text="Изменить дату"
+    app:layout_constraintEnd_toStartOf="@+id/guideline8"
+    app:layout_constraintStart_toStartOf="@+id/guideline7"
+    app:layout_constraintTop_toBottomOf="@+id/detailedPromptDate" />
+
+
+<Button
+    android:id="@+id/bthAddDetailedPromptToBD"
+    android:layout_width="0dp"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="40dp"
+    android:text="Обновить запись"
+    app:layout_constraintEnd_toStartOf="@+id/guideline8"
+    app:layout_constraintStart_toStartOf="@+id/guideline7"
+    app:layout_constraintTop_toBottomOf="@+id/bthAddDateDetailedPrompt" />
+
+
+
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

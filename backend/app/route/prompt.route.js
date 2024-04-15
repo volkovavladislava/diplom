@@ -9,6 +9,10 @@ module.exports = (app) => {
     app.put('/api/addPrompt/:userId', prompt.create);
 
 
-    app.get('/api/prompt/:userId', prompt.findByUserId);
+    app.get('/api/promptByUser/:userId', prompt.findByUserId);
+
+    app.get('/api/promptById/:promptId', prompt.findById);
+
+    app.put('/api/updatePrompt/:promptId', prompt.update);
 
 };

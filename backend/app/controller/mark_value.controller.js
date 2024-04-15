@@ -19,3 +19,21 @@ exports.findAll = (req, res) => {
             globalFunctions.sendError(res, err);
         })
 };
+
+
+exports.create = (req, res) => { 
+    MarkValue.create({
+        user_id:req.body.userId,
+        kind_of_mark_id:req.body.kind_of_mark_id,
+        date: req.body.date,
+        value_number1: req.body.value_number1,
+        value_number2: req.body.value_number2,
+        value_bool: req.body.value_bool,
+        value_string: req.body.value_string,
+        value_enum: req.body.value_enum
+    }).then(object => {
+        globalFunctions.sendResult(res, object);
+    }).catch(err => {
+        globalFunctions.sendError(res, err);
+    })
+};

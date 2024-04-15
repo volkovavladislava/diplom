@@ -51,3 +51,33 @@ exports.findByUserId = (req, res) => {
             globalFunctions.sendError(res, err);
         })
 };
+
+
+exports.findById = (req, res) => {
+    Prompt.findByPk(req.params.promptId)
+        .then(object => {
+            globalFunctions.sendResult(res, object);
+        })
+        .catch(err => {
+            globalFunctions.sendError(res, err);
+        })
+};
+
+exports.update = (req, res) => {
+    Prompt.update({
+            name: req.body.name,
+            description: req.body.description,
+            date: req.body.date
+        },
+        {
+            where: {
+                id: req.params.promptId
+            }
+        }
+    ).then(object => {
+        // console.log( object)
+        globalFunctions.sendResult(res, object);
+    }).catch(err => {
+        globalFunctions.sendError(res, err);
+    })
+};

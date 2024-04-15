@@ -11,22 +11,19 @@ import android.view.ViewGroup
 import android.widget.DatePicker
 import android.widget.TimePicker
 import android.widget.Toast
-import androidx.compose.material3.DatePickerDialog
-import com.example.mydiplom.data.AddPrompt
-import com.example.mydiplom.data.UserUpdate
-import com.example.mydiplom.databinding.FragmentAddPromptBinding
-import com.example.mydiplom.databinding.FragmentListRemindersBinding
+import androidx.fragment.app.activityViewModels
+import com.example.mydiplom.data.Mark
+import com.example.mydiplom.databinding.FragmentAddNewRecordMark1numberBinding
+import com.example.mydiplom.databinding.FragmentAddNewRecordMark2numberBinding
+import com.example.mydiplom.viewmodel.SharedViewModel
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.util.Calendar
-import java.util.TimeZone
 
-
-class FragmentAddPrompt : Fragment(), DatePickerDialog.OnDateSetListener, TimePickerDialog.OnTimeSetListener{
-
+class FragmentAddNewRecordMark2number : Fragment(), DatePickerDialog.OnDateSetListener, TimePickerDialog.OnTimeSetListener {
 
     var day = 0
     var month = 0
@@ -40,7 +37,8 @@ class FragmentAddPrompt : Fragment(), DatePickerDialog.OnDateSetListener, TimePi
     var savedHour = 0
     var savedMinute = 0
 
-    private var binding: FragmentAddPromptBinding? = null
+    private var binding: FragmentAddNewRecordMark2numberBinding? = null
+    private val viewModel: SharedViewModel by activityViewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -51,7 +49,9 @@ class FragmentAddPrompt : Fragment(), DatePickerDialog.OnDateSetListener, TimePi
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding = FragmentAddPromptBinding.inflate(inflater, container, false)
+        binding = FragmentAddNewRecordMark2numberBinding.inflate(inflater, container, false)
+
+        var kindOfMarkId = viewModel.kindOfMarkIdAddMark.value ?: 1
 
         val retrofit = Retrofit.Builder()
             .baseUrl("http://10.0.2.2:3000")
@@ -59,25 +59,24 @@ class FragmentAddPrompt : Fragment(), DatePickerDialog.OnDateSetListener, TimePi
             .build()
         val service: ApiController = retrofit.create(ApiController::class.java)
 
-//        val timeZone: String = TimeZone.getDefault().id
-//        Log.d("RetrofitClient","timeZone " + timeZone)
+
 
         val context = activity ?: return binding!!.root
-//        binding!!.addpromptDate
-        binding!!.bthAddDatePrompt.setOnClickListener{
+        binding!!.bthAddDateMarkNum2.setOnClickListener{
             getDateTimeCalendar()
             DatePickerDialog(context, this, year, month, day).show()
         }
 
-        binding!!.bthAddPromptToBD.setOnClickListener {
-            val name = binding!!.addpromptName.text.toString()
-            val description = binding!!.addpromptDescription.text.toString()
-            val date = binding!!.addpromptDate.text.toString()
 
-            Log.d("RetrofitClient","date " + date)
+        binding!!.bthAddMark.setOnClickListener {
+            val number1Value = binding!!.addMarkNum1.text.toString().toDouble()
+            val number2Value = binding!!.addMarkNum2.text.toString().toDouble()
+            val date = binding!!.addMarkNum2Date.text.toString()
 
-            val addPrompt = AddPrompt(userId = 1, name = name, description = description, date = date)
-            val call: Call<Void> = service.addPrompt(addPrompt.userId, addPrompt)
+
+            val mark = Mark(userId=1, kind_of_mark_id=kindOfMarkId,date=date,value_number1=number1Value,number2Value,null,null,null)
+
+            val call: Call<Void> = service.addMark(mark.kind_of_mark_id, mark)
 
             call.enqueue(object : Callback<Void> {
                 override fun onResponse(call: Call<Void>, response: Response<Void>) {
@@ -97,9 +96,7 @@ class FragmentAddPrompt : Fragment(), DatePickerDialog.OnDateSetListener, TimePi
 
 
         return binding!!.root
-
     }
-
 
     private fun getDateTimeCalendar(){
         val cal = Calendar.getInstance()
@@ -122,7 +119,7 @@ class FragmentAddPrompt : Fragment(), DatePickerDialog.OnDateSetListener, TimePi
         savedHour = hourOfDay
         savedMinute = minute
 
-        binding!!.addpromptDate.setText("$savedYear-$savedMonth-$savedDay $savedHour:$savedMinute:00")
+        binding!!.addMarkNum2Date.setText("$savedYear-$savedMonth-$savedDay $savedHour:$savedMinute:00")
     }
 
 

@@ -5,4 +5,6 @@ module.exports = (app) => {
 
     app.get('/api/listEnumerationValue', enumeration_value.findAll);
 
+    app.get('/api/kindOfMarkValues/:kindOfMarkId', enumeration_value.findByKindOfMarkId);
+
 };
