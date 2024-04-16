@@ -6,8 +6,8 @@
     android:layout_marginHorizontal="10dp"
     android:layout_marginVertical="10dp"
     app:cardCornerRadius="8dp"
-    android:id="@+id/recListItemReminderContainer">
-<!--    app:cardElevation="8dp">-->
+    android:id="@+id/recListItemFileContainer">
+    <!--    app:cardElevation="8dp">-->
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -15,7 +15,7 @@
 
 
         <TextView
-            android:id="@+id/recListItemReminderName"
+            android:id="@+id/recListItemFileName"
             android:layout_width="150dp"
             android:layout_height="50dp"
             android:layout_marginStart="10dp"
@@ -30,12 +30,12 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-            android:id="@+id/recListItemReminderDate"
+            android:id="@+id/recListItemFileDate"
             android:layout_width="150dp"
             android:layout_height="50dp"
             android:gravity="center"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/recListItemReminderName"
+            app:layout_constraintStart_toEndOf="@+id/recListItemFileName"
             app:layout_constraintBottom_toBottomOf="parent"
             android:text="Дата"/>
 

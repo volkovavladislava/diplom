@@ -12,6 +12,7 @@ import android.widget.DatePicker
 import android.widget.TimePicker
 import android.widget.Toast
 import androidx.fragment.app.activityViewModels
+import androidx.navigation.fragment.findNavController
 import com.example.mydiplom.data.Blog
 import com.example.mydiplom.data.Prompt
 import com.example.mydiplom.data.PromptUpdate
@@ -25,7 +26,9 @@ import retrofit2.Callback
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import java.text.SimpleDateFormat
 import java.util.Calendar
+import java.util.Locale
 
 class FragmentDetailedPrompt : Fragment(), DatePickerDialog.OnDateSetListener, TimePickerDialog.OnTimeSetListener {
 
@@ -74,7 +77,7 @@ class FragmentDetailedPrompt : Fragment(), DatePickerDialog.OnDateSetListener, T
                     promptData?.let {
                         binding!!.detailedPromptName.setText(it.name.toString())
                         binding!!.detailedPromptDescription.setText(it.description.toString())
-                        binding!!.detailedPromptDate.setText(it.date.toString())
+                        binding!!.detailedPromptDate.setText(formatDate(it.date.toString()))
                     }
                 }
                 else{}
@@ -117,6 +120,25 @@ class FragmentDetailedPrompt : Fragment(), DatePickerDialog.OnDateSetListener, T
         }
 
 
+        binding!!.bthDeleteDetailedPrompt.setOnClickListener{
+            val call: Call<Void> = service.deletePrompt(promptId)
+            call.enqueue(object : Callback<Void> {
+                override fun onResponse(call: Call<Void>, response: Response<Void>) {
+                    if (response.isSuccessful) {
+                        Toast.makeText(context, "Удалено", Toast.LENGTH_SHORT).show()
+                    } else {
+                        Toast.makeText(context, "Что-то пошло не так", Toast.LENGTH_SHORT).show()
+                    }
+                }
+
+                override fun onFailure(call: Call<Void>, t: Throwable) {
+                    Log.d("RetrofitClient", "Receive user from server problem " + t)
+                    Toast.makeText(context, "Ошибка", Toast.LENGTH_SHORT).show()
+                }
+            })
+            findNavController().navigate(R.id.fragmentListReminders)
+        }
+
 
         return binding!!.root
 
@@ -146,5 +168,12 @@ class FragmentDetailedPrompt : Fragment(), DatePickerDialog.OnDateSetListener, T
         binding!!.detailedPromptDate.setText("$savedYear-$savedMonth-$savedDay $savedHour:$savedMinute:00")
     }
 
+    fun formatDate(inputDate: String): String {
+        val inputFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.getDefault())
+        val outputFormat = SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.getDefault())
+
+        val date = inputFormat.parse(inputDate)
+        return outputFormat.format(date)
+    }
 
 }

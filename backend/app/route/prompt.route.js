@@ -15,4 +15,6 @@ module.exports = (app) => {
 
     app.put('/api/updatePrompt/:promptId', prompt.update);
 
+    app.post('/api/deletePrompt/:promptId', prompt.delete);
+
 };

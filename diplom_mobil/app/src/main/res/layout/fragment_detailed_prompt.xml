@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
 xmlns:app="http://schemas.android.com/apk/res-auto"
 xmlns:tools="http://schemas.android.com/tools"
 android:layout_width="match_parent"
@@ -45,7 +46,7 @@ tools:context=".FragmentDetailedPrompt">
     android:layout_width="0dp"
     android:layout_height="wrap_content"
     android:text="Описание"
-    android:layout_marginTop="40dp"
+    android:layout_marginTop="20dp"
     app:layout_constraintEnd_toStartOf="@+id/guideline8"
     app:layout_constraintStart_toStartOf="@+id/guideline7"
     app:layout_constraintTop_toBottomOf="@+id/detailedPromptName" />
@@ -82,7 +83,7 @@ tools:context=".FragmentDetailedPrompt">
 
 <Button
     android:id="@+id/bthAddDateDetailedPrompt"
-    android:layout_width="0dp"
+    android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:layout_marginTop="10dp"
     android:text="Изменить дату"
@@ -101,7 +102,16 @@ tools:context=".FragmentDetailedPrompt">
     app:layout_constraintStart_toStartOf="@+id/guideline7"
     app:layout_constraintTop_toBottomOf="@+id/bthAddDateDetailedPrompt" />
 
-
+    <Button
+        android:id="@+id/bthDeleteDetailedPrompt"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:text="Удалить запись"
+        android:backgroundTint="#E16D6D"
+        app:layout_constraintEnd_toStartOf="@+id/guideline8"
+        app:layout_constraintStart_toStartOf="@+id/guideline7"
+        app:layout_constraintTop_toBottomOf="@+id/bthAddDetailedPromptToBD" />
 
 
 

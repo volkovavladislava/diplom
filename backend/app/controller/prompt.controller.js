@@ -81,3 +81,15 @@ exports.update = (req, res) => {
         globalFunctions.sendError(res, err);
     })
 };
+
+exports.delete = (req, res) => {
+    Prompt.destroy({
+        where: {
+            id: req.params.promptId
+        }
+    }).then(() => {
+        globalFunctions.sendResult(res, 'Запись удалена');
+    }).catch(err => {
+        globalFunctions.sendError(res, err);
+    });
+};

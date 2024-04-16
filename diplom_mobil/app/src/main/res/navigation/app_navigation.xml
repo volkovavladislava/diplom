@@ -9,7 +9,11 @@
         android:id="@+id/fragmentBlog"
         android:name="com.example.mydiplom.FragmentBlog"
         android:label="@string/str_menu_see_blog"
-        tools:layout="@layout/fragment_blog" />
+        tools:layout="@layout/fragment_blog" >
+        <action
+            android:id="@+id/action_fragmentBlog_to_fragmentArticleOfBlog"
+            app:destination="@id/fragmentArticleOfBlog" />
+    </fragment>
     <fragment
         android:id="@+id/fragmentListFiles"
         android:name="com.example.mydiplom.FragmentListFiles"
@@ -64,4 +68,14 @@
         android:name="com.example.mydiplom.FragmentAddNewRecordMarkEnum"
         android:label="fragment_add_new_record_mark_enum"
         tools:layout="@layout/fragment_add_new_record_mark_enum" />
+    <fragment
+        android:id="@+id/fragmentDetailedFile"
+        android:name="com.example.mydiplom.FragmentDetailedFile"
+        android:label="Просмотр файла"
+        tools:layout="@layout/fragment_detailed_file" />
+    <fragment
+        android:id="@+id/fragmentAddFile"
+        android:name="com.example.mydiplom.FragmentAddFile"
+        android:label="Добавление файла"
+        tools:layout="@layout/fragment_add_file" />
 </navigation>

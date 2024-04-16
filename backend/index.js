@@ -1,5 +1,6 @@
 const express = require('express')
 const mysql = require('mysql')
+const multer = require('multer');
 
 const app = express()
 
@@ -14,6 +15,35 @@ app.use(bodyParser.urlencoded({ extended: false }));
 
 var db = require('./app/config/db.config.js'); // подключение настроек базы данных
 db.sequelize.sync({force: false});
+
+
+
+
+
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, 'files');
+  },
+  filename: (req, file, cb) => {
+    cb(null, Date.now() + '-' + path.extname(file.originalname));
+  },
+});
+
+exports.upload = multer({ 
+  storage: storage,
+  limits: {fileSize: '1000000'},
+  fileFilter: (req, file, cb) =>{
+      const fileTypes = /jpeg|jpg|png|gif/
+      const mimeType = fileTypes.test(file.mimetype)
+      const extname = fileTypes.test(path.extname(file.originalname))
+
+      if(mimeType && extname){
+          return cb(null, true)
+      }
+      cb('give proper files formate to upload')
+  }
+  }
+).single('file')
 
 
 // var cors = require('cors');
@@ -72,3 +102,6 @@ app.listen(port, () =>{
 // app.get('/listKindOfMark' , (req, res) =>{
 //     console.log(res)
 // })
+
+
+
