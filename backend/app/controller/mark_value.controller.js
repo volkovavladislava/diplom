@@ -37,3 +37,19 @@ exports.create = (req, res) => {
         globalFunctions.sendError(res, err);
     })
 };
+
+
+exports.MarksForUser= (req, res) => {
+    MarkValue.findAll({
+        where: {
+            user_id: req.params.userId,
+            kind_of_mark_id: req.params.kindOfMarkId
+        }
+    })
+        .then(objects => {
+            globalFunctions.sendResult(res, objects);
+        })
+        .catch(err => {
+            globalFunctions.sendError(res, err);
+        })
+};

@@ -26,6 +26,7 @@ class ListAdapterAddMarks(context: Context, dataArrayList: ArrayList<KindOfMark?
 
         listTitle.setOnClickListener{
             viewModel.kindOfMarkIdAddMark.value = listData.id
+            viewModel.kindOfMarkNameAddMark.value = listData.name
             if (listData!!.enum_kind_of_mark_id == 1){
                 Navigation.findNavController(view).navigate(R.id.fragmentAddNewRecordMark1number)
             }

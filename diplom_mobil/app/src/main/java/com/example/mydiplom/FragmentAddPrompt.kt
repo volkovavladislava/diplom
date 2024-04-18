@@ -21,7 +21,10 @@ import retrofit2.Callback
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import java.text.SimpleDateFormat
 import java.util.Calendar
+import java.util.Date
+import java.util.Locale
 import java.util.TimeZone
 
 
@@ -63,11 +66,12 @@ class FragmentAddPrompt : Fragment(), DatePickerDialog.OnDateSetListener, TimePi
 //        Log.d("RetrofitClient","timeZone " + timeZone)
 
         val context = activity ?: return binding!!.root
-//        binding!!.addpromptDate
         binding!!.bthAddDatePrompt.setOnClickListener{
             getDateTimeCalendar()
             DatePickerDialog(context, this, year, month, day).show()
         }
+
+        binding!!.addpromptDate.setText(SimpleDateFormat("yyyy-MM-dd HH:mm").format(Date()))
 
         binding!!.bthAddPromptToBD.setOnClickListener {
             val name = binding!!.addpromptName.text.toString()
@@ -122,7 +126,14 @@ class FragmentAddPrompt : Fragment(), DatePickerDialog.OnDateSetListener, TimePi
         savedHour = hourOfDay
         savedMinute = minute
 
-        binding!!.addpromptDate.setText("$savedYear-$savedMonth-$savedDay $savedHour:$savedMinute:00")
+        val formattedDate = String.format(
+            Locale.getDefault(),
+            "%04d-%02d-%02d %02d:%02d",
+            savedYear, savedMonth+1, savedDay, savedHour, savedMinute
+        )
+        binding!!.addpromptDate.setText(formattedDate)
+
+//        binding!!.addpromptDate.setText("$savedYear-$savedMonth-$savedDay $savedHour:$savedMinute:00")
     }
 
 

@@ -2,6 +2,7 @@ package com.example.mydiplom
 
 
 import com.example.mydiplom.data.AddFile
+import com.example.mydiplom.data.AddMark
 import com.example.mydiplom.data.AddPrompt
 import com.example.mydiplom.data.Blog
 import com.example.mydiplom.data.File
@@ -74,7 +75,7 @@ interface ApiController {
 
 
     @PUT("/api/addMark/{kindOfMarkId}")
-    fun addMark(@Path("kindOfMarkId") kindOfMarkId: Int, @Body addMark: Mark): Call<Void> //Call<Void>
+    fun addMark(@Path("kindOfMarkId") kindOfMarkId: Int, @Body addMark: AddMark): Call<Void> //Call<Void>
     @GET("/api/kindOfMarkValues/{kindOfMarkId}")
     fun getKindOfMarkValues(@Path("kindOfMarkId") kindOfMarkId: Int): Call<List<KindOfMarkValues>>
 
@@ -113,4 +114,10 @@ interface ApiController {
 
     @POST("/api/deleteFile/{fileId}")
     fun deleteFile(@Path("fileId") fileId: Int): Call<Void> //Call<Void>
+
+
+
+
+    @GET("/api/marksForUser/userId={userId}/kindOfMarkId={kindOfMarkId}")
+    fun marksForUser(@Path("userId") userId: Int, @Path("kindOfMarkId") kindOfMarkId: Int): Call<List<Mark>>
 }

@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.Button
+import androidx.navigation.Navigation
 import com.example.mydiplom.R
 import com.example.mydiplom.data.KindOfMark
 import com.example.mydiplom.viewmodel.SharedViewModel
@@ -25,6 +26,7 @@ class ListAdapterStatistic (context: Context, dataArrayList: ArrayList<KindOfMar
 
         listTitle.setOnClickListener{
             viewModel.kindOfMarkIdStatistic.value = listData.id
+            Navigation.findNavController(view).navigate(R.id.fragmentDetailedStatistic)
 //            if (listData!!.enum_kind_of_mark_id == 1){
 //                Navigation.findNavController(view).navigate(R.id.fragmentAddNewRecordMark1number)
 //            }

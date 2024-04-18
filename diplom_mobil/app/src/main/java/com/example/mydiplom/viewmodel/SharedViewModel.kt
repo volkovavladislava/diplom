@@ -8,7 +8,10 @@ class SharedViewModel : ViewModel() {
     var articleId = MutableLiveData<Int>()
     var promptId = MutableLiveData<Int>()
     var fileId = MutableLiveData<Int>()
+
     var kindOfMarkIdAddMark = MutableLiveData<Int>()
+    var kindOfMarkNameAddMark = MutableLiveData<String>()
+
     var kindOfMarkIdStatistic = MutableLiveData<Int>()
 
 //    var articleId: Int = 1

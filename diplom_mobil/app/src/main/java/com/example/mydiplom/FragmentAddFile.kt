@@ -30,7 +30,10 @@ import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.io.File
+import java.text.SimpleDateFormat
 import java.util.Calendar
+import java.util.Date
+import java.util.Locale
 
 
 class FragmentAddFile : Fragment(), DatePickerDialog.OnDateSetListener, TimePickerDialog.OnTimeSetListener {
@@ -78,7 +81,7 @@ class FragmentAddFile : Fragment(), DatePickerDialog.OnDateSetListener, TimePick
             getDateTimeCalendar()
             DatePickerDialog(context, this, year, month, day).show()
         }
-
+        binding!!.addFileDate.setText(SimpleDateFormat("yyyy-MM-dd HH:mm").format(Date()))
 
         imageView = binding!!.addImageFileFile
         val pickFileButton  = binding!!.bthAddImageFileAddFile
@@ -227,7 +230,16 @@ class FragmentAddFile : Fragment(), DatePickerDialog.OnDateSetListener, TimePick
         savedHour = hourOfDay
         savedMinute = minute
 
-        binding!!.addFileDate.setText("$savedYear-$savedMonth-$savedDay $savedHour:$savedMinute:00")
+        val formattedDate = String.format(
+            Locale.getDefault(),
+            "%04d-%02d-%02d %02d:%02d",
+            savedYear, savedMonth+1, savedDay, savedHour, savedMinute
+        )
+
+        binding!!.addFileDate.setText(formattedDate)
+//        binding!!.addFileDate.setText("$savedYear-$savedMonth-$savedDay $savedHour:$savedMinute:00")
     }
+
+
 
 }

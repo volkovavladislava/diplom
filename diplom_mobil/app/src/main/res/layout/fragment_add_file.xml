@@ -36,7 +36,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:text="Описание"
-        android:layout_marginTop="40dp"
+        android:layout_marginTop="20dp"
         app:layout_constraintEnd_toStartOf="@+id/guideline14"
         app:layout_constraintStart_toStartOf="@+id/guideline13"
         app:layout_constraintTop_toBottomOf="@+id/addFileName" />
@@ -66,16 +66,24 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:ems="10"
-        android:inputType="datetime"
+        android:textSize="8pt"
+        android:editable="false"
         app:layout_constraintEnd_toStartOf="@+id/guideline14"
         app:layout_constraintStart_toStartOf="@+id/guideline13"
         app:layout_constraintTop_toBottomOf="@+id/addFileDateLabel" />
+<!--    <View-->
+<!--        android:layout_width="0dp"-->
+<!--        android:layout_height="0.7dp"-->
+<!--        android:background="@android:color/black"-->
+<!--        app:layout_constraintEnd_toStartOf="@+id/guideline14"-->
+<!--        app:layout_constraintStart_toStartOf="@+id/guideline13"-->
+<!--        app:layout_constraintTop_toBottomOf="@+id/addFileDate"/>-->
 
     <Button
         android:id="@+id/bthAddDateAddFile"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="15dp"
         android:text="Изменить дату"
         app:layout_constraintEnd_toStartOf="@+id/guideline14"
         app:layout_constraintStart_toStartOf="@+id/guideline13"

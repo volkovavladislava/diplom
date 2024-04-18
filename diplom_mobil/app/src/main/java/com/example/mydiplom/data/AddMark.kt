@@ -1,7 +1,7 @@
 package com.example.mydiplom.data
 
-data class Mark(
-    val id: Int,
+data class AddMark(
+//    val id: Int,
     val userId: Int,
     val kind_of_mark_id: Int,
     val date: String,

@@ -15,9 +15,9 @@ import android.widget.Spinner
 import android.widget.TimePicker
 import android.widget.Toast
 import androidx.fragment.app.activityViewModels
+import com.example.mydiplom.data.AddMark
 import com.example.mydiplom.data.KindOfMark
 import com.example.mydiplom.data.KindOfMarkValues
-import com.example.mydiplom.data.Mark
 import com.example.mydiplom.data.User
 import com.example.mydiplom.databinding.FragmentAddNewRecordMark1numberBinding
 import com.example.mydiplom.databinding.FragmentAddNewRecordMarkEnumBinding
@@ -27,7 +27,10 @@ import retrofit2.Callback
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import java.text.SimpleDateFormat
 import java.util.Calendar
+import java.util.Date
+import java.util.Locale
 
 class FragmentAddNewRecordMarkEnum : Fragment(), DatePickerDialog.OnDateSetListener, TimePickerDialog.OnTimeSetListener {
 
@@ -61,13 +64,16 @@ class FragmentAddNewRecordMarkEnum : Fragment(), DatePickerDialog.OnDateSetListe
         binding = FragmentAddNewRecordMarkEnumBinding.inflate(inflater, container, false)
 
         var kindOfMarkId = viewModel.kindOfMarkIdAddMark.value ?: 1
-
+        var kindOfMarkName = viewModel.kindOfMarkNameAddMark.value
 
         val retrofit = Retrofit.Builder()
             .baseUrl("http://10.0.2.2:3000")
             .addConverterFactory(GsonConverterFactory.create())
             .build()
         val service: ApiController = retrofit.create(ApiController::class.java)
+
+        binding!!.addMarkEnumDate.setText(SimpleDateFormat("yyyy-MM-dd HH:mm").format(Date()))
+        binding!!.EnumMainLabel.setText("Показатель \""+kindOfMarkName + "\"")
 
 
         val call: Call<List<KindOfMarkValues>> = service.getKindOfMarkValues(kindOfMarkId)
@@ -128,7 +134,7 @@ class FragmentAddNewRecordMarkEnum : Fragment(), DatePickerDialog.OnDateSetListe
 
 
 
-            val mark = Mark(userId=1, kind_of_mark_id=kindOfMarkId,date=date,null,null,null,null,null)
+            val mark = AddMark(userId=1, kind_of_mark_id=kindOfMarkId,date=date,null,null,null,null,null)
 
             val call: Call<Void> = service.addMark(mark.kind_of_mark_id, mark)
 
@@ -173,7 +179,13 @@ class FragmentAddNewRecordMarkEnum : Fragment(), DatePickerDialog.OnDateSetListe
         savedHour = hourOfDay
         savedMinute = minute
 
-        binding!!.addMarkEnumDate.setText("$savedYear-$savedMonth-$savedDay $savedHour:$savedMinute:00")
+        val formattedDate = String.format(
+            Locale.getDefault(),
+            "%04d-%02d-%02d %02d:%02d",
+            savedYear, savedMonth+1, savedDay, savedHour, savedMinute
+        )
+        binding!!.addMarkEnumDate.setText(formattedDate)
+//        binding!!.addMarkEnumDate.setText("$savedYear-$savedMonth-$savedDay $savedHour:$savedMinute:00")
     }
 
 

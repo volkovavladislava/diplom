@@ -12,8 +12,8 @@ import android.widget.DatePicker
 import android.widget.TimePicker
 import android.widget.Toast
 import androidx.fragment.app.activityViewModels
+import com.example.mydiplom.data.AddMark
 import com.example.mydiplom.data.AddPrompt
-import com.example.mydiplom.data.Mark
 import com.example.mydiplom.databinding.FragmentAddNewRecordMark1numberBinding
 import com.example.mydiplom.viewmodel.SharedViewModel
 import retrofit2.Call
@@ -21,7 +21,10 @@ import retrofit2.Callback
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import java.text.SimpleDateFormat
 import java.util.Calendar
+import java.util.Date
+import java.util.Locale
 
 
 class FragmentAddNewRecordMark1number : Fragment(), DatePickerDialog.OnDateSetListener, TimePickerDialog.OnTimeSetListener {
@@ -61,8 +64,10 @@ class FragmentAddNewRecordMark1number : Fragment(), DatePickerDialog.OnDateSetLi
 
 
         var kindOfMarkId = viewModel.kindOfMarkIdAddMark.value ?: 1
+        var kindOfMarkName = viewModel.kindOfMarkNameAddMark.value
 
-
+        binding!!.addMarkNum1Date.setText(SimpleDateFormat("yyyy-MM-dd HH:mm").format(Date()))
+        binding!!.Num1MainLabel.setText("Показатель \""+kindOfMarkName + "\"")
 
         val context = activity ?: return binding!!.root
         binding!!.bthAddDateMarkNum1.setOnClickListener{
@@ -76,7 +81,7 @@ class FragmentAddNewRecordMark1number : Fragment(), DatePickerDialog.OnDateSetLi
             val date = binding!!.addMarkNum1Date.text.toString()
 
 
-            val mark = Mark(userId=1, kind_of_mark_id=kindOfMarkId,date=date,value_number1=numberValue,null,null,null,null)
+            val mark = AddMark(userId=1, kind_of_mark_id=kindOfMarkId,date=date,value_number1=numberValue,null,null,null,null)
 
             val call: Call<Void> = service.addMark(mark.kind_of_mark_id, mark)
 
@@ -122,7 +127,14 @@ class FragmentAddNewRecordMark1number : Fragment(), DatePickerDialog.OnDateSetLi
         savedHour = hourOfDay
         savedMinute = minute
 
-        binding!!.addMarkNum1Date.setText("$savedYear-$savedMonth-$savedDay $savedHour:$savedMinute:00")
+        val formattedDate = String.format(
+            Locale.getDefault(),
+            "%04d-%02d-%02d %02d:%02d",
+            savedYear, savedMonth+1, savedDay, savedHour, savedMinute
+        )
+        binding!!.addMarkNum1Date.setText(formattedDate)
+
+//        binding!!.addMarkNum1Date.setText("$savedYear-$savedMonth-$savedDay $savedHour:$savedMinute:00")
     }
 
 

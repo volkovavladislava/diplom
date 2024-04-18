@@ -268,7 +268,15 @@ class FragmentDetailedFile : Fragment(), DatePickerDialog.OnDateSetListener, Tim
         savedHour = hourOfDay
         savedMinute = minute
 
-        binding!!.detailedFileDate.setText("$savedYear-$savedMonth-$savedDay $savedHour:$savedMinute:00")
+        val formattedDate = String.format(
+            Locale.getDefault(),
+            "%04d-%02d-%02d %02d:%02d",
+            savedYear, savedMonth+1, savedDay, savedHour, savedMinute
+        )
+
+        binding!!.detailedFileDate.setText(formattedDate)
+
+//        binding!!.detailedFileDate.setText("$savedYear-$savedMonth-$savedDay $savedHour:$savedMinute:00")
     }
 
     fun formatDate(inputDate: String): String {

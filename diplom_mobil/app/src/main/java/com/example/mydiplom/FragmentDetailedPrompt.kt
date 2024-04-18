@@ -165,7 +165,15 @@ class FragmentDetailedPrompt : Fragment(), DatePickerDialog.OnDateSetListener, T
     override fun onTimeSet(view: TimePicker?, hourOfDay: Int, minute: Int) {
         savedHour = hourOfDay
         savedMinute = minute
-        binding!!.detailedPromptDate.setText("$savedYear-$savedMonth-$savedDay $savedHour:$savedMinute:00")
+
+        val formattedDate = String.format(
+            Locale.getDefault(),
+            "%04d-%02d-%02d %02d:%02d",
+            savedYear, savedMonth+1, savedDay, savedHour, savedMinute
+        )
+        binding!!.detailedPromptDate.setText(formattedDate)
+
+//        binding!!.detailedPromptDate.setText("$savedYear-$savedMonth-$savedDay $savedHour:$savedMinute:00")
     }
 
     fun formatDate(inputDate: String): String {
