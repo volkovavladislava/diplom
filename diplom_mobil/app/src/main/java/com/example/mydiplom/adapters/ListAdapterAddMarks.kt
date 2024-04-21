@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.Button
+import androidx.core.os.bundleOf
 import androidx.navigation.Navigation
 import com.example.mydiplom.R
 import com.example.mydiplom.data.KindOfMark
@@ -27,14 +28,17 @@ class ListAdapterAddMarks(context: Context, dataArrayList: ArrayList<KindOfMark?
         listTitle.setOnClickListener{
             viewModel.kindOfMarkIdAddMark.value = listData.id
             viewModel.kindOfMarkNameAddMark.value = listData.name
+
+            val bundle = bundleOf("title" to listData!!.name )
+
             if (listData!!.enum_kind_of_mark_id == 1){
-                Navigation.findNavController(view).navigate(R.id.fragmentAddNewRecordMark1number)
+                Navigation.findNavController(view).navigate(R.id.fragmentAddNewRecordMark1number, bundle)
             }
             if (listData!!.enum_kind_of_mark_id == 4){
-                Navigation.findNavController(view).navigate(R.id.fragmentAddNewRecordMarkEnum)
+                Navigation.findNavController(view).navigate(R.id.fragmentAddNewRecordMarkEnum, bundle)
             }
             if (listData!!.enum_kind_of_mark_id == 5){
-                Navigation.findNavController(view).navigate(R.id.fragmentAddNewRecordMark2number)
+                Navigation.findNavController(view).navigate(R.id.fragmentAddNewRecordMark2number, bundle)
             }
 
         }

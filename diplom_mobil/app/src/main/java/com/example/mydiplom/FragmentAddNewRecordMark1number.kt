@@ -67,7 +67,7 @@ class FragmentAddNewRecordMark1number : Fragment(), DatePickerDialog.OnDateSetLi
         var kindOfMarkName = viewModel.kindOfMarkNameAddMark.value
 
         binding!!.addMarkNum1Date.setText(SimpleDateFormat("yyyy-MM-dd HH:mm").format(Date()))
-        binding!!.Num1MainLabel.setText("Показатель \""+kindOfMarkName + "\"")
+
 
         val context = activity ?: return binding!!.root
         binding!!.bthAddDateMarkNum1.setOnClickListener{

@@ -9,9 +9,11 @@ import android.widget.ArrayAdapter
 import android.widget.RelativeLayout
 import android.widget.TextView
 import androidx.compose.runtime.Composable
+import androidx.core.os.bundleOf
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.Navigation
+import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import com.example.mydiplom.R
 import com.example.mydiplom.data.Blog
@@ -42,18 +44,16 @@ class ListAdapterBlog(context: Context, dataArrayList: ArrayList<Blog?>?, privat
 
         Picasso.get()
             .load(imageUrl)
-//            .placeholder(R.drawable.placeholder_image) // Опционально: изображение-заглушка, отображаемое во время загрузки
-//            .error(R.drawable.error_image) // Опционально: изображение, отображаемое в случае ошибки загрузки
             .into(listImage)
 
+        val bundle = bundleOf("title" to listData!!.title )
         listTitle.text = listData!!.title
         containerBlog.setOnClickListener{
             viewModel.articleId.value = listData.id
-
+            view.findNavController().navigate(R.id.fragmentArticleOfBlog, bundle)
     //                view: View ->
 //            findNavController().navigate(R.id.fragmentArticleOfBlog)
-
-            Navigation.findNavController(view).navigate(R.id.fragmentArticleOfBlog)
+//            Navigation.findNavController(view).navigate(R.id.fragmentArticleOfBlog)
         }
 
         return view

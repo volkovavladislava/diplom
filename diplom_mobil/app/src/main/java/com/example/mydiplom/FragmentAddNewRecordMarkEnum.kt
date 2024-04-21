@@ -10,6 +10,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
+import android.widget.AutoCompleteTextView
 import android.widget.DatePicker
 import android.widget.Spinner
 import android.widget.TimePicker
@@ -22,6 +23,7 @@ import com.example.mydiplom.data.User
 import com.example.mydiplom.databinding.FragmentAddNewRecordMark1numberBinding
 import com.example.mydiplom.databinding.FragmentAddNewRecordMarkEnumBinding
 import com.example.mydiplom.viewmodel.SharedViewModel
+import com.google.android.material.textfield.MaterialAutoCompleteTextView
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -50,6 +52,7 @@ class FragmentAddNewRecordMarkEnum : Fragment(), DatePickerDialog.OnDateSetListe
     private val viewModel: SharedViewModel by activityViewModels()
 
     var dataArrayList = ArrayList<String?>()
+    val mutableMap = mutableMapOf<String, Int>()
     private lateinit var spinner:Spinner
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -73,7 +76,6 @@ class FragmentAddNewRecordMarkEnum : Fragment(), DatePickerDialog.OnDateSetListe
         val service: ApiController = retrofit.create(ApiController::class.java)
 
         binding!!.addMarkEnumDate.setText(SimpleDateFormat("yyyy-MM-dd HH:mm").format(Date()))
-        binding!!.EnumMainLabel.setText("Показатель \""+kindOfMarkName + "\"")
 
 
         val call: Call<List<KindOfMarkValues>> = service.getKindOfMarkValues(kindOfMarkId)
@@ -86,7 +88,9 @@ class FragmentAddNewRecordMarkEnum : Fragment(), DatePickerDialog.OnDateSetListe
                     dataArrayList.clear()
                     for(i in kindOfMarkValuesData.indices){
                         dataArrayList.add(kindOfMarkValuesData[i].value)
+                        mutableMap[kindOfMarkValuesData[i].value] = kindOfMarkValuesData[i].id
                     }
+                    (binding!!.menu.editText as? MaterialAutoCompleteTextView)?.setSimpleItems(dataArrayList.toTypedArray())
                 }
                 else{}
             }
@@ -96,30 +100,6 @@ class FragmentAddNewRecordMarkEnum : Fragment(), DatePickerDialog.OnDateSetListe
         })
 
         val context = activity ?: return binding!!.root
-        spinner =  binding!!.addMarkEnumSpinner
-
-
-        val arrayAdapter = ArrayAdapter(context, android.R.layout.simple_spinner_item , dataArrayList)
-        arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-        spinner.adapter = arrayAdapter
-        spinner.setSelection(0)
-        spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener{
-            override fun onItemSelected(
-                parent: AdapterView<*>?,
-                view: View?,
-                position: Int,
-                id: Long
-            ) {
-                val selectedItem = parent?.getItemAtPosition(position).toString()
-            }
-
-            override fun onNothingSelected(parent: AdapterView<*>?) {
-
-            }
-        }
-
-
-
 
 
         binding!!.bthAddDateMarkEnum.setOnClickListener{
@@ -129,12 +109,12 @@ class FragmentAddNewRecordMarkEnum : Fragment(), DatePickerDialog.OnDateSetListe
 
 
         binding!!.bthAddMark.setOnClickListener {
-            val enumValue = binding!!.addMarkEnumSpinner
+            val enumValue = binding!!.textField.text.toString()
             val date = binding!!.addMarkEnumDate.text.toString()
+            Log.d("RetrofitClient","enumValue " + enumValue)
 
 
-
-            val mark = AddMark(userId=1, kind_of_mark_id=kindOfMarkId,date=date,null,null,null,null,null)
+            val mark = AddMark(userId=1, kind_of_mark_id=kindOfMarkId,date=date,null,null,null,null,mutableMap[enumValue])
 
             val call: Call<Void> = service.addMark(mark.kind_of_mark_id, mark)
 

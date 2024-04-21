@@ -57,8 +57,6 @@ class FragmentAddNewRecordMark2number : Fragment(), DatePickerDialog.OnDateSetLi
         var kindOfMarkId = viewModel.kindOfMarkIdAddMark.value ?: 1
         var kindOfMarkName = viewModel.kindOfMarkNameAddMark.value
 
-        binding!!.Num2MainLabel.setText("Показатель \""+kindOfMarkName + "\"")
-
         val retrofit = Retrofit.Builder()
             .baseUrl("http://10.0.2.2:3000")
             .addConverterFactory(GsonConverterFactory.create())

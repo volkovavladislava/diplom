@@ -6,50 +6,69 @@
     android:layout_height="match_parent"
     tools:context=".FragmentAddNewRecordMarkEnum">
 
-    <TextView
-        android:layout_marginTop="50dp"
-        android:id="@+id/EnumMainLabel"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text=""
-        android:textSize="8pt"
-        app:layout_constraintEnd_toStartOf="@+id/guideline4"
-        app:layout_constraintStart_toStartOf="@+id/guideline3"
-        app:layout_constraintTop_toTopOf="parent" />
+<!--    <TextView-->
+<!--        android:layout_marginTop="50dp"-->
+<!--        android:id="@+id/EnumMainLabel"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:text=""-->
+<!--        android:textSize="8pt"-->
+<!--        app:layout_constraintEnd_toStartOf="@+id/guideline4"-->
+<!--        app:layout_constraintStart_toStartOf="@+id/guideline3"-->
+<!--        app:layout_constraintTop_toTopOf="parent" />-->
 
     <TextView
         android:id="@+id/addMarkEnumLabel"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="50dp"
+        android:layout_marginTop="100dp"
         android:text="Выберите значение показателя"
         app:layout_constraintEnd_toStartOf="@+id/guideline4"
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="@+id/guideline3"
-        app:layout_constraintTop_toBottomOf="@+id/EnumMainLabel" />
+        app:layout_constraintTop_toTopOf="parent" />
 
 
-    <Spinner
-        style="@style/Widget.AppCompat.Spinner.DropDown"
-        android:id="@+id/addMarkEnumSpinner"
+<!--    <Spinner-->
+<!--        style="@style/Widget.AppCompat.Spinner.DropDown"-->
+<!--        android:id="@+id/addMarkEnumSpinner"-->
+<!--        android:layout_width="0dp"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_marginTop="20dp"-->
+
+<!--        android:textColor="@android:color/black"-->
+<!--        />-->
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/menu"
+        android:layout_marginTop="10dp"
+        style="@style/Widget.Material3.TextInputLayout.FilledBox.ExposedDropdownMenu"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
         app:layout_constraintEnd_toStartOf="@+id/guideline4"
         app:layout_constraintStart_toStartOf="@+id/guideline3"
-        app:layout_constraintTop_toBottomOf="@+id/addMarkEnumLabel"
-        android:textColor="@android:color/black"
-        />
+        app:layout_constraintTop_toBottomOf="@+id/addMarkEnumLabel">
+
+        <AutoCompleteTextView
+            android:id="@+id/textField"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="none"
+            android:backgroundTint="#FEF7FF"
+            app:dropDownBackgroundTint="#FEF7FF"
+            android:background="#FEF7FF"/>
+
+    </com.google.android.material.textfield.TextInputLayout>
 
     <TextView
         android:id="@+id/addMarkEnumDateLabel"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="30dp"
         android:text="Дата "
         app:layout_constraintEnd_toStartOf="@+id/guideline4"
         app:layout_constraintStart_toStartOf="@+id/guideline3"
-        app:layout_constraintTop_toBottomOf="@+id/addMarkEnumSpinner" />
+        app:layout_constraintTop_toBottomOf="@+id/menu" />
 
     <EditText
         android:id="@+id/addMarkEnumDate"

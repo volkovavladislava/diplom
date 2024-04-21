@@ -17,7 +17,7 @@
         <TextView
             android:id="@+id/recListItemReminderName"
             android:layout_width="150dp"
-            android:layout_height="50dp"
+            android:layout_height="70dp"
             android:layout_marginStart="10dp"
             android:layout_marginEnd="10dp"
             android:ellipsize="end"
@@ -32,7 +32,7 @@
         <TextView
             android:id="@+id/recListItemReminderDate"
             android:layout_width="150dp"
-            android:layout_height="50dp"
+            android:layout_height="70dp"
             android:gravity="center"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/recListItemReminderName"

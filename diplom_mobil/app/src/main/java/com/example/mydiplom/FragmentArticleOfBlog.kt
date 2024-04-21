@@ -40,6 +40,7 @@ class FragmentArticleOfBlog : Fragment() {
     ): View? {
         binding = FragmentArticleOfBlogBinding.inflate(inflater, container, false)
 
+        requireActivity().actionBar?.title = "efkler"
         var blogId = viewModel.articleId.value ?: 1
 
         val retrofit = Retrofit.Builder()

@@ -44,7 +44,7 @@ class FragmentProfile : Fragment() {
                 if (response.isSuccessful) {
                     var userData = response.body()
                     userData?.let {
-                        binding!!.profileName.setText(it.weight.toString())
+                        binding!!.profileName.setText(it.name.toString())
                         binding!!.profileWeight.setText(it.weight.toString())
                         binding!!.profileHeight.setText(it.height.toString())
                         binding!!.profileDate.setText(it.date_birth)

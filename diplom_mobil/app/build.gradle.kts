@@ -73,6 +73,18 @@ dependencies {
     implementation ("com.squareup.picasso:picasso:2.71828")
 
 
+    val camerax_version = "1.3.3"
+    implementation ("org.jetbrains.kotlinx:kotlinx-coroutines-guava:1.8.0")
+    implementation ("androidx.camera:camera-core:${camerax_version}")
+    implementation ("androidx.camera:camera-camera2:${camerax_version}")
+    implementation ("androidx.camera:camera-lifecycle:${camerax_version}")
+    implementation ("androidx.camera:camera-video:${camerax_version}")
+
+    implementation ("androidx.camera:camera-view:${camerax_version}")
+    implementation ("androidx.camera:camera-extensions:${camerax_version}")
+
+
+
 //    implementation ("com.jjoe64:graphview:4.2.2")
 //    implementation ("com.github.AnyChart:AnyChart-Android:1.1.5")
 

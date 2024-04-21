@@ -42,7 +42,9 @@
     <fragment
         android:id="@+id/fragmentArticleOfBlog"
         android:name="com.example.mydiplom.FragmentArticleOfBlog"
-        android:label="Статья" />
+        android:label="{title}">
+        <argument android:name="title" app:argType="string" android:defaultValue="Статья"/>
+    </fragment>
     <fragment
         android:id="@+id/fragmentAddPrompt"
         android:name="com.example.mydiplom.FragmentAddPrompt"
@@ -53,21 +55,31 @@
         android:name="com.example.mydiplom.FragmentDetailedPrompt"
         android:label="Просмотр записи"
         tools:layout="@layout/fragment_detailed_prompt" />
+
+
     <fragment
         android:id="@+id/fragmentAddNewRecordMark1number"
         android:name="com.example.mydiplom.FragmentAddNewRecordMark1number"
-        android:label="Внесите значение"
-        tools:layout="@layout/fragment_add_new_record_mark_1number" />
+        android:label="Показатель {title}"
+        tools:layout="@layout/fragment_add_new_record_mark_1number">
+        <argument android:name="title" app:argType="string" android:defaultValue="Внесите значение показателя"/>
+    </fragment>
     <fragment
         android:id="@+id/fragmentAddNewRecordMark2number"
         android:name="com.example.mydiplom.FragmentAddNewRecordMark2number"
-        android:label="Внесите значения"
-        tools:layout="@layout/fragment_add_new_record_mark2number" />
+        android:label="Показатель {title}"
+        tools:layout="@layout/fragment_add_new_record_mark2number" >
+        <argument android:name="title" app:argType="string" android:defaultValue="Внесите значение показателя"/>
+    </fragment>
     <fragment
         android:id="@+id/fragmentAddNewRecordMarkEnum"
         android:name="com.example.mydiplom.FragmentAddNewRecordMarkEnum"
-        android:label="Внесите значение"
-        tools:layout="@layout/fragment_add_new_record_mark_enum" />
+        android:label="Показатель {title}"
+        tools:layout="@layout/fragment_add_new_record_mark_enum" >
+        <argument android:name="title" app:argType="string" android:defaultValue="Внесите значение показателя"/>
+    </fragment>
+
+
     <fragment
         android:id="@+id/fragmentDetailedFile"
         android:name="com.example.mydiplom.FragmentDetailedFile"
@@ -83,4 +95,9 @@
         android:name="com.example.mydiplom.FragmentDetailedStatistic"
         android:label="fragment_detailed_statistic"
         tools:layout="@layout/fragment_detailed_statistic" />
+    <fragment
+        android:id="@+id/fragmentCamera"
+        android:name="com.example.mydiplom.FragmentCamera"
+        android:label="Сканирование Qr-кода"
+        tools:layout="@layout/fragment_camera" />
 </navigation>

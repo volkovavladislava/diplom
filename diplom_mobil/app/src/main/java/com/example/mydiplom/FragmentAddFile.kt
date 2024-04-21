@@ -142,6 +142,7 @@ class FragmentAddFile : Fragment(), DatePickerDialog.OnDateSetListener, TimePick
 
         binding!!.button.setOnClickListener{
             imageView.setImageURI(null)
+            imageView.setImageResource(0)
             file = null
             fileType = null
             binding!!.addFileImageFileLabel.setText("Выберите файл:")

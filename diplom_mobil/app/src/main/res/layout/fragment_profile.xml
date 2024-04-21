@@ -103,6 +103,7 @@
         android:layout_height="wrap_content"
         android:ems="10"
         android:inputType="date"
+        android:hint="ГГГГ-ММ-ДД"
         app:layout_constraintEnd_toStartOf="@+id/guideline2"
         app:layout_constraintStart_toStartOf="@+id/guideline"
         app:layout_constraintTop_toBottomOf="@+id/profiletDateLabel" />

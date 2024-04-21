@@ -52,7 +52,7 @@ class FragmentDetailedFile : Fragment(), DatePickerDialog.OnDateSetListener, Tim
     private var binding: FragmentDetailedFileBinding? = null
     private val viewModel: SharedViewModel by activityViewModels()
 
-    private lateinit var imageView: ImageView
+//    private lateinit var imageView: ImageView
     private val FILE_PICK_CODE = 1000
     private  var file : java.io.File? = null
     private  var fileType:String? = null
@@ -86,16 +86,18 @@ class FragmentDetailedFile : Fragment(), DatePickerDialog.OnDateSetListener, Tim
                         binding!!.detailedFileDate.setText(formatDate(it.date.toString()))
                         val imageUrl = "http://10.0.2.2:3000/files/" + it.link
                         if (it.mime_type.split("/")[0] != "image") {
-                            Picasso.get()
-                                .load(imageUrl)
-                                .into(binding!!.detailedImageFileFile)
-                            imageView.setImageResource(R.drawable.icondocument)
+//                            Picasso.get()
+//                                .load(imageUrl)
+//                                .into(binding!!.detailedImageFileFile)
+                            binding!!.detailedImageFileFile.setImageResource(R.drawable.icondocument)
                         } else {
                             Picasso.get()
                                 .load(imageUrl)
                                 .into(binding!!.detailedImageFileFile)
                         }
-//                        Log.d("RetrofitClient","java.io.File(imageUrl.path) " + java.io.File(imageUrl))
+
+//                        file = java.io.File(imageUrl)
+//                        Log.d("RetrofitClient","file " + file)
                     }
                 }
                 else{}
@@ -106,15 +108,15 @@ class FragmentDetailedFile : Fragment(), DatePickerDialog.OnDateSetListener, Tim
         })
 
         binding!!.button.setOnClickListener{
-            //почему- не работает очищение фото!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
             binding!!.detailedImageFileFile.setImageURI(null)
+            binding!!.detailedImageFileFile.setImageResource(0)
             file = null
             fileType = null
             binding!!.detailedFileImageFileLabel.setText("Выберите файл:")
             binding!!.button.visibility = View.INVISIBLE
         }
 
-        imageView = binding!!.detailedImageFileFile
+//        imageView = binding!!.detailedImageFileFile
         val pickFileButton  = binding!!.bthAddImageFileDetailedFile
         pickFileButton.setOnClickListener {
             openFileChooser()
@@ -216,6 +218,8 @@ class FragmentDetailedFile : Fragment(), DatePickerDialog.OnDateSetListener, Tim
         if (fileUri != null) {
             file = java.io.File(fileUri.path)
 
+            Log.d("RetrofitClient","filenew " + file)
+
             val fileName = file!!.name
             fileType = getMimeType(fileUri).toString()
             val type = fileType!!.split("/")[1]
@@ -228,9 +232,9 @@ class FragmentDetailedFile : Fragment(), DatePickerDialog.OnDateSetListener, Tim
             }
 
             if (papka != "image") {
-                imageView.setImageResource(R.drawable.icondocument)
+                binding!!.detailedImageFileFile.setImageResource(R.drawable.icondocument)
             } else {
-                imageView.setImageURI(fileUri)
+                binding!!.detailedImageFileFile.setImageURI(fileUri)
             }
 
             binding!!.detailedFileImageFileLabel.setText("Выбран файл")
