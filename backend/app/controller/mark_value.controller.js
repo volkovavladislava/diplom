@@ -1,7 +1,7 @@
 var db = require('../config/db.config.js');
 var MarkValue = db.mark_value;
 var globalFunctions = require('../config/global.functions.js');
-
+const { Op } = require('sequelize');
 
 exports.findAll = (req, res) => {
     MarkValue.findAll()
@@ -44,6 +44,30 @@ exports.MarksForUser= (req, res) => {
         where: {
             user_id: req.params.userId,
             kind_of_mark_id: req.params.kindOfMarkId
+        }
+    })
+        .then(objects => {
+            globalFunctions.sendResult(res, objects);
+        })
+        .catch(err => {
+            globalFunctions.sendError(res, err);
+        })
+};
+
+// ,
+//         order: [['date', 'DESC']]
+
+exports.MarksForUserByDate= (req, res) => {
+    console.log(req.params.date1)
+    console.log(req.params.date2)
+    MarkValue.findAll({
+        where: {
+            user_id: req.params.userId,
+            kind_of_mark_id: req.params.kindOfMarkId,
+            date: {
+                [Op.gte]: req.params.date1,
+                [Op.lte]: req.params.date2
+            }
         }
     })
         .then(objects => {

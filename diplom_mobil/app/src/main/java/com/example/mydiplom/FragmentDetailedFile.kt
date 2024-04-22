@@ -2,10 +2,16 @@ package com.example.mydiplom
 
 import android.app.Activity
 import android.app.DatePickerDialog
+import android.app.DownloadManager
 import android.app.TimePickerDialog
+import android.content.BroadcastReceiver
+import android.content.Context
+
 import android.content.Intent
+import android.content.IntentFilter
 import android.net.Uri
 import android.os.Bundle
+import android.os.Environment
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -15,6 +21,8 @@ import android.widget.DatePicker
 import android.widget.ImageView
 import android.widget.TimePicker
 import android.widget.Toast
+import androidx.core.content.ContextCompat.getSystemService
+import androidx.core.content.ContextCompat.registerReceiver
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.Navigation
 import androidx.navigation.fragment.findNavController
@@ -56,6 +64,8 @@ class FragmentDetailedFile : Fragment(), DatePickerDialog.OnDateSetListener, Tim
     private val FILE_PICK_CODE = 1000
     private  var file : java.io.File? = null
     private  var fileType:String? = null
+    private  var imageUrl:String? = null
+    private  var imageName:String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -84,7 +94,8 @@ class FragmentDetailedFile : Fragment(), DatePickerDialog.OnDateSetListener, Tim
                         binding!!.detailedFileName.setText(it.name.toString())
                         binding!!.detailedFileComment.setText(it.comment.toString())
                         binding!!.detailedFileDate.setText(formatDate(it.date.toString()))
-                        val imageUrl = "http://10.0.2.2:3000/files/" + it.link
+                        imageUrl = "http://10.0.2.2:3000/files/" + it.link
+                        imageName = it.link
                         if (it.mime_type.split("/")[0] != "image") {
 //                            Picasso.get()
 //                                .load(imageUrl)
@@ -193,6 +204,10 @@ class FragmentDetailedFile : Fragment(), DatePickerDialog.OnDateSetListener, Tim
             findNavController().navigate(R.id.fragmentListFiles)
         }
 
+
+//        binding!!.button2.setOnClickListener{
+//            downloadFile(imageUrl!!, imageName!!)
+//        }
         return binding!!.root
     }
 
@@ -246,6 +261,43 @@ class FragmentDetailedFile : Fragment(), DatePickerDialog.OnDateSetListener, Tim
         val cr = requireActivity().contentResolver
         return cr.getType(uri)
     }
+
+
+//
+//    private fun downloadFile( url: String, fileName: String) {
+//        val downloadManager = requireContext().getSystemService(Context.DOWNLOAD_SERVICE) as DownloadManager
+//        val uri = Uri.parse(url)
+//
+//        val request = DownloadManager.Request(uri)
+//            .setTitle("File Download") // Название загрузки
+//            .setDescription("Downloading") // Описание загрузки
+//            .setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED) // Отображение уведомления при завершении загрузки
+//            .setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, fileName) // Путь сохранения файла
+//
+//        val downloadId = downloadManager.enqueue(request) // Запуск загрузки
+//
+//        // Обработка завершения загрузки
+//        val onCompleteReceiver = object : BroadcastReceiver() {
+//            override fun onReceive(context: Context?, intent: Intent?) {
+//                if (DownloadManager.ACTION_DOWNLOAD_COMPLETE == intent?.action) {
+//                    val id = intent.getLongExtra(DownloadManager.EXTRA_DOWNLOAD_ID, -1)
+//                    if (id == downloadId) {
+//                        // Файл успешно загружен
+//                        // Выполните здесь необходимые действия после загрузки файла
+//                    }
+//                }
+//            }
+//        }
+//
+//        requireActivity().registerReceiver(onCompleteReceiver, IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE))
+//    }
+
+
+
+
+
+
+
 
 
 

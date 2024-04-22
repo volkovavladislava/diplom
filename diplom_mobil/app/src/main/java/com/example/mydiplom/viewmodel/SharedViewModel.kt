@@ -13,5 +13,7 @@ class SharedViewModel : ViewModel() {
 
     var kindOfMarkIdStatistic = MutableLiveData<Int>()
 
+    var markId = MutableLiveData<Int>()
+
 
 }

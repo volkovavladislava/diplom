@@ -93,8 +93,10 @@
     <fragment
         android:id="@+id/fragmentDetailedStatistic"
         android:name="com.example.mydiplom.FragmentDetailedStatistic"
-        android:label="fragment_detailed_statistic"
-        tools:layout="@layout/fragment_detailed_statistic" />
+        android:label="Показатель {title}"
+        tools:layout="@layout/fragment_detailed_statistic" >
+        <argument android:name="title" app:argType="string" android:defaultValue="Статистика показателя"/>
+    </fragment>
     <fragment
         android:id="@+id/fragmentCamera"
         android:name="com.example.mydiplom.FragmentCamera"

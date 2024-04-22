@@ -6,6 +6,12 @@
     </style>
 
     <style name="NavigationViewDividerStyle">
-        <item name="android:layout_height">10dp</item> <!-- Измените толщину здесь -->
+        <item name="android:layout_height">10dp</item>
     </style>
+
+    <style name="ThemeMaterialCalendar" parent="ThemeOverlay.MaterialComponents.MaterialCalendar">
+        <item name="android:windowFullscreen">false</item>
+    </style>
+
+
 </resources>

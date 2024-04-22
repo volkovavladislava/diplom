@@ -42,7 +42,8 @@ exports.findByUserId = (req, res) => {
     Prompt.findAll({
         where: {
             user_id: req.params.userId
-        }
+        },
+        order: [['date', 'DESC']]
     }).then(object => {
             
             globalFunctions.sendResult(res, object);

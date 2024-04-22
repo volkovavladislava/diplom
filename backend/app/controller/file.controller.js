@@ -51,7 +51,8 @@ exports.findByUserId = (req, res) => {
     File.findAll({
         where: {
             user_id: req.params.userId
-        }
+        },
+        order: [['id', 'DESC']]
     }).then(object => {
             
             globalFunctions.sendResult(res, object);

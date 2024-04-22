@@ -1,16 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <ScrollView
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools">
+android:layout_width="match_parent"
+android:layout_height="match_parent"
+xmlns:android="http://schemas.android.com/apk/res/android"
+xmlns:app="http://schemas.android.com/apk/res-auto"
+xmlns:tools="http://schemas.android.com/tools">
 
 <androidx.constraintlayout.widget.ConstraintLayout
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".FragmentDetailedStatistic">
+    tools:context=".FragmentDetailedStatisticEnum">
 
 
     <!--    <ScrollView-->
@@ -28,7 +27,7 @@
 
 
     <com.github.mikephil.charting.charts.LineChart
-        android:id="@+id/line"
+        android:id="@+id/lineEnum"
         android:layout_width="match_parent"
         android:layout_height="350dp"
 
@@ -42,29 +41,29 @@
 
 
     <TextView
-        android:id="@+id/labelDatePicked"
+        android:id="@+id/labelDatePickedEnum"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="40dp"
         android:text="Выберите период для сортировки"
         app:layout_constraintEnd_toStartOf="@+id/guideline16"
         app:layout_constraintStart_toStartOf="@+id/guideline15"
-        app:layout_constraintTop_toBottomOf="@+id/line" />
+        app:layout_constraintTop_toBottomOf="@+id/lineEnum" />
 
 
     <Button
-        android:id="@+id/bthDatePicked"
+        android:id="@+id/bthDatePickedEnum"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
         android:text="Выбрать период  и обновить данные "
         app:layout_constraintEnd_toStartOf="@+id/guideline16"
         app:layout_constraintStart_toStartOf="@+id/guideline15"
-        app:layout_constraintTop_toBottomOf="@+id/labelDatePicked"
+        app:layout_constraintTop_toBottomOf="@+id/labelDatePickedEnum"
         />
 
     <TextView
-        android:id="@+id/textView"
+        android:id="@+id/textViewEnum"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="30dp"
@@ -72,16 +71,16 @@
         android:text="Список внесенных значений"
         app:layout_constraintEnd_toStartOf="@+id/guideline16"
         app:layout_constraintStart_toStartOf="@+id/guideline15"
-        app:layout_constraintTop_toBottomOf="@+id/bthDatePicked" />
+        app:layout_constraintTop_toBottomOf="@+id/bthDatePickedEnum" />
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recycleListMarks"
+        android:id="@+id/recycleListMarksEnum"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="15dp"
         app:layout_constraintEnd_toStartOf="@+id/guideline16"
         app:layout_constraintStart_toStartOf="@+id/guideline15"
-        app:layout_constraintTop_toBottomOf="@+id/textView" />
+        app:layout_constraintTop_toBottomOf="@+id/textViewEnum" />
 
 
 
@@ -106,4 +105,4 @@
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
-    </ScrollView>
+</ScrollView>

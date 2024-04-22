@@ -120,4 +120,8 @@ interface ApiController {
 
     @GET("/api/marksForUser/userId={userId}/kindOfMarkId={kindOfMarkId}")
     fun marksForUser(@Path("userId") userId: Int, @Path("kindOfMarkId") kindOfMarkId: Int): Call<List<Mark>>
+
+
+    @GET("/api/marksForUserByDate/userId={userId}/kindOfMarkId={kindOfMarkId}/date1={date1}/date2={date2}")
+    fun marksForUserByDate(@Path("userId") userId: Int, @Path("kindOfMarkId") kindOfMarkId: Int, @Path("date1") date1: String, @Path("date2") date2: String): Call<List<Mark>>
 }

@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.Button
+import androidx.core.os.bundleOf
 import androidx.navigation.Navigation
 import com.example.mydiplom.R
 import com.example.mydiplom.data.KindOfMark
@@ -24,9 +25,11 @@ class ListAdapterStatistic (context: Context, dataArrayList: ArrayList<KindOfMar
         val listTitle = view!!.findViewById<Button>(R.id.listItemStatisticMarkButton)
         listTitle.text = listData!!.name
 
+        val bundle = bundleOf("title" to listData!!.name )
+
         listTitle.setOnClickListener{
             viewModel.kindOfMarkIdStatistic.value = listData.id
-            Navigation.findNavController(view).navigate(R.id.fragmentDetailedStatistic)
+            Navigation.findNavController(view).navigate(R.id.fragmentDetailedStatistic, bundle)
 //            if (listData!!.enum_kind_of_mark_id == 1){
 //                Navigation.findNavController(view).navigate(R.id.fragmentAddNewRecordMark1number)
 //            }
