@@ -101,8 +101,14 @@
         app:layout_constraintStart_toStartOf="@+id/guideline7"
         app:layout_constraintTop_toBottomOf="@+id/bthAddDatePrompt" />
 
-
-
+    <CheckBox
+        android:id="@+id/checkBox"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Напомнить про событие"
+        app:layout_constraintEnd_toStartOf="@+id/guideline8"
+        app:layout_constraintStart_toStartOf="@+id/guideline7"
+        app:layout_constraintTop_toBottomOf="@+id/bthAddPromptToBD" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

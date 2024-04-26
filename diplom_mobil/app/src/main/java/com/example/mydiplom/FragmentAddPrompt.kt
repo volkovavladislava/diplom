@@ -2,7 +2,11 @@ package com.example.mydiplom
 
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
+import android.content.ContentResolver
+import android.content.ContentValues
+import android.content.pm.PackageManager
 import android.os.Bundle
+import android.provider.CalendarContract
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -12,6 +16,7 @@ import android.widget.DatePicker
 import android.widget.TimePicker
 import android.widget.Toast
 import androidx.compose.material3.DatePickerDialog
+import androidx.core.content.ContextCompat
 import com.example.mydiplom.data.AddPrompt
 import com.example.mydiplom.data.UserUpdate
 import com.example.mydiplom.databinding.FragmentAddPromptBinding
@@ -26,6 +31,8 @@ import java.util.Calendar
 import java.util.Date
 import java.util.Locale
 import java.util.TimeZone
+import android.Manifest
+import androidx.activity.result.contract.ActivityResultContracts
 
 
 class FragmentAddPrompt : Fragment(), DatePickerDialog.OnDateSetListener, TimePickerDialog.OnTimeSetListener{
@@ -42,6 +49,22 @@ class FragmentAddPrompt : Fragment(), DatePickerDialog.OnDateSetListener, TimePi
     var savedYear = 0
     var savedHour = 0
     var savedMinute = 0
+
+    var id = -1L
+
+    private val permissionLauncher = registerForActivityResult(
+        ActivityResultContracts.RequestMultiplePermissions()
+    ) { permissions ->
+        val cameraGranted = permissions[Manifest.permission.READ_CALENDAR] ?: false
+        val locationGranted = permissions[Manifest.permission.WRITE_CALENDAR] ?: false
+
+        if (cameraGranted && locationGranted) {
+            id = addEventToCalendar()
+            Log.d("RetrofitClient","id " + id)
+        } else {
+
+        }
+    }
 
     private var binding: FragmentAddPromptBinding? = null
 
@@ -78,7 +101,16 @@ class FragmentAddPrompt : Fragment(), DatePickerDialog.OnDateSetListener, TimePi
             val description = binding!!.addpromptDescription.text.toString()
             val date = binding!!.addpromptDate.text.toString()
 
-            Log.d("RetrofitClient","date " + date)
+            val check =  binding!!.checkBox.isChecked
+
+            if (check){
+                permissionLauncher.launch(
+                    arrayOf(
+                        Manifest.permission.READ_CALENDAR,
+                        Manifest.permission.WRITE_CALENDAR
+                    )
+                )
+            }
 
             val addPrompt = AddPrompt(userId = 1, name = name, description = description, date = date)
             val call: Call<Void> = service.addPrompt(addPrompt.userId, addPrompt)
@@ -137,4 +169,39 @@ class FragmentAddPrompt : Fragment(), DatePickerDialog.OnDateSetListener, TimePi
     }
 
 
-}
+
+
+    private fun addEventToCalendar(): Long {
+
+        val name = binding!!.addpromptName.text.toString()
+        val description = binding!!.addpromptDescription.text.toString()
+        val date = convertDateTimeToMilliseconds(binding!!.addpromptDate.text.toString())
+
+
+        Log.d("RetrofitClient","date " + date)
+
+        val cr = requireContext().contentResolver
+        val values = ContentValues().apply {
+            put(CalendarContract.Events.TITLE, name)
+            put(CalendarContract.Events.DESCRIPTION, description)
+            put(CalendarContract.Events.DTSTART, date)
+            put(CalendarContract.Events.DTEND, date + 60 * 60 * 1000)
+            put(CalendarContract.Events.CALENDAR_ID, 1)
+            put(CalendarContract.Events.EVENT_LOCATION, "")
+            put(CalendarContract.Events.EVENT_TIMEZONE, TimeZone.getDefault().id)
+        }
+        val uri = cr.insert(CalendarContract.Events.CONTENT_URI, values)
+        Log.d("RetrofitClient","uri " + uri)
+        val eventId = uri?.lastPathSegment?.toLongOrNull() ?: -1
+        return eventId
+    }
+
+    fun convertDateTimeToMilliseconds(dateTime: String, pattern: String = "yyyy-MM-dd HH:mm"): Long {
+        val dateFormat = SimpleDateFormat(pattern, Locale.getDefault())
+        val date = dateFormat.parse(dateTime)
+        return date?.time ?: -1
+
+    }
+
+
+    }
