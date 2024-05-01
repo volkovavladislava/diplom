@@ -2,6 +2,7 @@ package com.example.mydiplom
 
 
 import com.example.mydiplom.data.AddFile
+import com.example.mydiplom.data.AddHandMadeKindOfMark
 import com.example.mydiplom.data.AddMark
 import com.example.mydiplom.data.AddPrompt
 import com.example.mydiplom.data.Blog
@@ -26,12 +27,14 @@ import retrofit2.http.Path
 
 interface ApiController {
 
-    @GET("/api/listKindOfMark")
-    fun getListKindOfMark(): Call<List<KindOfMark>>
+    @GET("/api/listKindOfMarkOfSystem")
+    fun getListKindOfMarkOfSystem(): Call<List<KindOfMark>>
 
+    @GET("/api/listKindOfMarkOfHandMade/{userId}")
+    fun getListKindOfMarkOfHandMade(@Path("userId") userId: Int): Call<List<KindOfMark>>
 
-
-
+    @PUT("/api/addHandMadeKindOfMark/{userId}")
+    fun addHandMadeKindOfMark(@Path("userId") userId: Int, @Body addHandMadeKindOfMark: AddHandMadeKindOfMark): Call<Void>
 
 
 
@@ -124,4 +127,21 @@ interface ApiController {
 
     @GET("/api/marksForUserByDate/userId={userId}/kindOfMarkId={kindOfMarkId}/date1={date1}/date2={date2}")
     fun marksForUserByDate(@Path("userId") userId: Int, @Path("kindOfMarkId") kindOfMarkId: Int, @Path("date1") date1: String, @Path("date2") date2: String): Call<List<Mark>>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 }

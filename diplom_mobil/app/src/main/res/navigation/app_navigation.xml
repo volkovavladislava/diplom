@@ -102,4 +102,19 @@
         android:name="com.example.mydiplom.FragmentCamera"
         android:label="Сканирование Qr-кода"
         tools:layout="@layout/fragment_camera" />
+    <fragment
+        android:id="@+id/fragmentListHandMadeMarks"
+        android:name="com.example.mydiplom.FragmentListHandMadeMarks"
+        android:label="Персональные показатели"
+        tools:layout="@layout/fragment_list_hand_made_marks" />
+    <fragment
+        android:id="@+id/fragmentAddNewHandMadeMark"
+        android:name="com.example.mydiplom.FragmentAddNewHandMadeMark"
+        android:label="Добавление показателя"
+        tools:layout="@layout/fragment_add_new_hand_made_mark" />
+    <fragment
+        android:id="@+id/fragmentDetailedHandMadeMark"
+        android:name="com.example.mydiplom.FragmentDetailedHandMadeMark"
+        android:label="fragment_detailed_hand_made_mark"
+        tools:layout="@layout/fragment_detailed_hand_made_mark" />
 </navigation>

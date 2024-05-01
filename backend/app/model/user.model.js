@@ -50,6 +50,14 @@ module.exports = (sequelize, Sequelize) => {
                 sourceKey: 'id'
             });
 
+            User.hasMany(models.kind_of_mark, {
+                foreignKey: 'user_id',
+                onDelete: 'RESTRICT',
+                onUpdate: 'RESTRICT',
+                sourceKey: 'id'
+            });
+
+
             User.hasMany(models.file, {
                 foreignKey: 'user_id',
                 onDelete: 'CASCADE',

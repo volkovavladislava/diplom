@@ -12,6 +12,10 @@ module.exports = (sequelize, Sequelize) => {
                 type: Sequelize.STRING(150), // тип данных String (в MySQL Varchar)
                 allowNull: false
             },
+            user_id: {
+                type: Sequelize.INTEGER(10),
+                allowNull: true
+            },
             enum_kind_of_mark_id: {
                 type: Sequelize.INTEGER(10),
                 allowNull: false
@@ -22,6 +26,10 @@ module.exports = (sequelize, Sequelize) => {
 
         KindOfMark.belongsTo(models.enum_kind_of_mark, {
             foreignKey: 'enum_kind_of_mark_id'
+        });
+
+        KindOfMark.belongsTo(models.user, {
+            foreignKey: 'user_id'
         });
 
         KindOfMark.hasMany(models.user_operating_value_of_mark, {

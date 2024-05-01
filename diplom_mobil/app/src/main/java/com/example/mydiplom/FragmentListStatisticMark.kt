@@ -43,7 +43,7 @@ class FragmentListStatisticMark : Fragment() {
             .addConverterFactory(GsonConverterFactory.create())
             .build()
         val service: ApiController = retrofit.create(ApiController::class.java)
-        val call: Call<List<KindOfMark>> = service.getListKindOfMark()
+        val call: Call<List<KindOfMark>> = service.getListKindOfMarkOfSystem()
 
         call.enqueue(object : Callback<List<KindOfMark>> {
             override fun onResponse(call: Call<List<KindOfMark>>, response: Response<List<KindOfMark>>) {
@@ -53,7 +53,7 @@ class FragmentListStatisticMark : Fragment() {
 
                     dataArrayList.clear()
                     for(i in kindOfMarks.indices){
-                        listData = KindOfMark(kindOfMarks[i].id, kindOfMarks[i].name, kindOfMarks[i].enum_kind_of_mark_id)
+                        listData = KindOfMark(kindOfMarks[i].id, kindOfMarks[i].name,kindOfMarks[i].user_id, kindOfMarks[i].enum_kind_of_mark_id)
                         dataArrayList.add(listData)
                     }
 

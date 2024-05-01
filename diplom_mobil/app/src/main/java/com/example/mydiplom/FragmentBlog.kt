@@ -11,7 +11,6 @@ import androidx.fragment.app.viewModels
 import com.example.mydiplom.adapters.ListAdapterAddMarks
 import com.example.mydiplom.adapters.ListAdapterBlog
 import com.example.mydiplom.data.Blog
-import com.example.mydiplom.data.KindOfMark
 import com.example.mydiplom.databinding.FragmentBlogBinding
 import com.example.mydiplom.viewmodel.SharedViewModel
 import retrofit2.Call

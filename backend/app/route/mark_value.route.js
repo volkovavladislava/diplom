@@ -9,5 +9,6 @@ module.exports = (app) => {
 
     app.get('/api/marksForUser/userId=:userId/kindOfMarkId=:kindOfMarkId', mark_value.MarksForUser);
 
+
     app.get('/api/marksForUserByDate/userId=:userId/kindOfMarkId=:kindOfMarkId/date1=:date1/date2=:date2', mark_value.MarksForUserByDate);
 };
