@@ -4,14 +4,13 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
 import android.widget.TextView
 import androidx.cardview.widget.CardView
+import androidx.core.os.bundleOf
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.RecyclerView
 import com.example.mydiplom.R
 import com.example.mydiplom.data.KindOfMark
-
 import com.example.mydiplom.viewmodel.SharedViewModel
 
 class RecycleAdapterHandMadeMark (private val dataList: ArrayList<KindOfMark>, private val viewModel: SharedViewModel) :
@@ -32,10 +31,11 @@ class RecycleAdapterHandMadeMark (private val dataList: ArrayList<KindOfMark>, p
         val currentItem = dataList[position]
         Log.d("RetrofitClient","currentItem " + currentItem.name)
         holder.bth.setText(currentItem.name)
+        val bundle = bundleOf("title" to currentItem.name )
 
         holder.cardView.setOnClickListener{
                 view: View->
-            Navigation.findNavController(view).navigate(R.id.fragmentDetailedHandMadeMark)
+            Navigation.findNavController(view).navigate(R.id.fragmentDetailedHandMadeMark, bundle)
             this.viewModel.handMadeMarkId.value = dataList[position].id
 
 

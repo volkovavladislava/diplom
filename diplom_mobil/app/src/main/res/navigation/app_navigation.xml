@@ -115,6 +115,19 @@
     <fragment
         android:id="@+id/fragmentDetailedHandMadeMark"
         android:name="com.example.mydiplom.FragmentDetailedHandMadeMark"
-        android:label="fragment_detailed_hand_made_mark"
-        tools:layout="@layout/fragment_detailed_hand_made_mark" />
+        android:label="Показатель {title}"
+        tools:layout="@layout/fragment_detailed_hand_made_mark"
+        >
+        <argument android:name="title" app:argType="string" android:defaultValue="Статистика показателя"/>
+    </fragment>
+    <fragment
+        android:id="@+id/fragmentAddRecordHandMadeMark"
+        android:name="com.example.mydiplom.FragmentAddRecordHandMadeMark"
+        android:label="Добавление значения"
+        tools:layout="@layout/fragment_add_record_hand_made_mark" />
+    <fragment
+        android:id="@+id/fragmentUpdateRecordHandMadeMark"
+        android:name="com.example.mydiplom.FragmentUpdateRecordHandMadeMark"
+        android:label="Редактирование записи"
+        tools:layout="@layout/fragment_update_record_hand_made_mark" />
 </navigation>

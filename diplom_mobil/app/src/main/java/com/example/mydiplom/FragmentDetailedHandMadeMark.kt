@@ -8,6 +8,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
+import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.mydiplom.adapters.RecycleAdapterDetailedHandMadeMark
@@ -47,6 +48,7 @@ class FragmentDetailedHandMadeMark : Fragment() {
         val service: ApiController = retrofit.create(ApiController::class.java)
 
         var handMadeMarkId = viewModel.handMadeMarkId.value ?: 1
+
         Log.d("RetrofitClient","handMadeMarkId  " + handMadeMarkId)
         val call: Call<List<Mark>> = service.marksForUser(1, handMadeMarkId)
 
@@ -91,6 +93,11 @@ class FragmentDetailedHandMadeMark : Fragment() {
             }
         })
 
+        binding!!.bthAddValueDetailedHandMadeMark.setOnClickListener{
+                view: View->
+            Navigation.findNavController(view).navigate(R.id.fragmentAddRecordHandMadeMark)
+            this.viewModel.handMadeMarkId.value = handMadeMarkId
+        }
 
         return binding!!.root
     }

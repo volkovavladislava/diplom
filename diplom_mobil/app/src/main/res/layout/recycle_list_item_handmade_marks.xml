@@ -16,9 +16,16 @@
         <TextView
             android:id="@+id/bthAddNewHandMadeMark"
             android:layout_width="300dp"
-            android:layout_height="50dp"
+            android:layout_height="40dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginBottom="10dp"
+            android:ellipsize="end"
             android:gravity="center"
+            android:maxLines="2"
             android:text="показатель"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />

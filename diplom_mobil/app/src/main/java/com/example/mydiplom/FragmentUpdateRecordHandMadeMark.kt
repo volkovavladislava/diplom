@@ -13,9 +13,9 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
-import com.example.mydiplom.data.Prompt
-import com.example.mydiplom.data.PromptUpdate
-import com.example.mydiplom.databinding.FragmentDetailedPromptBinding
+import com.example.mydiplom.data.Mark
+import com.example.mydiplom.data.MarkUpdate
+import com.example.mydiplom.databinding.FragmentUpdateRecordHandMadeMarkBinding
 import com.example.mydiplom.viewmodel.SharedViewModel
 import retrofit2.Call
 import retrofit2.Callback
@@ -26,7 +26,8 @@ import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Locale
 
-class FragmentDetailedPrompt : Fragment(), DatePickerDialog.OnDateSetListener, TimePickerDialog.OnTimeSetListener {
+
+class FragmentUpdateRecordHandMadeMark : Fragment(), DatePickerDialog.OnDateSetListener, TimePickerDialog.OnTimeSetListener {
 
     var day = 0
     var month = 0
@@ -40,7 +41,7 @@ class FragmentDetailedPrompt : Fragment(), DatePickerDialog.OnDateSetListener, T
     var savedHour = 0
     var savedMinute = 0
 
-    private var binding: FragmentDetailedPromptBinding? = null
+    private var binding: FragmentUpdateRecordHandMadeMarkBinding? = null
     private val viewModel: SharedViewModel by activityViewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -52,72 +53,83 @@ class FragmentDetailedPrompt : Fragment(), DatePickerDialog.OnDateSetListener, T
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        binding = FragmentUpdateRecordHandMadeMarkBinding.inflate(inflater, container, false)
 
-        binding = FragmentDetailedPromptBinding.inflate(inflater, container, false)
-
-        var promptId = viewModel.promptId.value ?: 1
+        var handMadeMarkRecordId = viewModel.handMadeMarkRecordId.value ?: 1
+        var handMadeMarkId = viewModel.handMadeMarkId.value ?: 1
 
         val retrofit = Retrofit.Builder()
             .baseUrl("http://10.0.2.2:3000")
             .addConverterFactory(GsonConverterFactory.create())
             .build()
         val service: ApiController = retrofit.create(ApiController::class.java)
-        val call: Call<Prompt> = service.getPromptById(promptId)
 
+        val call: Call<Mark> = service.getMarkById(handMadeMarkRecordId)
 
-        call.enqueue(object : Callback<Prompt> {
-            override fun onResponse(call: Call<Prompt>, response: Response<Prompt>) {
+        call.enqueue(object : Callback<Mark> {
+            override fun onResponse(call: Call<Mark>, response: Response<Mark>) {
                 if (response.isSuccessful) {
-                    var promptData = response.body()
+                    var markData = response.body()
+                    markData?.let {
+                        binding!!.updateRecordHandMadeMarkValue.setText(it.value_string.toString())
+                        binding!!.updateRecordHandMadeMarkDate.setText(formatDate(it.date.toString()))
 
-                    promptData?.let {
-                        binding!!.detailedPromptName.setText(it.name.toString())
-                        binding!!.detailedPromptDescription.setText(it.description.toString())
-                        binding!!.detailedPromptDate.setText(formatDate(it.date.toString()))
                     }
                 }
                 else{}
             }
-            override fun onFailure(call: Call<Prompt>, t: Throwable) {
+            override fun onFailure(call: Call<Mark>, t: Throwable) {
                 Log.d("RetrofitClient","Receive user from server problem " + t)
             }
         })
 
 
-        binding!!.bthAddDetailedPromptToBD.setOnClickListener {
-            val name = binding!!.detailedPromptName.text.toString()
-            val description =  binding!!.detailedPromptDescription.text.toString()
-            val date = binding!!.detailedPromptDate.text.toString()
 
-            val promptUpdate = PromptUpdate( name = name,description = description , date = date)
 
-            val call: Call<Void> = service.updatePrompt(promptId, promptUpdate)
 
-            call.enqueue(object : Callback<Void> {
-                override fun onResponse(call: Call<Void>, response: Response<Void>) {
-                    if (response.isSuccessful) {
-                        Toast.makeText(context, "Данные успешно обновлены", Toast.LENGTH_SHORT).show()
-                    }
-                    else{
-                        Toast.makeText(context, "Что-то пошло не так", Toast.LENGTH_SHORT).show()
-                    }
-                }
-                override fun onFailure(call: Call<Void>, t: Throwable) {
-                    Log.d("RetrofitClient","Receive user from server problem " + t)
-                    Toast.makeText(context, "Ошибка", Toast.LENGTH_SHORT).show()
-                }
-            })
-        }
+
 
         val context = activity ?: return binding!!.root
-        binding!!.bthAddDateDetailedPrompt.setOnClickListener{
+        binding!!.bthAddDateUpdateRecordHandMadeMark.setOnClickListener{
             getDateTimeCalendar()
             DatePickerDialog(context, this, year, month, day).show()
         }
 
 
-        binding!!.bthDeleteDetailedPrompt.setOnClickListener{
-            val call: Call<Void> = service.deletePrompt(promptId)
+
+
+        binding!!.bthUpdateRecordHandMadeMarkValue.setOnClickListener {
+
+            if(!binding!!.updateRecordHandMadeMarkValue.text.isNullOrEmpty() && !binding!!.updateRecordHandMadeMarkDate.text.isNullOrEmpty()){
+                val value = binding!!.updateRecordHandMadeMarkValue.text.toString()
+                val date = binding!!.updateRecordHandMadeMarkDate.text.toString()
+
+
+                val markUpdate = MarkUpdate(userId =1,kind_of_mark_id = handMadeMarkId,  date = date, null,null,null, value,null)
+                val call: Call<Void> = service.updateMark(handMadeMarkRecordId, markUpdate)
+                call.enqueue(object : Callback<Void> {
+                    override fun onResponse(call: Call<Void>, response: Response<Void>) {
+                        if (response.isSuccessful) {
+                            Toast.makeText(context, "Данные успешно обновлены", Toast.LENGTH_SHORT).show()
+                        }
+                        else{
+                            Toast.makeText(context, "Что-то пошло не так", Toast.LENGTH_SHORT).show()
+                        }
+                    }
+                    override fun onFailure(call: Call<Void>, t: Throwable) {
+                        Log.d("RetrofitClient","Receive user from server problem " + t)
+                        Toast.makeText(context, "Ошибка", Toast.LENGTH_SHORT).show()
+                    }
+                })
+            }
+            else{
+                Toast.makeText(context, "Сначала добавьте значение и дату", Toast.LENGTH_SHORT).show()
+            }
+        }
+
+
+        binding!!.bthDeleteRecordHandMadeMarkValue.setOnClickListener {
+            val call: Call<Void> = service.deleteMark(handMadeMarkRecordId)
             call.enqueue(object : Callback<Void> {
                 override fun onResponse(call: Call<Void>, response: Response<Void>) {
                     if (response.isSuccessful) {
@@ -126,19 +138,22 @@ class FragmentDetailedPrompt : Fragment(), DatePickerDialog.OnDateSetListener, T
                         Toast.makeText(context, "Что-то пошло не так", Toast.LENGTH_SHORT).show()
                     }
                 }
-
                 override fun onFailure(call: Call<Void>, t: Throwable) {
                     Log.d("RetrofitClient", "Receive user from server problem " + t)
                     Toast.makeText(context, "Ошибка", Toast.LENGTH_SHORT).show()
                 }
             })
-            findNavController().navigate(R.id.fragmentListReminders)
+            findNavController().navigate(R.id.fragmentDetailedHandMadeMark)
         }
 
-
         return binding!!.root
-
     }
+
+
+
+
+
+
 
     private fun getDateTimeCalendar(){
         val cal = Calendar.getInstance()
@@ -148,7 +163,6 @@ class FragmentDetailedPrompt : Fragment(), DatePickerDialog.OnDateSetListener, T
         hour = cal.get(Calendar.HOUR)
         minute = cal.get(Calendar.MINUTE)
     }
-
     override fun onDateSet(view: DatePicker?, year: Int, month: Int, dayOfMonth: Int) {
         savedDay = dayOfMonth
         savedMonth = month
@@ -167,10 +181,11 @@ class FragmentDetailedPrompt : Fragment(), DatePickerDialog.OnDateSetListener, T
             "%04d-%02d-%02d %02d:%02d",
             savedYear, savedMonth+1, savedDay, savedHour, savedMinute
         )
-        binding!!.detailedPromptDate.setText(formattedDate)
+        binding!!.updateRecordHandMadeMarkDate.setText(formattedDate)
 
-//        binding!!.detailedPromptDate.setText("$savedYear-$savedMonth-$savedDay $savedHour:$savedMinute:00")
     }
+
+
 
     fun formatDate(inputDate: String): String {
         val inputFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.getDefault())

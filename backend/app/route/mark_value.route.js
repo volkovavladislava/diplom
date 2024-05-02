@@ -11,4 +11,11 @@ module.exports = (app) => {
 
 
     app.get('/api/marksForUserByDate/userId=:userId/kindOfMarkId=:kindOfMarkId/date1=:date1/date2=:date2', mark_value.MarksForUserByDate);
+
+    app.get('/api/markById/:markId', mark_value.findById);
+
+    app.post('/api/deleteMark/:markId', mark_value.delete);
+
+    app.put('/api/updateMark/:markId', mark_value.update);
+
 };

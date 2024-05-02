@@ -2,20 +2,16 @@ package com.example.mydiplom
 
 import android.os.Bundle
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.mydiplom.adapters.RecycleAdapterPrompt
-import com.example.mydiplom.data.AddPrompt
 import com.example.mydiplom.data.Prompt
-import com.example.mydiplom.data.User
-
 import com.example.mydiplom.databinding.FragmentListRemindersBinding
 import com.example.mydiplom.viewmodel.SharedViewModel
 import retrofit2.Call

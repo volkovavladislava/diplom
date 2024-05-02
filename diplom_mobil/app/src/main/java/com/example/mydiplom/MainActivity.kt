@@ -7,10 +7,8 @@ import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
-import androidx.navigation.Navigation
 import androidx.navigation.findNavController
 import androidx.navigation.ui.NavigationUI
-import com.example.mydiplom.data.Blog
 import com.example.mydiplom.data.User
 import com.example.mydiplom.databinding.MainActivityBinding
 import retrofit2.Call

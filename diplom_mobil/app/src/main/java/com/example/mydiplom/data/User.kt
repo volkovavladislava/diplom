@@ -1,7 +1,5 @@
 package com.example.mydiplom.data
 
-import java.time.LocalDate
-
 data class User(
     val userId: Int,
     val name: String,

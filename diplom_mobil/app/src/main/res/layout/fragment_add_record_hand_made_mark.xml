@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+xmlns:app="http://schemas.android.com/apk/res-auto"
+xmlns:tools="http://schemas.android.com/tools"
+android:layout_width="match_parent"
+android:layout_height="match_parent"
+tools:context=".FragmentAddRecordHandMadeMark">
+
+
+    <TextView
+        android:id="@+id/addNewRecordHandMadeMarkValueLabel"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="80dp"
+        android:text="Введите значение собственного показателя"
+        app:layout_constraintEnd_toStartOf="@+id/guideline24"
+        app:layout_constraintStart_toStartOf="@+id/guideline23"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <EditText
+        android:id="@+id/addNewRecordHandMadeMarkValue"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text=""
+        app:layout_constraintEnd_toStartOf="@+id/guideline24"
+        app:layout_constraintStart_toStartOf="@+id/guideline23"
+        app:layout_constraintTop_toBottomOf="@+id/addNewRecordHandMadeMarkValueLabel" />
+
+
+    <TextView
+        android:id="@+id/addNewRecordHandMadeMarkDateLabel"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:text="Дата "
+        app:layout_constraintEnd_toStartOf="@+id/guideline24"
+        app:layout_constraintStart_toStartOf="@+id/guideline23"
+        app:layout_constraintTop_toBottomOf="@+id/addNewRecordHandMadeMarkValue" />
+
+    <EditText
+        android:id="@+id/addNewRecordHandMadeMarkDate"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:editable="false"
+        app:layout_constraintEnd_toStartOf="@+id/guideline24"
+        app:layout_constraintStart_toStartOf="@+id/guideline23"
+        app:layout_constraintTop_toBottomOf="@+id/addNewRecordHandMadeMarkDateLabel" />
+
+    <Button
+        android:id="@+id/bthAddDateNewRecordHandMadeMark"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:text="Изменить дату"
+        app:layout_constraintEnd_toStartOf="@+id/guideline24"
+        app:layout_constraintStart_toStartOf="@+id/guideline23"
+        app:layout_constraintTop_toBottomOf="@+id/addNewRecordHandMadeMarkDate" />
+
+
+
+<Button
+    android:id="@+id/bthaddNewRecordHandMadeMarkValue"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="40dp"
+    android:text="Добавить значение показатель"
+    app:layout_constraintEnd_toStartOf="@+id/guideline24"
+    app:layout_constraintStart_toStartOf="@+id/guideline23"
+    app:layout_constraintTop_toBottomOf="@+id/bthAddDateNewRecordHandMadeMark" />
+
+
+
+
+
+<androidx.constraintlayout.widget.Guideline
+    android:id="@+id/guideline23"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    app:layout_constraintGuide_begin="16dp" />
+
+<androidx.constraintlayout.widget.Guideline
+    android:id="@+id/guideline24"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    app:layout_constraintGuide_begin="381dp" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,20 +1,17 @@
 package com.example.mydiplom
 
 import android.Manifest
-import android.app.Instrumentation.ActivityResult
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.camera.core.CameraSelector
 import androidx.camera.core.Preview
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import com.example.mydiplom.camera.CameraRecognitionCenter
 import com.example.mydiplom.databinding.FragmentCameraBinding
-import com.example.mydiplom.databinding.FragmentDetailedFileBinding
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.launch

@@ -17,6 +17,7 @@ class SharedViewModel : ViewModel() {
 
 
     var handMadeMarkId = MutableLiveData<Int>()
+    var handMadeMarkRecordId = MutableLiveData<Int>()
 
 
 }

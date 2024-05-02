@@ -1,7 +1,6 @@
 package com.example.mydiplom
 
 
-import com.example.mydiplom.data.AddFile
 import com.example.mydiplom.data.AddHandMadeKindOfMark
 import com.example.mydiplom.data.AddMark
 import com.example.mydiplom.data.AddPrompt
@@ -10,6 +9,7 @@ import com.example.mydiplom.data.File
 import com.example.mydiplom.data.KindOfMark
 import com.example.mydiplom.data.KindOfMarkValues
 import com.example.mydiplom.data.Mark
+import com.example.mydiplom.data.MarkUpdate
 import com.example.mydiplom.data.Prompt
 import com.example.mydiplom.data.PromptUpdate
 import com.example.mydiplom.data.User
@@ -128,7 +128,14 @@ interface ApiController {
     @GET("/api/marksForUserByDate/userId={userId}/kindOfMarkId={kindOfMarkId}/date1={date1}/date2={date2}")
     fun marksForUserByDate(@Path("userId") userId: Int, @Path("kindOfMarkId") kindOfMarkId: Int, @Path("date1") date1: String, @Path("date2") date2: String): Call<List<Mark>>
 
+    @GET("/api/markById/{markId}")
+    fun getMarkById(@Path("markId") markId: Int): Call<Mark>
 
+    @POST("/api/deleteMark/{markId}")
+    fun deleteMark(@Path("markId") markId: Int): Call<Void> //Call<Void>
+
+    @PUT("/api/updateMark/{markId}")
+    fun updateMark(@Path("markId") markId: Int, @Body markUpdate: MarkUpdate): Call<Void> //Call<Void>
 
 
 

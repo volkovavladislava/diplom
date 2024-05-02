@@ -38,6 +38,30 @@ exports.create = (req, res) => {
     })
 };
 
+exports.update = (req, res) => {
+    MarkValue.update({
+            user_id:req.body.userId,
+            kind_of_mark_id:req.body.kind_of_mark_id,
+            date: req.body.date,
+            value_number1: req.body.value_number1,
+            value_number2: req.body.value_number2,
+            value_bool: req.body.value_bool,
+            value_string: req.body.value_string,
+            value_enum: req.body.value_enum
+        },
+        {
+            where: {
+                id: req.params.markId
+            }
+        }
+    ).then(object => {
+        // console.log( object)
+        globalFunctions.sendResult(res, object);
+    }).catch(err => {
+        globalFunctions.sendError(res, err);
+    })
+};
+
 
 exports.MarksForUser= (req, res) => {
     MarkValue.findAll({
@@ -61,8 +85,6 @@ exports.MarksForUser= (req, res) => {
 //         order: [['date', 'DESC']]
 
 exports.MarksForUserByDate= (req, res) => {
-    console.log(req.params.date1)
-    console.log(req.params.date2)
     MarkValue.findAll({
         where: {
             user_id: req.params.userId,
@@ -79,4 +101,27 @@ exports.MarksForUserByDate= (req, res) => {
         .catch(err => {
             globalFunctions.sendError(res, err);
         })
+};
+
+
+exports.findById = (req, res) => {
+    MarkValue.findByPk(req.params.markId)
+        .then(object => {
+            globalFunctions.sendResult(res, object);
+        })
+        .catch(err => {
+            globalFunctions.sendError(res, err);
+        })
+};
+
+exports.delete = (req, res) => {
+    MarkValue.destroy({
+        where: {
+            id: req.params.markId
+        }
+    }).then(() => {
+        globalFunctions.sendResult(res, 'Запись удалена');
+    }).catch(err => {
+        globalFunctions.sendError(res, err);
+    });
 };

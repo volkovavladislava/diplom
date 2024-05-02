@@ -1,6 +1,5 @@
 package com.example.mydiplom.adapters
 
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,7 +8,6 @@ import androidx.cardview.widget.CardView
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.RecyclerView
 import com.example.mydiplom.R
-
 import com.example.mydiplom.data.Mark
 import com.example.mydiplom.viewmodel.SharedViewModel
 import java.text.SimpleDateFormat
@@ -34,9 +32,9 @@ class RecycleAdapterDetailedHandMadeMark (private val dataList: ArrayList<Mark>,
         holder.date.setText(formatDate(currentItem.date))
         holder.value.setText(currentItem.value_string)
         holder.cardView.setOnClickListener{
-//                view: View->
-//            Navigation.findNavController(view).navigate(R.id.fragmentDetailedHandMadeMark)
-//            this.viewModel.handMadeMarkId.value = dataList[position].id
+                view: View->
+            Navigation.findNavController(view).navigate(R.id.fragmentUpdateRecordHandMadeMark)
+            this.viewModel.handMadeMarkRecordId.value = dataList[position].id
 
 
         }

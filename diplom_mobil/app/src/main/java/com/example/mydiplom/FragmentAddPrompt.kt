@@ -1,26 +1,22 @@
 package com.example.mydiplom
 
+import android.Manifest
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
-import android.content.ContentResolver
 import android.content.ContentValues
-import android.content.pm.PackageManager
 import android.os.Bundle
 import android.provider.CalendarContract
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.DatePicker
 import android.widget.TimePicker
 import android.widget.Toast
-import androidx.compose.material3.DatePickerDialog
-import androidx.core.content.ContextCompat
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.fragment.app.Fragment
 import com.example.mydiplom.data.AddPrompt
-import com.example.mydiplom.data.UserUpdate
 import com.example.mydiplom.databinding.FragmentAddPromptBinding
-import com.example.mydiplom.databinding.FragmentListRemindersBinding
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -31,8 +27,6 @@ import java.util.Calendar
 import java.util.Date
 import java.util.Locale
 import java.util.TimeZone
-import android.Manifest
-import androidx.activity.result.contract.ActivityResultContracts
 
 
 class FragmentAddPrompt : Fragment(), DatePickerDialog.OnDateSetListener, TimePickerDialog.OnTimeSetListener{

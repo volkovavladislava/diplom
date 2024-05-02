@@ -13,7 +13,7 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import com.example.mydiplom.data.AddMark
-import com.example.mydiplom.databinding.FragmentAddNewRecordMark2numberBinding
+import com.example.mydiplom.databinding.FragmentAddRecordHandMadeMarkBinding
 import com.example.mydiplom.viewmodel.SharedViewModel
 import retrofit2.Call
 import retrofit2.Callback
@@ -25,7 +25,8 @@ import java.util.Calendar
 import java.util.Date
 import java.util.Locale
 
-class FragmentAddNewRecordMark2number : Fragment(), DatePickerDialog.OnDateSetListener, TimePickerDialog.OnTimeSetListener {
+class FragmentAddRecordHandMadeMark : Fragment(), DatePickerDialog.OnDateSetListener, TimePickerDialog.OnTimeSetListener {
+
 
     var day = 0
     var month = 0
@@ -39,8 +40,11 @@ class FragmentAddNewRecordMark2number : Fragment(), DatePickerDialog.OnDateSetLi
     var savedHour = 0
     var savedMinute = 0
 
-    private var binding: FragmentAddNewRecordMark2numberBinding? = null
+
+    private var binding: FragmentAddRecordHandMadeMarkBinding? = null
     private val viewModel: SharedViewModel by activityViewModels()
+
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -51,35 +55,33 @@ class FragmentAddNewRecordMark2number : Fragment(), DatePickerDialog.OnDateSetLi
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding = FragmentAddNewRecordMark2numberBinding.inflate(inflater, container, false)
-
-        var kindOfMarkId = viewModel.kindOfMarkIdAddMark.value ?: 1
-        var kindOfMarkName = viewModel.kindOfMarkNameAddMark.value
-
-        val retrofit = Retrofit.Builder()
-            .baseUrl("http://10.0.2.2:3000")
-            .addConverterFactory(GsonConverterFactory.create())
-            .build()
-        val service: ApiController = retrofit.create(ApiController::class.java)
+        binding = FragmentAddRecordHandMadeMarkBinding.inflate(inflater, container, false)
 
 
+
+        var handMadeMarkId = viewModel.handMadeMarkId.value ?: 1
+
+
+        binding!!.addNewRecordHandMadeMarkDate.setText(SimpleDateFormat("yyyy-MM-dd HH:mm").format(Date()))
 
         val context = activity ?: return binding!!.root
-        binding!!.bthAddDateMarkNum2.setOnClickListener{
+        binding!!.bthAddDateNewRecordHandMadeMark.setOnClickListener{
             getDateTimeCalendar()
             DatePickerDialog(context, this, year, month, day).show()
         }
-        binding!!.addMarkNum2Date.setText(SimpleDateFormat("yyyy-MM-dd HH:mm").format(Date()))
 
+        binding!!.bthaddNewRecordHandMadeMarkValue.setOnClickListener{
 
-        binding!!.bthAddMark.setOnClickListener {
-            val number1Value = binding!!.addMarkNum1.text.toString().toDouble()
-            val number2Value = binding!!.addMarkNum2.text.toString().toDouble()
-            val date = binding!!.addMarkNum2Date.text.toString()
+            val retrofit = Retrofit.Builder()
+                .baseUrl("http://10.0.2.2:3000")
+                .addConverterFactory(GsonConverterFactory.create())
+                .build()
+            val service: ApiController = retrofit.create(ApiController::class.java)
 
+            val numberValue = binding!!.addNewRecordHandMadeMarkValue.text.toString()
+            val date = binding!!.addNewRecordHandMadeMarkDate.text.toString()
 
-            val mark = AddMark(userId=1, kind_of_mark_id=kindOfMarkId,date=date,value_number1=number1Value,number2Value,null,null,null)
-
+            val mark = AddMark(userId=1, kind_of_mark_id=handMadeMarkId,date=date,null,null,null,numberValue,null)
             val call: Call<Void> = service.addMark(mark.kind_of_mark_id, mark)
 
             call.enqueue(object : Callback<Void> {
@@ -99,8 +101,10 @@ class FragmentAddNewRecordMark2number : Fragment(), DatePickerDialog.OnDateSetLi
         }
 
 
+
         return binding!!.root
     }
+
 
     private fun getDateTimeCalendar(){
         val cal = Calendar.getInstance()
@@ -128,9 +132,9 @@ class FragmentAddNewRecordMark2number : Fragment(), DatePickerDialog.OnDateSetLi
             "%04d-%02d-%02d %02d:%02d",
             savedYear, savedMonth+1, savedDay, savedHour, savedMinute
         )
-        binding!!.addMarkNum2Date.setText(formattedDate)
-//        binding!!.addMarkNum2Date.setText("$savedYear-$savedMonth-$savedDay $savedHour:$savedMinute:00")
-    }
+        binding!!.addNewRecordHandMadeMarkDate.setText(formattedDate)
 
+//        binding!!.addMarkNum1Date.setText("$savedYear-$savedMonth-$savedDay $savedHour:$savedMinute:00")
+    }
 
 }

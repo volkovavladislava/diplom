@@ -12,16 +12,12 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.mydiplom.adapters.RecycleAdapterPrompt
 import com.example.mydiplom.adapters.RecycleAdapterStatisticNum1
 import com.example.mydiplom.data.Mark
-import com.example.mydiplom.data.Prompt
-import com.example.mydiplom.data.User
 import com.example.mydiplom.databinding.FragmentDetailedStatisticBinding
 import com.example.mydiplom.viewmodel.SharedViewModel
 import com.github.mikephil.charting.components.XAxis
 import com.github.mikephil.charting.data.Entry
-
 import com.github.mikephil.charting.data.LineData
 import com.github.mikephil.charting.data.LineDataSet
 import com.github.mikephil.charting.formatter.ValueFormatter

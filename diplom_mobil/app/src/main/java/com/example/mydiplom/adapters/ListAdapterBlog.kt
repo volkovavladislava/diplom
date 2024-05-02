@@ -1,20 +1,14 @@
 package com.example.mydiplom.adapters
 
 import android.content.Context
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.RelativeLayout
 import android.widget.TextView
-import androidx.compose.runtime.Composable
 import androidx.core.os.bundleOf
-import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.viewmodel.compose.viewModel
-import androidx.navigation.Navigation
 import androidx.navigation.findNavController
-import androidx.navigation.fragment.findNavController
 import com.example.mydiplom.R
 import com.example.mydiplom.data.Blog
 import com.example.mydiplom.viewmodel.SharedViewModel
