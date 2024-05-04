@@ -1,8 +1,10 @@
 package com.example.mydiplom
 
 
+import com.example.mydiplom.data.AddFavoriteKindOfMark
 import com.example.mydiplom.data.AddHandMadeKindOfMark
 import com.example.mydiplom.data.AddMark
+import com.example.mydiplom.data.AddMarkDavlenie
 import com.example.mydiplom.data.AddPrompt
 import com.example.mydiplom.data.Blog
 import com.example.mydiplom.data.File
@@ -12,7 +14,9 @@ import com.example.mydiplom.data.Mark
 import com.example.mydiplom.data.MarkUpdate
 import com.example.mydiplom.data.Prompt
 import com.example.mydiplom.data.PromptUpdate
+import com.example.mydiplom.data.UpdateOperatingValue
 import com.example.mydiplom.data.User
+import com.example.mydiplom.data.UserOperatingValue
 import com.example.mydiplom.data.UserUpdate
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
@@ -36,14 +40,27 @@ interface ApiController {
     @PUT("/api/addHandMadeKindOfMark/{userId}")
     fun addHandMadeKindOfMark(@Path("userId") userId: Int, @Body addHandMadeKindOfMark: AddHandMadeKindOfMark): Call<Void>
 
+    @PUT("/api/addFavoriteKindOfMark")
+    fun addFavoriteKindOfMark( @Body addFavoriteKindOfMark: AddFavoriteKindOfMark): Call<Void>
+
+    @POST("/api/deleteFavoriteKindOfMark")
+    fun deleteFavoriteKindOfMark( @Body addFavoriteKindOfMark: AddFavoriteKindOfMark): Call<Void>
+
+
+
 
 
     @PUT("/api/updateUser/{userId}")
     fun updateUser(@Path("userId") userId: Int, @Body userUpdate: UserUpdate): Call<Void> //Call<Void>
 
+    @GET("/api/userOpertingValue/{userId}")
+    fun getUserOpertingValue(@Path("userId") userId: Int): Call<List<UserOperatingValue>>
+
+    @PUT("/api/updateUserOperatingValue/{userId}")
+    fun updateUserOperatingValue(@Path("userId") userId: Int, @Body userOperatingValueUpdate: UpdateOperatingValue): Call<Void> //Call<Void>
+
     @GET("/api/user/{userId}")
     fun getUser(@Path("userId") userId: Int): Call<User>
-
 
 
 
@@ -77,10 +94,7 @@ interface ApiController {
 
 
 
-    @PUT("/api/addMark/{kindOfMarkId}")
-    fun addMark(@Path("kindOfMarkId") kindOfMarkId: Int, @Body addMark: AddMark): Call<Void> //Call<Void>
-    @GET("/api/kindOfMarkValues/{kindOfMarkId}")
-    fun getKindOfMarkValues(@Path("kindOfMarkId") kindOfMarkId: Int): Call<List<KindOfMarkValues>>
+
 
 
 
@@ -119,6 +133,19 @@ interface ApiController {
     fun deleteFile(@Path("fileId") fileId: Int): Call<Void> //Call<Void>
 
 
+
+
+
+
+
+    @PUT("/api/addMark/{kindOfMarkId}")
+    fun addMark(@Path("kindOfMarkId") kindOfMarkId: Int, @Body addMark: AddMark): Call<Void> //Call<Void>
+
+    @PUT("/api/addMarkD")
+    fun addMarkDavlenie( @Body addMark: AddMarkDavlenie): Call<Void> //Call<Void>
+
+    @GET("/api/kindOfMarkValues/{kindOfMarkId}")
+    fun getKindOfMarkValues(@Path("kindOfMarkId") kindOfMarkId: Int): Call<List<KindOfMarkValues>>
 
 
     @GET("/api/marksForUser/userId={userId}/kindOfMarkId={kindOfMarkId}")

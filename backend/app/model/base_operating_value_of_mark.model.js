@@ -23,6 +23,18 @@ module.exports = (sequelize, Sequelize) => {
             date: {
                 type: Sequelize.DATEONLY,
                 allowNull: false
+            },
+            gender: {
+                type: Sequelize.INTEGER(10),
+                allowNull: false
+            },
+            min_value: {
+                type: Sequelize.INTEGER(10),
+                allowNull: false
+            },
+            max_value: {
+                type: Sequelize.INTEGER(10),
+                allowNull: false
             }
         });
 

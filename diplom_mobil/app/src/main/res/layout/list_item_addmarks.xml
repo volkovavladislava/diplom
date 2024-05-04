@@ -19,4 +19,24 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+    <Button
+        android:id="@+id/bthMatchFavoriteAddMarks"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_marginEnd="24dp"
+        android:background="@drawable/baseline_favorite_24_grey"
+        android:foreground="@drawable/baseline_favorite_24_grey"
+        app:layout_constraintBottom_toBottomOf="@+id/listItemMarkButton"
+        app:layout_constraintEnd_toEndOf="@+id/listItemMarkButton"
+        app:layout_constraintTop_toTopOf="@+id/listItemMarkButton" />
+
+
+    <!--    <ImageButton-->
+<!--        android:id="@+id/imageButton3"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        app:srcCompat="@android:drawable/btn_star_big_on"-->
+<!--        tools:layout_editor_absoluteX="303dp"-->
+<!--        tools:layout_editor_absoluteY="119dp" />-->
+
+</androidx.constraintlayout.widget.ConstraintLayout>

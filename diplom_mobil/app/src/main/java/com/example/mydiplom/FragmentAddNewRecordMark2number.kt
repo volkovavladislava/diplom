@@ -13,6 +13,7 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import com.example.mydiplom.data.AddMark
+import com.example.mydiplom.data.AddMarkDavlenie
 import com.example.mydiplom.databinding.FragmentAddNewRecordMark2numberBinding
 import com.example.mydiplom.viewmodel.SharedViewModel
 import retrofit2.Call
@@ -73,29 +74,42 @@ class FragmentAddNewRecordMark2number : Fragment(), DatePickerDialog.OnDateSetLi
 
 
         binding!!.bthAddMark.setOnClickListener {
-            val number1Value = binding!!.addMarkNum1.text.toString().toDouble()
-            val number2Value = binding!!.addMarkNum2.text.toString().toDouble()
-            val date = binding!!.addMarkNum2Date.text.toString()
 
+            if (!binding!!.addMarkNum1.text.isNullOrEmpty() && !binding!!.addMarkNum2.text.isNullOrEmpty() && !binding!!.addMarkNum2Date.text.isNullOrEmpty()) {
 
-            val mark = AddMark(userId=1, kind_of_mark_id=kindOfMarkId,date=date,value_number1=number1Value,number2Value,null,null,null)
+                val number1Value = binding!!.addMarkNum1.text.toString().toDouble()
+                val number2Value = binding!!.addMarkNum2.text.toString().toDouble()
+                val date = binding!!.addMarkNum2Date.text.toString()
 
-            val call: Call<Void> = service.addMark(mark.kind_of_mark_id, mark)
+                val mark = AddMarkDavlenie(
+                    userId = 1,
+                    date = date,
+                    value_number1 = number1Value,
+                    value_number2 = number2Value
+                )
 
-            call.enqueue(object : Callback<Void> {
-                override fun onResponse(call: Call<Void>, response: Response<Void>) {
-                    if (response.isSuccessful) {
-                        Toast.makeText(context, "Данные успешно добавлены", Toast.LENGTH_SHORT).show()
+                val call: Call<Void> = service.addMarkDavlenie(mark)
+
+                call.enqueue(object : Callback<Void> {
+                    override fun onResponse(call: Call<Void>, response: Response<Void>) {
+                        if (response.isSuccessful) {
+                            Toast.makeText(context, "Данные успешно добавлены", Toast.LENGTH_SHORT)
+                                .show()
+                        } else {
+                            Toast.makeText(context, "Что-то пошло не так", Toast.LENGTH_SHORT)
+                                .show()
+                        }
                     }
-                    else{
-                        Toast.makeText(context, "Что-то пошло не так", Toast.LENGTH_SHORT).show()
+                    override fun onFailure(call: Call<Void>, t: Throwable) {
+                        Log.d("RetrofitClient", "Receive user from server problem " + t)
+                        Toast.makeText(context, "Ошибка", Toast.LENGTH_SHORT).show()
                     }
-                }
-                override fun onFailure(call: Call<Void>, t: Throwable) {
-                    Log.d("RetrofitClient","Receive user from server problem " + t)
-                    Toast.makeText(context, "Ошибка", Toast.LENGTH_SHORT).show()
-                }
-            })
+                })
+
+            }
+            else{
+                Toast.makeText(context, "Сначала заполните значения и дату", Toast.LENGTH_SHORT).show()
+            }
         }
 
 

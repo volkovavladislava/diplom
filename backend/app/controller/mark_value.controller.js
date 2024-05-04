@@ -6,11 +6,6 @@ const { Op } = require('sequelize');
 exports.findAll = (req, res) => {
     MarkValue.findAll()
         .then(objects => {
-            // возврат найденных записей
-            // console.log("objects ")
-            // console.log(objects)
-            // console.log("res ")
-            // console.log( res)
             globalFunctions.sendResult(res, objects);
             
         })
@@ -26,9 +21,7 @@ exports.create = (req, res) => {
         user_id:req.body.userId,
         kind_of_mark_id:req.body.kind_of_mark_id,
         date: req.body.date,
-        value_number1: req.body.value_number1,
-        value_number2: req.body.value_number2,
-        value_bool: req.body.value_bool,
+        value_number: req.body.value_number,
         value_string: req.body.value_string,
         value_enum: req.body.value_enum
     }).then(object => {
@@ -38,14 +31,45 @@ exports.create = (req, res) => {
     })
 };
 
+exports.createD = (req, res) => { 
+
+    const dav1 = MarkValue.create({
+        user_id:    req.body.userId,
+        kind_of_mark_id:    1,
+        date:   req.body.date,
+        value_number: req.body.value_number1,
+        value_string: null,
+        value_enum: null
+    });
+
+    const dav2 = MarkValue.create({
+        user_id:    req.body.userId,
+        kind_of_mark_id:    2,
+        date:   req.body.date,
+        value_number: req.body.value_number2,
+        value_string: null,
+        value_enum: null
+    });
+
+
+    Promise.all([dav1, dav2])
+    .then(([result1, result2]) => {
+        globalFunctions.sendResult(res, {result1, result2});
+    }).catch(err => {
+        globalFunctions.sendError(res, err);
+    })
+
+
+
+};
+
+
 exports.update = (req, res) => {
     MarkValue.update({
             user_id:req.body.userId,
             kind_of_mark_id:req.body.kind_of_mark_id,
             date: req.body.date,
-            value_number1: req.body.value_number1,
-            value_number2: req.body.value_number2,
-            value_bool: req.body.value_bool,
+            value_number: req.body.value_number,
             value_string: req.body.value_string,
             value_enum: req.body.value_enum
         },

@@ -91,10 +91,10 @@
         android:label="Добавление файла"
         tools:layout="@layout/fragment_add_file" />
     <fragment
-        android:id="@+id/fragmentDetailedStatistic"
-        android:name="com.example.mydiplom.FragmentDetailedStatistic"
+        android:id="@+id/fragmentDetailedStatisticNum1"
+        android:name="com.example.mydiplom.FragmentDetailedStatisticNum1"
         android:label="Показатель {title}"
-        tools:layout="@layout/fragment_detailed_statistic" >
+        tools:layout="@layout/fragment_detailed_statistic_num1" >
         <argument android:name="title" app:argType="string" android:defaultValue="Статистика показателя"/>
     </fragment>
     <fragment

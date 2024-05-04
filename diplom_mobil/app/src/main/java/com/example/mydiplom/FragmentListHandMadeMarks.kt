@@ -43,7 +43,7 @@ class FragmentListHandMadeMarks : Fragment() {
 
 
         val call: Call<List<KindOfMark>> = service.getListKindOfMarkOfHandMade(1)
-
+        val context = activity ?: return binding!!.root
         call.enqueue(object : Callback<List<KindOfMark>> {
             override fun onResponse(call: Call<List<KindOfMark>>, response: Response<List<KindOfMark>>) {
                 if (response.isSuccessful) {
@@ -60,13 +60,14 @@ class FragmentListHandMadeMarks : Fragment() {
                             handMadeMarks[i].id,
                             handMadeMarks[i].name,
                             handMadeMarks[i].user_id,
-                            handMadeMarks[i].enum_kind_of_mark_id)
+                            handMadeMarks[i].enum_kind_of_mark_id,
+                            handMadeMarks[i].has_reference)
                         datalist.add(dataClass)
                     }
 
                     Log.d("RetrofitClient","datalist " + datalist)
 
-                    recyclerView.adapter = RecycleAdapterHandMadeMark(datalist, viewModel)
+                    recyclerView.adapter = RecycleAdapterHandMadeMark(context, datalist, viewModel)
 
                 }
                 else{}

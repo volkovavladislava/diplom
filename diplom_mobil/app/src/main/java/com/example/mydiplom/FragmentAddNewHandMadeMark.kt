@@ -40,28 +40,33 @@ class FragmentAddNewHandMadeMark : Fragment() {
 
 
         binding!!.bthaddNewHandMadeMark.setOnClickListener {
-            val name = binding!!.addNewHandMadeMarkName.text.toString()
 
-            val kindOfMark = AddHandMadeKindOfMark(name = name, user_id=1, enum_kind_of_mark_id=2 )
+            if( !binding!!.addNewHandMadeMarkName.text.isNullOrEmpty() ){
+                val name = binding!!.addNewHandMadeMarkName.text.toString()
+
+                val kindOfMark = AddHandMadeKindOfMark(name = name, user_id=1, enum_kind_of_mark_id=2 )
 
 
-            val call: Call<Void> = service.addHandMadeKindOfMark(kindOfMark.user_id, kindOfMark)
+                val call: Call<Void> = service.addHandMadeKindOfMark(kindOfMark.user_id, kindOfMark)
 
-            call.enqueue(object : Callback<Void> {
-                override fun onResponse(call: Call<Void>, response: Response<Void>) {
-                    if (response.isSuccessful) {
-                        Toast.makeText(context, "Данные успешно добавлены", Toast.LENGTH_SHORT).show()
+                call.enqueue(object : Callback<Void> {
+                    override fun onResponse(call: Call<Void>, response: Response<Void>) {
+                        if (response.isSuccessful) {
+                            Toast.makeText(context, "Данные успешно добавлены", Toast.LENGTH_SHORT).show()
+                        }
+                        else{
+                            Toast.makeText(context, "Что-то пошло не так", Toast.LENGTH_SHORT).show()
+                        }
                     }
-                    else{
-                        Toast.makeText(context, "Что-то пошло не так", Toast.LENGTH_SHORT).show()
+                    override fun onFailure(call: Call<Void>, t: Throwable) {
+                        Log.d("RetrofitClient","Receive user from server problem " + t)
+                        Toast.makeText(context, "Ошибка", Toast.LENGTH_SHORT).show()
                     }
-                }
-                override fun onFailure(call: Call<Void>, t: Throwable) {
-                    Log.d("RetrofitClient","Receive user from server problem " + t)
-                    Toast.makeText(context, "Ошибка", Toast.LENGTH_SHORT).show()
-                }
-            })
-
+                })
+            }
+            else{
+                Toast.makeText(context, "Сначала добавьте название", Toast.LENGTH_SHORT).show()
+            }
 
         }
 

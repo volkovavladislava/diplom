@@ -18,4 +18,15 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <Button
+        android:id="@+id/bthMatchFavoriteStatisticMarks"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_marginEnd="24dp"
+        android:background="@drawable/baseline_favorite_24_grey"
+        android:foreground="@drawable/baseline_favorite_24_grey"
+        app:layout_constraintBottom_toBottomOf="@+id/listItemStatisticMarkButton"
+        app:layout_constraintEnd_toEndOf="@+id/listItemStatisticMarkButton"
+        app:layout_constraintTop_toTopOf="@+id/listItemStatisticMarkButton" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

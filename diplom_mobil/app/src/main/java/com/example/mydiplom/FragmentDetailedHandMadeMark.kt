@@ -72,9 +72,7 @@ class FragmentDetailedHandMadeMark : Fragment() {
                             marksData[i].userId,
                             marksData[i].kind_of_mark_id,
                             marksData[i].date,
-                            marksData[i].value_number1,
-                            marksData[i].value_number2,
-                            marksData[i].value_bool,
+                            marksData[i].value_number,
                             marksData[i].value_string,
                             marksData[i].value_enum )
                         datalist.add(dataClass)

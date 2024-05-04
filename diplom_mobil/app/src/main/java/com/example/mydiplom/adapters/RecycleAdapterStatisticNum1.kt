@@ -28,7 +28,7 @@ class RecycleAdapterStatisticNum1 (private val dataList: ArrayList<Mark>,  priva
 
     override fun onBindViewHolder(holder: ViewHolderClass, position: Int) {
         val currentItem = dataList[position]
-        holder.valueTextView.setText(currentItem.value_number1.toString())
+        holder.valueTextView.setText(currentItem.value_number.toString())
         holder.dateTextView.setText(formatDate(currentItem.date))
         holder.cardView.setOnClickListener{
                 view: View->

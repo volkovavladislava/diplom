@@ -29,7 +29,7 @@ class RecycleAdapterStatisticEnum (private val dataList: ArrayList<Mark>, privat
     override fun onBindViewHolder(holder: RecycleAdapterStatisticEnum.ViewHolderClass, position: Int) {
         val currentItem = dataList[position]
         //поменять на нужное value
-        holder.valueTextView.setText(currentItem.value_number1.toString())
+        holder.valueTextView.setText(currentItem.value_number.toString())
         holder.dateTextView.setText(formatDate(currentItem.date))
         holder.cardView.setOnClickListener{
                 view: View->

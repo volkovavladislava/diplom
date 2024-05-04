@@ -72,32 +72,46 @@ class FragmentAddRecordHandMadeMark : Fragment(), DatePickerDialog.OnDateSetList
 
         binding!!.bthaddNewRecordHandMadeMarkValue.setOnClickListener{
 
-            val retrofit = Retrofit.Builder()
-                .baseUrl("http://10.0.2.2:3000")
-                .addConverterFactory(GsonConverterFactory.create())
-                .build()
-            val service: ApiController = retrofit.create(ApiController::class.java)
+            if( !binding!!.addNewRecordHandMadeMarkValue.text.isNullOrEmpty()  && !binding!!.addNewRecordHandMadeMarkDate.text.isNullOrEmpty()) {
+                val retrofit = Retrofit.Builder()
+                    .baseUrl("http://10.0.2.2:3000")
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build()
+                val service: ApiController = retrofit.create(ApiController::class.java)
 
-            val numberValue = binding!!.addNewRecordHandMadeMarkValue.text.toString()
-            val date = binding!!.addNewRecordHandMadeMarkDate.text.toString()
+                val numberValue = binding!!.addNewRecordHandMadeMarkValue.text.toString()
+                val date = binding!!.addNewRecordHandMadeMarkDate.text.toString()
 
-            val mark = AddMark(userId=1, kind_of_mark_id=handMadeMarkId,date=date,null,null,null,numberValue,null)
-            val call: Call<Void> = service.addMark(mark.kind_of_mark_id, mark)
+                val mark = AddMark(
+                    userId = 1,
+                    kind_of_mark_id = handMadeMarkId,
+                    date = date,
+                    null,
+                    numberValue,
+                    null
+                )
+                val call: Call<Void> = service.addMark(mark.kind_of_mark_id, mark)
 
-            call.enqueue(object : Callback<Void> {
-                override fun onResponse(call: Call<Void>, response: Response<Void>) {
-                    if (response.isSuccessful) {
-                        Toast.makeText(context, "Данные успешно добавлены", Toast.LENGTH_SHORT).show()
+                call.enqueue(object : Callback<Void> {
+                    override fun onResponse(call: Call<Void>, response: Response<Void>) {
+                        if (response.isSuccessful) {
+                            Toast.makeText(context, "Данные успешно добавлены", Toast.LENGTH_SHORT)
+                                .show()
+                        } else {
+                            Toast.makeText(context, "Что-то пошло не так", Toast.LENGTH_SHORT)
+                                .show()
+                        }
                     }
-                    else{
-                        Toast.makeText(context, "Что-то пошло не так", Toast.LENGTH_SHORT).show()
+
+                    override fun onFailure(call: Call<Void>, t: Throwable) {
+                        Log.d("RetrofitClient", "Receive user from server problem " + t)
+                        Toast.makeText(context, "Ошибка", Toast.LENGTH_SHORT).show()
                     }
-                }
-                override fun onFailure(call: Call<Void>, t: Throwable) {
-                    Log.d("RetrofitClient","Receive user from server problem " + t)
-                    Toast.makeText(context, "Ошибка", Toast.LENGTH_SHORT).show()
-                }
-            })
+                })
+            }
+            else{
+                Toast.makeText(context, "Сначала добавьте значение и дату", Toast.LENGTH_SHORT).show()
+            }
         }
 
 

@@ -16,12 +16,8 @@ module.exports = (sequelize, Sequelize) => {
                 type: Sequelize.INTEGER(10),
                 allowNull: false
             },
-            min_value: {
-                type: Sequelize.DOUBLE, // тип данных String (в MySQL Varchar)
-                allowNull: false
-            },
-            max_value: {
-                type: Sequelize.DOUBLE,
+            value: {
+                type: Sequelize.DOUBLE, 
                 allowNull: false
             },
             date: {

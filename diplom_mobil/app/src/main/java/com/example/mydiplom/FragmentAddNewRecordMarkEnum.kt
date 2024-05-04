@@ -103,29 +103,43 @@ class FragmentAddNewRecordMarkEnum : Fragment(), DatePickerDialog.OnDateSetListe
 
 
         binding!!.bthAddMark.setOnClickListener {
-            val enumValue = binding!!.textField.text.toString()
-            val date = binding!!.addMarkEnumDate.text.toString()
-            Log.d("RetrofitClient","enumValue " + enumValue)
+            if( !binding!!.textField.text.isNullOrEmpty()  && !binding!!.addMarkEnumDate.text.isNullOrEmpty()) {
+                val enumValue = binding!!.textField.text.toString()
+                val date = binding!!.addMarkEnumDate.text.toString()
+//                Log.d("RetrofitClient", "enumValue " + enumValue)
 
 
-            val mark = AddMark(userId=1, kind_of_mark_id=kindOfMarkId,date=date,null,null,null,null,mutableMap[enumValue])
+                val mark = AddMark(
+                    userId = 1,
+                    kind_of_mark_id = kindOfMarkId,
+                    date = date,
+                    null,
+                    null,
+                    mutableMap[enumValue]
+                )
 
-            val call: Call<Void> = service.addMark(mark.kind_of_mark_id, mark)
+                val call: Call<Void> = service.addMark(mark.kind_of_mark_id, mark)
 
-            call.enqueue(object : Callback<Void> {
-                override fun onResponse(call: Call<Void>, response: Response<Void>) {
-                    if (response.isSuccessful) {
-                        Toast.makeText(context, "Данные успешно добавлены", Toast.LENGTH_SHORT).show()
+                call.enqueue(object : Callback<Void> {
+                    override fun onResponse(call: Call<Void>, response: Response<Void>) {
+                        if (response.isSuccessful) {
+                            Toast.makeText(context, "Данные успешно добавлены", Toast.LENGTH_SHORT)
+                                .show()
+                        } else {
+                            Toast.makeText(context, "Что-то пошло не так", Toast.LENGTH_SHORT)
+                                .show()
+                        }
                     }
-                    else{
-                        Toast.makeText(context, "Что-то пошло не так", Toast.LENGTH_SHORT).show()
+
+                    override fun onFailure(call: Call<Void>, t: Throwable) {
+                        Log.d("RetrofitClient", "Receive user from server problem " + t)
+                        Toast.makeText(context, "Ошибка", Toast.LENGTH_SHORT).show()
                     }
-                }
-                override fun onFailure(call: Call<Void>, t: Throwable) {
-                    Log.d("RetrofitClient","Receive user from server problem " + t)
-                    Toast.makeText(context, "Ошибка", Toast.LENGTH_SHORT).show()
-                }
-            })
+                })
+            }
+            else{
+                Toast.makeText(context, "Сначала добавьте значение и дату", Toast.LENGTH_SHORT).show()
+            }
         }
 
         return binding!!.root

@@ -20,16 +20,8 @@ module.exports = (sequelize, Sequelize) => {
                 type: Sequelize.DATE,
                 allowNull: false
             },
-            value_number1: {
+            value_number: {
                 type: Sequelize.DOUBLE,
-                allowNull: true
-            },
-            value_number2: {
-                type: Sequelize.DOUBLE,
-                allowNull: true
-            },
-            value_bool: {
-                type: Sequelize.TINYINT(1),
                 allowNull: true
             },
             value_string: {

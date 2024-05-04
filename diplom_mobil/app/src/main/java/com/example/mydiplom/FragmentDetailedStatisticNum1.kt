@@ -14,7 +14,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.mydiplom.adapters.RecycleAdapterStatisticNum1
 import com.example.mydiplom.data.Mark
-import com.example.mydiplom.databinding.FragmentDetailedStatisticBinding
+import com.example.mydiplom.databinding.FragmentDetailedStatisticNum1Binding
 import com.example.mydiplom.viewmodel.SharedViewModel
 import com.github.mikephil.charting.components.XAxis
 import com.github.mikephil.charting.data.Entry
@@ -30,21 +30,16 @@ import retrofit2.converter.gson.GsonConverterFactory
 //import com.jjoe64.graphview.GraphView
 //import com.jjoe64.graphview.series.DataPoint
 //import com.jjoe64.graphview.series.LineGraphSeries
-import java.security.KeyStore
-import java.text.ParseException
 import java.text.SimpleDateFormat
-import java.time.LocalDateTime
-import java.time.ZonedDateTime
-import java.time.format.DateTimeFormatter
 import java.util.Calendar
 import java.util.Date
 import java.util.Locale
 import java.util.TimeZone
 
 
-class FragmentDetailedStatistic : Fragment() {
+class FragmentDetailedStatisticNum1 : Fragment() {
 
-    private var binding: FragmentDetailedStatisticBinding? = null
+    private var binding: FragmentDetailedStatisticNum1Binding? = null
     private val viewModel: SharedViewModel by activityViewModels()
 
     private lateinit var recyclerView: RecyclerView
@@ -60,7 +55,7 @@ class FragmentDetailedStatistic : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding = FragmentDetailedStatisticBinding.inflate(inflater, container, false)
+        binding = FragmentDetailedStatisticNum1Binding.inflate(inflater, container, false)
 
 //        // Получаем ссылку на GraphView из макета
 //        val graphView: GraphView = binding!!.graph
@@ -100,14 +95,12 @@ class FragmentDetailedStatistic : Fragment() {
                             marksData[i].userId,
                             marksData[i].kind_of_mark_id,
                             marksData[i].date,
-                            marksData[i].value_number1,
-                            marksData[i].value_number2,
-                            marksData[i].value_bool,
+                            marksData[i].value_number,
                             marksData[i].value_string,
                             marksData[i].value_enum )
                         datalist.add(dataClass)
 
-                        val e = Entry(convertDateStringToMilliseconds(dataClass.date), marksData[i].value_number1?.toFloat() ?: 0f)
+                        val e = Entry(convertDateStringToMilliseconds(dataClass.date), marksData[i].value_number?.toFloat() ?: 0f)
                         entries.add(e)
 
                     }
@@ -246,13 +239,11 @@ class FragmentDetailedStatistic : Fragment() {
                             marksData[i].userId,
                             marksData[i].kind_of_mark_id,
                             marksData[i].date,
-                            marksData[i].value_number1,
-                            marksData[i].value_number2,
-                            marksData[i].value_bool,
+                            marksData[i].value_number,
                             marksData[i].value_string,
                             marksData[i].value_enum )
                         datalist.add(dataClass)
-                        val e = Entry(convertDateStringToMilliseconds(dataClass.date), marksData[i].value_number1?.toFloat() ?: 0f)
+                        val e = Entry(convertDateStringToMilliseconds(dataClass.date), marksData[i].value_number?.toFloat() ?: 0f)
                         entries.add(e)
                     }
 

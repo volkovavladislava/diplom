@@ -7,6 +7,9 @@ module.exports = (app) => {
 
     app.put('/api/addMark/:kind_of_mark_id', mark_value.create);
 
+    app.put('/api/addMarkD', mark_value.createD);
+
+
     app.get('/api/marksForUser/userId=:userId/kindOfMarkId=:kindOfMarkId', mark_value.MarksForUser);
 
 

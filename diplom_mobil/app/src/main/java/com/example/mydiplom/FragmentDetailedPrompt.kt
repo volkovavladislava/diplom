@@ -85,28 +85,34 @@ class FragmentDetailedPrompt : Fragment(), DatePickerDialog.OnDateSetListener, T
 
 
         binding!!.bthAddDetailedPromptToBD.setOnClickListener {
-            val name = binding!!.detailedPromptName.text.toString()
-            val description =  binding!!.detailedPromptDescription.text.toString()
-            val date = binding!!.detailedPromptDate.text.toString()
+            if( !binding!!.detailedPromptName.text.isNullOrEmpty()  && !binding!!.detailedPromptDate.text.isNullOrEmpty()) {
+                val name = binding!!.detailedPromptName.text.toString()
+                val description = binding!!.detailedPromptDescription.text.toString()
+                val date = binding!!.detailedPromptDate.text.toString()
 
-            val promptUpdate = PromptUpdate( name = name,description = description , date = date)
+                val promptUpdate = PromptUpdate(name = name, description = description, date = date)
 
-            val call: Call<Void> = service.updatePrompt(promptId, promptUpdate)
+                val call: Call<Void> = service.updatePrompt(promptId, promptUpdate)
 
-            call.enqueue(object : Callback<Void> {
-                override fun onResponse(call: Call<Void>, response: Response<Void>) {
-                    if (response.isSuccessful) {
-                        Toast.makeText(context, "Данные успешно обновлены", Toast.LENGTH_SHORT).show()
+                call.enqueue(object : Callback<Void> {
+                    override fun onResponse(call: Call<Void>, response: Response<Void>) {
+                        if (response.isSuccessful) {
+                            Toast.makeText(context, "Данные успешно обновлены", Toast.LENGTH_SHORT)
+                                .show()
+                        } else {
+                            Toast.makeText(context, "Что-то пошло не так", Toast.LENGTH_SHORT)
+                                .show()
+                        }
                     }
-                    else{
-                        Toast.makeText(context, "Что-то пошло не так", Toast.LENGTH_SHORT).show()
+
+                    override fun onFailure(call: Call<Void>, t: Throwable) {
+                        Log.d("RetrofitClient", "Receive user from server problem " + t)
+                        Toast.makeText(context, "Ошибка", Toast.LENGTH_SHORT).show()
                     }
-                }
-                override fun onFailure(call: Call<Void>, t: Throwable) {
-                    Log.d("RetrofitClient","Receive user from server problem " + t)
-                    Toast.makeText(context, "Ошибка", Toast.LENGTH_SHORT).show()
-                }
-            })
+                })
+            }else{
+                Toast.makeText(context, "Сначала добавьте значение и дату", Toast.LENGTH_SHORT).show()
+            }
         }
 
         val context = activity ?: return binding!!.root

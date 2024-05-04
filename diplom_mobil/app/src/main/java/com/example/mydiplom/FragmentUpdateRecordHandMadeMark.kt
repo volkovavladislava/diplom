@@ -105,7 +105,7 @@ class FragmentUpdateRecordHandMadeMark : Fragment(), DatePickerDialog.OnDateSetL
                 val date = binding!!.updateRecordHandMadeMarkDate.text.toString()
 
 
-                val markUpdate = MarkUpdate(userId =1,kind_of_mark_id = handMadeMarkId,  date = date, null,null,null, value,null)
+                val markUpdate = MarkUpdate(userId =1,kind_of_mark_id = handMadeMarkId,  date = date, null, value,null)
                 val call: Call<Void> = service.updateMark(handMadeMarkRecordId, markUpdate)
                 call.enqueue(object : Callback<Void> {
                     override fun onResponse(call: Call<Void>, response: Response<Void>) {

@@ -91,38 +91,46 @@ class FragmentAddPrompt : Fragment(), DatePickerDialog.OnDateSetListener, TimePi
         binding!!.addpromptDate.setText(SimpleDateFormat("yyyy-MM-dd HH:mm").format(Date()))
 
         binding!!.bthAddPromptToBD.setOnClickListener {
-            val name = binding!!.addpromptName.text.toString()
-            val description = binding!!.addpromptDescription.text.toString()
-            val date = binding!!.addpromptDate.text.toString()
+            if( !binding!!.addpromptName.text.isNullOrEmpty()  && !binding!!.addpromptDate.text.isNullOrEmpty()) {
+                val name = binding!!.addpromptName.text.toString()
+                val description = binding!!.addpromptDescription.text.toString()
+                val date = binding!!.addpromptDate.text.toString()
 
-            val check =  binding!!.checkBox.isChecked
+                val check = binding!!.checkBox.isChecked
 
-            if (check){
-                permissionLauncher.launch(
-                    arrayOf(
-                        Manifest.permission.READ_CALENDAR,
-                        Manifest.permission.WRITE_CALENDAR
+                if (check) {
+                    permissionLauncher.launch(
+                        arrayOf(
+                            Manifest.permission.READ_CALENDAR,
+                            Manifest.permission.WRITE_CALENDAR
+                        )
                     )
-                )
+                }
+
+                val addPrompt =
+                    AddPrompt(userId = 1, name = name, description = description, date = date)
+                val call: Call<Void> = service.addPrompt(addPrompt.userId, addPrompt)
+
+                call.enqueue(object : Callback<Void> {
+                    override fun onResponse(call: Call<Void>, response: Response<Void>) {
+                        if (response.isSuccessful) {
+                            Toast.makeText(context, "Данные успешно добавлены", Toast.LENGTH_SHORT)
+                                .show()
+                        } else {
+                            Toast.makeText(context, "Что-то пошло не так", Toast.LENGTH_SHORT)
+                                .show()
+                        }
+                    }
+
+                    override fun onFailure(call: Call<Void>, t: Throwable) {
+                        Log.d("RetrofitClient", "Receive user from server problem " + t)
+                        Toast.makeText(context, "Ошибка", Toast.LENGTH_SHORT).show()
+                    }
+                })
             }
-
-            val addPrompt = AddPrompt(userId = 1, name = name, description = description, date = date)
-            val call: Call<Void> = service.addPrompt(addPrompt.userId, addPrompt)
-
-            call.enqueue(object : Callback<Void> {
-                override fun onResponse(call: Call<Void>, response: Response<Void>) {
-                    if (response.isSuccessful) {
-                        Toast.makeText(context, "Данные успешно добавлены", Toast.LENGTH_SHORT).show()
-                    }
-                    else{
-                        Toast.makeText(context, "Что-то пошло не так", Toast.LENGTH_SHORT).show()
-                    }
-                }
-                override fun onFailure(call: Call<Void>, t: Throwable) {
-                    Log.d("RetrofitClient","Receive user from server problem " + t)
-                    Toast.makeText(context, "Ошибка", Toast.LENGTH_SHORT).show()
-                }
-            })
+            else{
+                Toast.makeText(context, "Сначала добавьте название и дату", Toast.LENGTH_SHORT).show()
+            }
         }
 
 
