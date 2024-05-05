@@ -19,6 +19,10 @@ module.exports = (app) => {
 
     app.post('/api/deleteMark/:markId', mark_value.delete);
 
+    app.post('/api/deleteMarkDavlenie', mark_value.deleteDavlenie);
+
     app.put('/api/updateMark/:markId', mark_value.update);
+
+    app.put('/api/updateMarkDavlenie', mark_value.updateDavlenie);
 
 };

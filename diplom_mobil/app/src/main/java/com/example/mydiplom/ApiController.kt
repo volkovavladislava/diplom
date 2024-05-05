@@ -11,7 +11,9 @@ import com.example.mydiplom.data.File
 import com.example.mydiplom.data.KindOfMark
 import com.example.mydiplom.data.KindOfMarkValues
 import com.example.mydiplom.data.Mark
+import com.example.mydiplom.data.MarkDeleteDavlenie
 import com.example.mydiplom.data.MarkUpdate
+import com.example.mydiplom.data.MarkUpdateDavlenie
 import com.example.mydiplom.data.Prompt
 import com.example.mydiplom.data.PromptUpdate
 import com.example.mydiplom.data.UpdateOperatingValue
@@ -164,7 +166,11 @@ interface ApiController {
     @PUT("/api/updateMark/{markId}")
     fun updateMark(@Path("markId") markId: Int, @Body markUpdate: MarkUpdate): Call<Void> //Call<Void>
 
+    @PUT("/api/updateMarkDavlenie")
+    fun updateMarkDavlenie( @Body markUpdate: MarkUpdateDavlenie): Call<Void> //Call<Void>
 
+    @POST("/api/deleteMarkDavlenie")
+    fun deleteMarkDavlenie(@Body markUpdate: MarkDeleteDavlenie): Call<Void>
 
 
 

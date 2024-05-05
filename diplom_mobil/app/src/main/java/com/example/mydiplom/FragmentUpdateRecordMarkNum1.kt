@@ -4,18 +4,18 @@ import android.app.DatePickerDialog
 import android.app.TimePickerDialog
 import android.os.Bundle
 import android.util.Log
+import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.DatePicker
 import android.widget.TimePicker
 import android.widget.Toast
-import androidx.fragment.app.Fragment
+import androidx.core.os.bundleOf
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
-import com.example.mydiplom.data.Mark
 import com.example.mydiplom.data.MarkUpdate
-import com.example.mydiplom.databinding.FragmentUpdateRecordHandMadeMarkBinding
+import com.example.mydiplom.databinding.FragmentUpdateRecordMarkNum1Binding
 import com.example.mydiplom.viewmodel.SharedViewModel
 import retrofit2.Call
 import retrofit2.Callback
@@ -27,8 +27,7 @@ import java.util.Calendar
 import java.util.Locale
 
 
-class FragmentUpdateRecordHandMadeMark : Fragment(), DatePickerDialog.OnDateSetListener, TimePickerDialog.OnTimeSetListener {
-
+class FragmentUpdateRecordMarkNum1 : Fragment(), DatePickerDialog.OnDateSetListener, TimePickerDialog.OnTimeSetListener {
     var day = 0
     var month = 0
     var year = 0
@@ -41,22 +40,19 @@ class FragmentUpdateRecordHandMadeMark : Fragment(), DatePickerDialog.OnDateSetL
     var savedHour = 0
     var savedMinute = 0
 
-    private var binding: FragmentUpdateRecordHandMadeMarkBinding? = null
+    private var binding: FragmentUpdateRecordMarkNum1Binding? = null
     private val viewModel: SharedViewModel by activityViewModels()
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
     }
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding = FragmentUpdateRecordHandMadeMarkBinding.inflate(inflater, container, false)
-
-        var handMadeMarkRecordId = viewModel.handMadeMarkRecordId.value ?: 1
-        var handMadeMarkId = viewModel.handMadeMarkId.value ?: 1
+        binding = FragmentUpdateRecordMarkNum1Binding.inflate(inflater, container, false)
 
         val retrofit = Retrofit.Builder()
             .baseUrl("http://10.0.2.2:3000")
@@ -64,49 +60,34 @@ class FragmentUpdateRecordHandMadeMark : Fragment(), DatePickerDialog.OnDateSetL
             .build()
         val service: ApiController = retrofit.create(ApiController::class.java)
 
-        val call: Call<Mark> = service.getMarkById(handMadeMarkRecordId)
+        var updateNum1Id = viewModel.updateNum1Id.value
+        var updateNum1UserId = viewModel.updateNum1UserId.value
+        var updateNum1KindOfMarkId = viewModel.updateNum1KindOfMarkId.value
+        var updateNum1Date = viewModel.updateNum1Date.value
+        var updateNum1ValueDouble = viewModel.updateNum1ValueDouble.value
 
-        call.enqueue(object : Callback<Mark> {
-            override fun onResponse(call: Call<Mark>, response: Response<Mark>) {
-                if (response.isSuccessful) {
-                    var markData = response.body()
-                    markData?.let {
-                        binding!!.updateRecordHandMadeMarkValue.setText(it.value_string.toString())
-                        binding!!.updateRecordHandMadeMarkDate.setText(formatDate(it.date.toString()))
-
-                    }
-                }
-                else{}
-            }
-            override fun onFailure(call: Call<Mark>, t: Throwable) {
-                Log.d("RetrofitClient","Receive user from server problem " + t)
-            }
-        })
-
-
-
-
-
+        binding!!.updateMarkNum1Date.setText(formatDate(updateNum1Date.toString()))
+        binding!!.updateMarkValueNum1.setText(updateNum1ValueDouble.toString())
 
 
         val context = activity ?: return binding!!.root
-        binding!!.bthAddDateUpdateRecordHandMadeMark.setOnClickListener{
+
+
+        binding!!.bthUpdateDateMarkNum1.setOnClickListener{
             getDateTimeCalendar()
             DatePickerDialog(context, this, year, month, day).show()
         }
 
 
+        binding!!.bthUpdateMarkNum1.setOnClickListener {
+            if( !binding!!.updateMarkValueNum1.text.isNullOrEmpty()  && !binding!!.updateMarkNum1Date.text.isNullOrEmpty()) {
+                val value = binding!!.updateMarkValueNum1.text.toString().toDouble()
+                val date = binding!!.updateMarkNum1Date.text.toString()
 
 
-        binding!!.bthUpdateRecordHandMadeMarkValue.setOnClickListener {
+                val markUpdate = MarkUpdate(user_id = updateNum1UserId!!,kind_of_mark_id = updateNum1KindOfMarkId!!,  date = date, value, null,null)
 
-            if(!binding!!.updateRecordHandMadeMarkValue.text.isNullOrEmpty() && !binding!!.updateRecordHandMadeMarkDate.text.isNullOrEmpty()){
-                val value = binding!!.updateRecordHandMadeMarkValue.text.toString()
-                val date = binding!!.updateRecordHandMadeMarkDate.text.toString()
-
-
-                val markUpdate = MarkUpdate(user_id =1,kind_of_mark_id = handMadeMarkId,  date = date, null, value,null)
-                val call: Call<Void> = service.updateMark(handMadeMarkRecordId, markUpdate)
+                val call: Call<Void> = service.updateMark(updateNum1Id!!, markUpdate)
                 call.enqueue(object : Callback<Void> {
                     override fun onResponse(call: Call<Void>, response: Response<Void>) {
                         if (response.isSuccessful) {
@@ -128,8 +109,9 @@ class FragmentUpdateRecordHandMadeMark : Fragment(), DatePickerDialog.OnDateSetL
         }
 
 
-        binding!!.bthDeleteRecordHandMadeMarkValue.setOnClickListener {
-            val call: Call<Void> = service.deleteMark(handMadeMarkRecordId)
+
+        binding!!.bthDeleteMarkNum1.setOnClickListener {
+            val call: Call<Void> = service.deleteMark(updateNum1Id!!)
             call.enqueue(object : Callback<Void> {
                 override fun onResponse(call: Call<Void>, response: Response<Void>) {
                     if (response.isSuccessful) {
@@ -143,15 +125,14 @@ class FragmentUpdateRecordHandMadeMark : Fragment(), DatePickerDialog.OnDateSetL
                     Toast.makeText(context, "Ошибка", Toast.LENGTH_SHORT).show()
                 }
             })
-            findNavController().navigate(R.id.fragmentDetailedHandMadeMark)
+            val bundle = bundleOf("title" to viewModel.kindOfMarkNameStatistic.value )
+            findNavController().navigate(R.id.fragmentDetailedStatisticNum1, bundle)
         }
+
+
 
         return binding!!.root
     }
-
-
-
-
 
 
 
@@ -181,10 +162,8 @@ class FragmentUpdateRecordHandMadeMark : Fragment(), DatePickerDialog.OnDateSetL
             "%04d-%02d-%02d %02d:%02d",
             savedYear, savedMonth+1, savedDay, savedHour, savedMinute
         )
-        binding!!.updateRecordHandMadeMarkDate.setText(formattedDate)
-
+        binding!!.updateMarkNum1Date.setText(formattedDate)
     }
-
 
 
     fun formatDate(inputDate: String): String {

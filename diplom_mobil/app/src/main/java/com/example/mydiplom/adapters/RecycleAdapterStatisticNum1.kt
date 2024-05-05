@@ -32,8 +32,13 @@ class RecycleAdapterStatisticNum1 (private val dataList: ArrayList<Mark>,  priva
         holder.dateTextView.setText(formatDate(currentItem.date))
         holder.cardView.setOnClickListener{
                 view: View->
-            Navigation.findNavController(view).navigate(R.id.fragmentDetailedFile)
-            this.viewModel.markId.value = dataList[position].id
+            Navigation.findNavController(view).navigate(R.id.fragmentUpdateRecordMarkNum1)
+            this.viewModel.updateNum1Id.value = dataList[position].id
+            this.viewModel.updateNum1UserId.value = dataList[position].user_id
+            this.viewModel.updateNum1KindOfMarkId.value = dataList[position].kind_of_mark_id
+            this.viewModel.updateNum1Date.value = dataList[position].date
+            this.viewModel.updateNum1ValueDouble.value = dataList[position].value_number
+
 
         }
     }

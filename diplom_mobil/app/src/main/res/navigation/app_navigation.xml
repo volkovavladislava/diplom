@@ -98,6 +98,18 @@
         <argument android:name="title" app:argType="string" android:defaultValue="Статистика показателя"/>
     </fragment>
     <fragment
+        android:id="@+id/fragmentDetailedStatisticEnum"
+        android:name="com.example.mydiplom.FragmentDetailedStatisticEnum"
+        android:label="Показатель {title}">
+        <argument android:name="title" app:argType="string" android:defaultValue="Статистика показателя"/>
+    </fragment>
+    <fragment
+        android:id="@+id/fragmentDetailedStatisticNum2"
+        android:name="com.example.mydiplom.FragmentDetailedStatisticNum2"
+        android:label="Показатель {title}">
+        <argument android:name="title" app:argType="string" android:defaultValue="Статистика показателя"/>
+    </fragment>
+    <fragment
         android:id="@+id/fragmentCamera"
         android:name="com.example.mydiplom.FragmentCamera"
         android:label="Сканирование Qr-кода"
@@ -130,4 +142,21 @@
         android:name="com.example.mydiplom.FragmentUpdateRecordHandMadeMark"
         android:label="Редактирование записи"
         tools:layout="@layout/fragment_update_record_hand_made_mark" />
+    <fragment
+        android:id="@+id/fragmentUpdateRecordMarkEnum"
+        android:name="com.example.mydiplom.FragmentUpdateRecordMarkEnum"
+        android:label="Редактирование записи"
+        tools:layout="@layout/fragment_update_record_mark_enum" />
+    <fragment
+        android:id="@+id/fragmentUpdateRecordMarkNum1"
+        android:name="com.example.mydiplom.FragmentUpdateRecordMarkNum1"
+        android:label="Редактирование записи"
+        tools:layout="@layout/fragment_update_record_mark_num1" />
+    <fragment
+        android:id="@+id/fragmentUpdateRecordMarkNum2"
+        android:name="com.example.mydiplom.FragmentUpdateRecordMarkNum2"
+        android:label="Редактирование записи"
+        tools:layout="@layout/fragment_update_record_mark_num2" />
+
+
 </navigation>

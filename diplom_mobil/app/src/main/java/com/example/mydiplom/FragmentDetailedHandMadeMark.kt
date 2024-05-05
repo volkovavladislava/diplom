@@ -69,12 +69,13 @@ class FragmentDetailedHandMadeMark : Fragment() {
                     for(i in marksData.indices){
                         val dataClass = Mark(
                             marksData[i].id,
-                            marksData[i].userId,
+                            marksData[i].user_id,
                             marksData[i].kind_of_mark_id,
                             marksData[i].date,
                             marksData[i].value_number,
                             marksData[i].value_string,
-                            marksData[i].value_enum )
+                            marksData[i].value_enum,
+                            marksData[i].value)
                         datalist.add(dataClass)
                     }
 

@@ -57,16 +57,17 @@ class ListAdapterStatistic (context: Context, dataArrayList: ArrayList<KindOfMar
 
         listTitle.setOnClickListener{
             viewModel.kindOfMarkIdStatistic.value = listData.id
-            Navigation.findNavController(view).navigate(R.id.fragmentDetailedStatisticNum1, bundle)
-//            if (listData!!.enum_kind_of_mark_id == 1){
-//                Navigation.findNavController(view).navigate(R.id.fragmentAddNewRecordMark1number)
-//            }
-//            if (listData!!.enum_kind_of_mark_id == 4){
-//                Navigation.findNavController(view).navigate(R.id.fragmentAddNewRecordMarkEnum)
-//            }
-//            if (listData!!.enum_kind_of_mark_id == 5){
-//                Navigation.findNavController(view).navigate(R.id.fragmentAddNewRecordMark2number)
-//            }
+            viewModel.kindOfMarkNameStatistic.value = listData.name
+
+            if (listData!!.enum_kind_of_mark_id == 1){
+                Navigation.findNavController(view).navigate(R.id.fragmentDetailedStatisticNum1, bundle)
+            }
+            if (listData!!.enum_kind_of_mark_id == 4){
+                Navigation.findNavController(view).navigate(R.id.fragmentDetailedStatisticEnum, bundle)
+            }
+            if (listData!!.enum_kind_of_mark_id == 5){
+                Navigation.findNavController(view).navigate(R.id.fragmentDetailedStatisticNum2, bundle)
+            }
 
         }
 

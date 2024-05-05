@@ -86,6 +86,7 @@ class FragmentProfile : Fragment() {
         })
 
         binding!!.bthUpdateUserMarks.setOnClickListener {
+
             val pressureSystolic = binding!!.profilePressureSystolic.text.toString().toDouble()
             val pressureDiastolic = binding!!.profilePressureDiastolic.text.toString().toDouble()
             val pulse = binding!!.profilePulse.text.toString().toDouble()
@@ -113,29 +114,43 @@ class FragmentProfile : Fragment() {
 
 
         binding!!.bthUpdateProfile.setOnClickListener {
-            val name = binding!!.profileName.text.toString()
-            val weight = binding!!.profileWeight.text.toString().toInt()
-            val height = binding!!.profileHeight.text.toString().toInt()
-            val date = binding!!.profileDate.text.toString()
+            if( !binding!!.profileName.text.isNullOrEmpty()  && !binding!!.profileWeight.text.isNullOrEmpty() &&
+                !binding!!.profileHeight.text.isNullOrEmpty()  && !binding!!.profileDate.text.isNullOrEmpty()) {
+                val name = binding!!.profileName.text.toString()
+                val weight = binding!!.profileWeight.text.toString().toInt()
+                val height = binding!!.profileHeight.text.toString().toInt()
+                val date = binding!!.profileDate.text.toString()
 
-            val userUpdate = UserUpdate(userId = 1, name = name, height = height, weight = weight, date_birth = date)
+                val userUpdate = UserUpdate(
+                    userId = 1,
+                    name = name,
+                    height = height,
+                    weight = weight,
+                    date_birth = date
+                )
 
-            val call: Call<Void> = service.updateUser(userUpdate. userId, userUpdate)
+                val call: Call<Void> = service.updateUser(userUpdate.userId, userUpdate)
 
-            call.enqueue(object : Callback<Void> {
-                override fun onResponse(call: Call<Void>, response: Response<Void>) {
-                    if (response.isSuccessful) {
-                        Toast.makeText(context, "Данные успешно обновлены", Toast.LENGTH_SHORT).show()
+                call.enqueue(object : Callback<Void> {
+                    override fun onResponse(call: Call<Void>, response: Response<Void>) {
+                        if (response.isSuccessful) {
+                            Toast.makeText(context, "Данные успешно обновлены", Toast.LENGTH_SHORT)
+                                .show()
+                        } else {
+                            Toast.makeText(context, "Что-то пошло не так", Toast.LENGTH_SHORT)
+                                .show()
+                        }
                     }
-                    else{
-                        Toast.makeText(context, "Что-то пошло не так", Toast.LENGTH_SHORT).show()
+
+                    override fun onFailure(call: Call<Void>, t: Throwable) {
+                        Log.d("RetrofitClient", "Receive user from server problem " + t)
+                        Toast.makeText(context, "Ошибка", Toast.LENGTH_SHORT).show()
                     }
-                }
-                override fun onFailure(call: Call<Void>, t: Throwable) {
-                    Log.d("RetrofitClient","Receive user from server problem " + t)
-                    Toast.makeText(context, "Ошибка", Toast.LENGTH_SHORT).show()
-                }
-            })
+                })
+            }
+            else{
+                Toast.makeText(context, "Сначала заполните имя, вес, рост и дату рождения", Toast.LENGTH_SHORT).show()
+            }
         }
 
 

@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+xmlns:app="http://schemas.android.com/apk/res-auto"
+xmlns:tools="http://schemas.android.com/tools"
+android:layout_width="match_parent"
+android:layout_height="match_parent"
+tools:context=".FragmentUpdateRecordMarkEnum">
+
+
+<TextView
+    android:id="@+id/updateMarkEnumLabel"
+    android:layout_width="0dp"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="50dp"
+    android:text="Значение показателя"
+    app:layout_constraintEnd_toStartOf="@+id/guideline4"
+    app:layout_constraintHorizontal_bias="0.498"
+    app:layout_constraintStart_toStartOf="@+id/guideline3"
+    app:layout_constraintTop_toTopOf="parent" />
+
+
+
+<com.google.android.material.textfield.TextInputLayout
+    android:id="@+id/updateMarkMenu"
+    android:layout_marginTop="10dp"
+    style="@style/Widget.Material3.TextInputLayout.FilledBox.ExposedDropdownMenu"
+    android:layout_width="0dp"
+    android:layout_height="wrap_content"
+    app:layout_constraintEnd_toStartOf="@+id/guideline4"
+    app:layout_constraintStart_toStartOf="@+id/guideline3"
+    app:layout_constraintTop_toBottomOf="@+id/updateMarkEnumLabel">
+
+    <AutoCompleteTextView
+        android:id="@+id/textField1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="none"
+        android:backgroundTint="#FEF7FF"
+        app:dropDownBackgroundTint="#FEF7FF"
+        android:background="#FEF7FF"/>
+
+</com.google.android.material.textfield.TextInputLayout>
+
+<TextView
+    android:id="@+id/updateMarkEnumDateLabel"
+    android:layout_width="0dp"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="30dp"
+    android:text="Дата "
+    app:layout_constraintEnd_toStartOf="@+id/guideline4"
+    app:layout_constraintStart_toStartOf="@+id/guideline3"
+    app:layout_constraintTop_toBottomOf="@+id/updateMarkMenu" />
+
+<EditText
+    android:id="@+id/updateMarkEnumDate"
+    android:layout_width="0dp"
+    android:layout_height="wrap_content"
+    android:ems="10"
+    android:editable="false"
+    app:layout_constraintEnd_toStartOf="@+id/guideline4"
+    app:layout_constraintStart_toStartOf="@+id/guideline3"
+    app:layout_constraintTop_toBottomOf="@+id/updateMarkEnumDateLabel" />
+
+<Button
+    android:id="@+id/bthUpdateDateMarkEnum"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="20dp"
+    android:text="Изменить дату"
+    app:layout_constraintEnd_toStartOf="@+id/guideline4"
+    app:layout_constraintStart_toStartOf="@+id/guideline3"
+    app:layout_constraintTop_toBottomOf="@+id/updateMarkEnumDate" />
+
+<Button
+    android:id="@+id/bthUpdateMarkEnum"
+    android:layout_width="0dp"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="50dp"
+    android:text="Обновить запись"
+    app:layout_constraintEnd_toStartOf="@+id/guideline4"
+    app:layout_constraintStart_toStartOf="@+id/guideline3"
+    app:layout_constraintTop_toBottomOf="@+id/bthUpdateDateMarkEnum" />
+
+    <Button
+        android:id="@+id/bthDeleteMarkEnum"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:text="Удалить запись"
+        android:backgroundTint="#EF6E6E"
+        app:layout_constraintEnd_toStartOf="@+id/guideline4"
+        app:layout_constraintStart_toStartOf="@+id/guideline3"
+        app:layout_constraintTop_toBottomOf="@+id/bthUpdateMarkEnum" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+<androidx.constraintlayout.widget.Guideline
+    android:id="@+id/guideline3"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    app:layout_constraintGuide_begin="53dp" />
+
+<androidx.constraintlayout.widget.Guideline
+    android:id="@+id/guideline4"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    app:layout_constraintGuide_begin="355dp" />
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,7 +1,7 @@
 package com.example.mydiplom.data
 
 data class MarkUpdate(
-    val userId: Int,
+    val user_id: Int,
     val kind_of_mark_id: Int,
     val date: String,
     val value_number:Double?,

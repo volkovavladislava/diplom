@@ -23,6 +23,7 @@ class SharedViewModel : ViewModel() {
     var kindOfMarkNameAddMark = MutableLiveData<String>()
 
     var kindOfMarkIdStatistic = MutableLiveData<Int>()
+    var kindOfMarkNameStatistic = MutableLiveData<String>()
 
     var markId = MutableLiveData<Int>()
 
@@ -31,6 +32,32 @@ class SharedViewModel : ViewModel() {
     var handMadeMarkRecordId = MutableLiveData<Int>()
 
     var userId = 1
+
+
+
+
+    val updateEnumId= MutableLiveData<Int>()
+    val updateEnumUserId= MutableLiveData<Int>()
+    val updateEnumKindOfMarkId= MutableLiveData<Int>()
+    val updateEnumDate= MutableLiveData<String>()
+    val updateEnumValueEnum= MutableLiveData<Int>()
+    val updateEnumValue= MutableLiveData<String>()
+
+
+    val updateNum1Id= MutableLiveData<Int>()
+    val updateNum1UserId= MutableLiveData<Int>()
+    val updateNum1KindOfMarkId= MutableLiveData<Int>()
+    val updateNum1Date= MutableLiveData<String>()
+    val updateNum1ValueDouble= MutableLiveData<Double>()
+
+    val updateNum2Id1= MutableLiveData<Int>()
+    val updateNum2Id2= MutableLiveData<Int>()
+    val updateNum2UserId= MutableLiveData<Int>()
+    val updateNum2KindOfMarkId= MutableLiveData<Int>()
+    val updateNum2Date= MutableLiveData<String>()
+    val updateNum2Value1Double= MutableLiveData<Double>()
+    val updateNum2Value2Double= MutableLiveData<Double>()
+
 
     fun addToFavorite(context: Context, userId: Int, kindOfMarkId: Int){
         val retrofit = Retrofit.Builder()

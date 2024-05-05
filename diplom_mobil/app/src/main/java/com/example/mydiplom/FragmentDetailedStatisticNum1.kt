@@ -92,12 +92,13 @@ class FragmentDetailedStatisticNum1 : Fragment() {
                     for(i in marksData.indices){
                         val dataClass = Mark(
                             marksData[i].id,
-                            marksData[i].userId,
+                            marksData[i].user_id,
                             marksData[i].kind_of_mark_id,
                             marksData[i].date,
                             marksData[i].value_number,
                             marksData[i].value_string,
-                            marksData[i].value_enum )
+                            marksData[i].value_enum,
+                            marksData[i].value)
                         datalist.add(dataClass)
 
                         val e = Entry(convertDateStringToMilliseconds(dataClass.date), marksData[i].value_number?.toFloat() ?: 0f)
@@ -183,7 +184,6 @@ class FragmentDetailedStatisticNum1 : Fragment() {
 
         override fun getFormattedValue(value: Float): String {
             val t = simpleDateFormat.format(Date(value.toLong()))
-//            Log.d("RetrofitClient","simpleDateFormat " + t)
             return t
 
         }
@@ -236,12 +236,13 @@ class FragmentDetailedStatisticNum1 : Fragment() {
                     for(i in marksData.indices){
                         val dataClass = Mark(
                             marksData[i].id,
-                            marksData[i].userId,
+                            marksData[i].user_id,
                             marksData[i].kind_of_mark_id,
                             marksData[i].date,
                             marksData[i].value_number,
                             marksData[i].value_string,
-                            marksData[i].value_enum )
+                            marksData[i].value_enum,
+                            marksData[i].value)
                         datalist.add(dataClass)
                         val e = Entry(convertDateStringToMilliseconds(dataClass.date), marksData[i].value_number?.toFloat() ?: 0f)
                         entries.add(e)

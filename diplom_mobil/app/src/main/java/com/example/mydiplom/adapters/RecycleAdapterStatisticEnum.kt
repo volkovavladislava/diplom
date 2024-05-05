@@ -1,5 +1,6 @@
 package com.example.mydiplom.adapters
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -28,13 +29,17 @@ class RecycleAdapterStatisticEnum (private val dataList: ArrayList<Mark>, privat
 
     override fun onBindViewHolder(holder: RecycleAdapterStatisticEnum.ViewHolderClass, position: Int) {
         val currentItem = dataList[position]
-        //поменять на нужное value
-        holder.valueTextView.setText(currentItem.value_number.toString())
+        holder.valueTextView.setText(currentItem.value.toString())
         holder.dateTextView.setText(formatDate(currentItem.date))
         holder.cardView.setOnClickListener{
                 view: View->
-            Navigation.findNavController(view).navigate(R.id.fragmentDetailedFile)
-            this.viewModel.markId.value = dataList[position].id
+            Navigation.findNavController(view).navigate(R.id.fragmentUpdateRecordMarkEnum)
+            this.viewModel.updateEnumId.value = dataList[position].id
+            this.viewModel.updateEnumUserId.value = dataList[position].user_id
+            this.viewModel.updateEnumKindOfMarkId.value = dataList[position].kind_of_mark_id
+            this.viewModel.updateEnumDate.value = dataList[position].date
+            this.viewModel.updateEnumValueEnum.value = dataList[position].value_enum
+            this.viewModel.updateEnumValue.value = dataList[position].value
 
         }
     }

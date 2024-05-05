@@ -4,19 +4,22 @@ import android.app.DatePickerDialog
 import android.app.TimePickerDialog
 import android.os.Bundle
 import android.util.Log
+import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.DatePicker
 import android.widget.TimePicker
 import android.widget.Toast
-import androidx.fragment.app.Fragment
+import androidx.core.os.bundleOf
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
-import com.example.mydiplom.data.Mark
+import com.example.mydiplom.data.AddMark
+import com.example.mydiplom.data.KindOfMarkValues
 import com.example.mydiplom.data.MarkUpdate
-import com.example.mydiplom.databinding.FragmentUpdateRecordHandMadeMarkBinding
+import com.example.mydiplom.databinding.FragmentUpdateRecordMarkEnumBinding
 import com.example.mydiplom.viewmodel.SharedViewModel
+import com.google.android.material.textfield.MaterialAutoCompleteTextView
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -24,11 +27,10 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.text.SimpleDateFormat
 import java.util.Calendar
+import java.util.Date
 import java.util.Locale
 
-
-class FragmentUpdateRecordHandMadeMark : Fragment(), DatePickerDialog.OnDateSetListener, TimePickerDialog.OnTimeSetListener {
-
+class FragmentUpdateRecordMarkEnum : Fragment(), DatePickerDialog.OnDateSetListener, TimePickerDialog.OnTimeSetListener {
     var day = 0
     var month = 0
     var year = 0
@@ -41,8 +43,13 @@ class FragmentUpdateRecordHandMadeMark : Fragment(), DatePickerDialog.OnDateSetL
     var savedHour = 0
     var savedMinute = 0
 
-    private var binding: FragmentUpdateRecordHandMadeMarkBinding? = null
+    private var binding: FragmentUpdateRecordMarkEnumBinding? = null
     private val viewModel: SharedViewModel by activityViewModels()
+
+
+    var dataArrayList = ArrayList<String?>()
+    val mutableMap = mutableMapOf<String, Int>()
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -53,60 +60,62 @@ class FragmentUpdateRecordHandMadeMark : Fragment(), DatePickerDialog.OnDateSetL
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding = FragmentUpdateRecordHandMadeMarkBinding.inflate(inflater, container, false)
-
-        var handMadeMarkRecordId = viewModel.handMadeMarkRecordId.value ?: 1
-        var handMadeMarkId = viewModel.handMadeMarkId.value ?: 1
-
+        binding = FragmentUpdateRecordMarkEnumBinding.inflate(inflater, container, false)
         val retrofit = Retrofit.Builder()
             .baseUrl("http://10.0.2.2:3000")
             .addConverterFactory(GsonConverterFactory.create())
             .build()
         val service: ApiController = retrofit.create(ApiController::class.java)
 
-        val call: Call<Mark> = service.getMarkById(handMadeMarkRecordId)
+        var updateEnumId = viewModel.updateEnumId.value
+        var updateEnumUserId = viewModel.updateEnumUserId.value
+        var updateEnumKindOfMarkId = viewModel.updateEnumKindOfMarkId.value
+        var updateEnumDate = viewModel.updateEnumDate.value
+        var updateEnumValueEnum = viewModel.updateEnumValueEnum.value
+        var updateEnumValue = viewModel.updateEnumValue.value
 
-        call.enqueue(object : Callback<Mark> {
-            override fun onResponse(call: Call<Mark>, response: Response<Mark>) {
+        binding!!.updateMarkEnumDate.setText(formatDate(updateEnumDate.toString()))
+        binding!!.textField1.setText(updateEnumValue)
+
+
+        val call: Call<List<KindOfMarkValues>> = service.getKindOfMarkValues(updateEnumKindOfMarkId!!)
+        call.enqueue(object : Callback<List<KindOfMarkValues>> {
+            override fun onResponse(call: Call<List<KindOfMarkValues>>, response: Response<List<KindOfMarkValues>>) {
                 if (response.isSuccessful) {
-                    var markData = response.body()
-                    markData?.let {
-                        binding!!.updateRecordHandMadeMarkValue.setText(it.value_string.toString())
-                        binding!!.updateRecordHandMadeMarkDate.setText(formatDate(it.date.toString()))
+                    var kindOfMarkValuesData = response.body() ?: emptyList()
 
+                    dataArrayList.clear()
+                    for(i in kindOfMarkValuesData.indices){
+                        dataArrayList.add(kindOfMarkValuesData[i].value)
+                        mutableMap[kindOfMarkValuesData[i].value] = kindOfMarkValuesData[i].id
                     }
+                    (binding!!.updateMarkMenu.editText as? MaterialAutoCompleteTextView)?.setSimpleItems(dataArrayList.toTypedArray())
                 }
                 else{}
             }
-            override fun onFailure(call: Call<Mark>, t: Throwable) {
+            override fun onFailure(call: Call<List<KindOfMarkValues>>, t: Throwable) {
                 Log.d("RetrofitClient","Receive user from server problem " + t)
             }
         })
 
-
-
-
-
-
-
         val context = activity ?: return binding!!.root
-        binding!!.bthAddDateUpdateRecordHandMadeMark.setOnClickListener{
+
+
+        binding!!.bthUpdateDateMarkEnum.setOnClickListener{
             getDateTimeCalendar()
             DatePickerDialog(context, this, year, month, day).show()
         }
 
 
+        binding!!.bthUpdateMarkEnum.setOnClickListener {
+            if( !binding!!.textField1.text.isNullOrEmpty()  && !binding!!.updateMarkEnumDate.text.isNullOrEmpty()) {
+                val enumValue = binding!!.textField1.text.toString()
+                val date = binding!!.updateMarkEnumDate.text.toString()
 
 
-        binding!!.bthUpdateRecordHandMadeMarkValue.setOnClickListener {
+                val markUpdate = MarkUpdate(user_id = updateEnumUserId!!,kind_of_mark_id = updateEnumKindOfMarkId,  date = date, null, null,mutableMap[enumValue])
 
-            if(!binding!!.updateRecordHandMadeMarkValue.text.isNullOrEmpty() && !binding!!.updateRecordHandMadeMarkDate.text.isNullOrEmpty()){
-                val value = binding!!.updateRecordHandMadeMarkValue.text.toString()
-                val date = binding!!.updateRecordHandMadeMarkDate.text.toString()
-
-
-                val markUpdate = MarkUpdate(user_id =1,kind_of_mark_id = handMadeMarkId,  date = date, null, value,null)
-                val call: Call<Void> = service.updateMark(handMadeMarkRecordId, markUpdate)
+                val call: Call<Void> = service.updateMark(updateEnumId!!, markUpdate)
                 call.enqueue(object : Callback<Void> {
                     override fun onResponse(call: Call<Void>, response: Response<Void>) {
                         if (response.isSuccessful) {
@@ -128,8 +137,9 @@ class FragmentUpdateRecordHandMadeMark : Fragment(), DatePickerDialog.OnDateSetL
         }
 
 
-        binding!!.bthDeleteRecordHandMadeMarkValue.setOnClickListener {
-            val call: Call<Void> = service.deleteMark(handMadeMarkRecordId)
+
+        binding!!.bthDeleteMarkEnum.setOnClickListener {
+            val call: Call<Void> = service.deleteMark(updateEnumId!!)
             call.enqueue(object : Callback<Void> {
                 override fun onResponse(call: Call<Void>, response: Response<Void>) {
                     if (response.isSuccessful) {
@@ -143,14 +153,13 @@ class FragmentUpdateRecordHandMadeMark : Fragment(), DatePickerDialog.OnDateSetL
                     Toast.makeText(context, "Ошибка", Toast.LENGTH_SHORT).show()
                 }
             })
-            findNavController().navigate(R.id.fragmentDetailedHandMadeMark)
+            val bundle = bundleOf("title" to viewModel.kindOfMarkNameStatistic.value )
+            findNavController().navigate(R.id.fragmentDetailedStatisticEnum, bundle)
         }
+
 
         return binding!!.root
     }
-
-
-
 
 
 
@@ -181,10 +190,8 @@ class FragmentUpdateRecordHandMadeMark : Fragment(), DatePickerDialog.OnDateSetL
             "%04d-%02d-%02d %02d:%02d",
             savedYear, savedMonth+1, savedDay, savedHour, savedMinute
         )
-        binding!!.updateRecordHandMadeMarkDate.setText(formattedDate)
-
+        binding!!.updateMarkEnumDate.setText(formattedDate)
     }
-
 
 
     fun formatDate(inputDate: String): String {
@@ -194,5 +201,6 @@ class FragmentUpdateRecordHandMadeMark : Fragment(), DatePickerDialog.OnDateSetL
         val date = inputFormat.parse(inputDate)
         return outputFormat.format(date)
     }
+
 
 }
