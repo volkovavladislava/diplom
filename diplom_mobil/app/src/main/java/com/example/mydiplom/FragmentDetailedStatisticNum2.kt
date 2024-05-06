@@ -116,7 +116,7 @@ class FragmentDetailedStatisticNum2 : Fragment() {
 
         binding!!.bthDatePickedDetailedStatisticNum2.setOnClickListener{
             val picker = MaterialDatePicker.Builder.dateRangePicker()
-//                .setTheme(R.style.ThemeMaterialCalendar)
+                .setTheme(R.style.ThemeMaterialCalendar)
                 .setTitleText("Выберите период")
                 .setSelection(Pair(null, null))
                 .build()
@@ -125,7 +125,7 @@ class FragmentDetailedStatisticNum2 : Fragment() {
 
             picker.addOnPositiveButtonClickListener {
                 binding!!.labelDatePickedDetailedStatisticNum2.setText(convertTimeToDate(it.first) + " - " + convertTimeToDate(it.second))
-                updateData(convertTimeToDate(it.first),convertTimeToDate(it.second))
+                updateData(convertTimeToDate(it.first),convertTimeToDateSecond(it.second))
 
             }
             picker.addOnNegativeButtonClickListener{
@@ -270,6 +270,13 @@ class FragmentDetailedStatisticNum2 : Fragment() {
     private fun convertTimeToDate(time: Long):String{
         val utc = Calendar.getInstance(TimeZone.getTimeZone("UTC"))
         utc.timeInMillis = time
+        val format =  SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+        return format.format(utc.time)
+    }
+
+    private fun convertTimeToDateSecond(time: Long):String{
+        val utc = Calendar.getInstance(TimeZone.getTimeZone("UTC"))
+        utc.timeInMillis = time + 1000*60*60*24
         val format =  SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
         return format.format(utc.time)
     }

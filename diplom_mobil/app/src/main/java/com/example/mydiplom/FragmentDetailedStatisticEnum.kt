@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import androidx.core.util.Pair
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.mydiplom.adapters.RecycleAdapterStatisticEnum
@@ -53,6 +54,7 @@ class FragmentDetailedStatisticEnum : Fragment() {
     ): View? {
         binding = FragmentDetailedStatisticEnumBinding.inflate(inflater, container, false)
 
+//        findNavController().popBackStack(R.id.fragmentUpdateRecordMarkEnum, false)
 
         val retrofit = Retrofit.Builder()
             .baseUrl("http://10.0.2.2:3000")

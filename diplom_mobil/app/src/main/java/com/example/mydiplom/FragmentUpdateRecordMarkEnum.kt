@@ -154,7 +154,9 @@ class FragmentUpdateRecordMarkEnum : Fragment(), DatePickerDialog.OnDateSetListe
                 }
             })
             val bundle = bundleOf("title" to viewModel.kindOfMarkNameStatistic.value )
+//            findNavController().popBackStack(R.id.fragmentUpdateRecordMarkEnum, false)
             findNavController().navigate(R.id.fragmentDetailedStatisticEnum, bundle)
+
         }
 
 

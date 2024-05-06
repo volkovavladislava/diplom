@@ -4,7 +4,7 @@ package com.example.mydiplom
 //import com.jjoe64.graphview.GraphView
 //import com.jjoe64.graphview.series.DataPoint
 //import com.jjoe64.graphview.series.LineGraphSeries
-import android.R
+
 import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
@@ -67,14 +67,6 @@ class FragmentDetailedStatisticNum1 : Fragment() {
     ): View? {
         binding = FragmentDetailedStatisticNum1Binding.inflate(inflater, container, false)
 
-//        // Получаем ссылку на GraphView из макета
-//        val graphView: GraphView = binding!!.graph
-//        // Создаем серию точек для графика
-//        val series = LineGraphSeries(getDataPoints())
-//        // Добавляем серию точек на график
-//        graphView.addSeries(series)
-//        1609459200000F
-//        1640995200000F
 
         val retrofit = Retrofit.Builder()
             .baseUrl("http://10.0.2.2:3000")
@@ -122,18 +114,18 @@ class FragmentDetailedStatisticNum1 : Fragment() {
 
 
                     values.add(valuelist)
+
                     val lineView: LineView  = activity!!.findViewById(com.example.mydiplom.R.id.line_view)
 
-
+//                    if(valuelist.size < 4){
+//                        lineView.layout_gravity = "center_horizontal "
+//                    }
                     lineView.setBottomTextList(dates);
                     lineView.setDrawDotLine(true);
                     lineView.setShowPopup(LineView.SHOW_POPUPS_All);
                     lineView.setBottomTextList(dates);
                     lineView.setColorArray(intArrayOf(Color.BLUE))
                     lineView.setFloatDataList(values);
-
-
-
 
                     datalist.reverse()
                     recyclerView.adapter = RecycleAdapterStatisticNum1(datalist,  viewModel)
@@ -152,7 +144,7 @@ class FragmentDetailedStatisticNum1 : Fragment() {
 
         binding!!.bthDatePicked.setOnClickListener{
             val picker = MaterialDatePicker.Builder.dateRangePicker()
-//                .setTheme(R.style.ThemeMaterialCalendar)
+                .setTheme(R.style.ThemeMaterialCalendar)
                 .setTitleText("Выберите период")
                 .setSelection(Pair(null, null))
                 .build()
@@ -161,7 +153,7 @@ class FragmentDetailedStatisticNum1 : Fragment() {
 
             picker.addOnPositiveButtonClickListener {
                 binding!!.labelDatePicked.setText(convertTimeToDate(it.first) + " - " + convertTimeToDate(it.second))
-                updateData(convertTimeToDate(it.first),convertTimeToDate(it.second))
+                updateData(convertTimeToDate(it.first),convertTimeToDateSecond(it.second))
 
             }
             picker.addOnNegativeButtonClickListener{
@@ -200,6 +192,13 @@ class FragmentDetailedStatisticNum1 : Fragment() {
     private fun convertTimeToDate(time: Long):String{
         val utc = Calendar.getInstance(TimeZone.getTimeZone("UTC"))
         utc.timeInMillis = time
+        val format =  SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+        return format.format(utc.time)
+    }
+
+    private fun convertTimeToDateSecond(time: Long):String{
+        val utc = Calendar.getInstance(TimeZone.getTimeZone("UTC"))
+        utc.timeInMillis = time + 1000*60*60*24
         val format =  SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
         return format.format(utc.time)
     }
@@ -341,6 +340,19 @@ class FragmentDetailedStatisticNum1 : Fragment() {
 //
 //                    lineChart.data = lineData
 //                    lineChart.invalidate()
+
+
+
+
+
+    //        // Получаем ссылку на GraphView из макета
+//        val graphView: GraphView = binding!!.graph
+//        // Создаем серию точек для графика
+//        val series = LineGraphSeries(getDataPoints())
+//        // Добавляем серию точек на график
+//        graphView.addSeries(series)
+//        1609459200000F
+//        1640995200000F
 
 
 //

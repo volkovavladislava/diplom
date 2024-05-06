@@ -41,7 +41,7 @@
 
     <HorizontalScrollView
         android:id="@+id/line_viewContainer"
-        android:layout_width="match_parent"
+        android:layout_width="400dp"
         android:layout_height="match_parent"
         app:layout_constraintEnd_toStartOf="@+id/guideline16"
         app:layout_constraintStart_toStartOf="@+id/guideline15"
@@ -50,8 +50,9 @@
             android:layout_width="match_parent"
             android:layout_height="300dp"
             class="im.dacer.androidcharts.LineView"
-            android:id="@+id/line_view"
-            />
+            android:id="@+id/line_view" />
+<!--            android:layout_gravity="center_horizontal" />-->
+
     </HorizontalScrollView>
 
 <!--    <RelativeLayout-->

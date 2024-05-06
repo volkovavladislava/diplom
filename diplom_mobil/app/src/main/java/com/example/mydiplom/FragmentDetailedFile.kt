@@ -2,10 +2,17 @@ package com.example.mydiplom
 
 import android.app.Activity
 import android.app.DatePickerDialog
+import android.app.DownloadManager
 import android.app.TimePickerDialog
+import android.content.BroadcastReceiver
+import android.content.Context
+import android.content.Context.RECEIVER_EXPORTED
 import android.content.Intent
+import android.content.IntentFilter
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
+import android.os.Environment
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -193,9 +200,9 @@ class FragmentDetailedFile : Fragment(), DatePickerDialog.OnDateSetListener, Tim
         }
 
 
-//        binding!!.button2.setOnClickListener{
-//            downloadFile(imageUrl!!, imageName!!)
-//        }
+        binding!!.loadFile.setOnClickListener{
+            downloadFile(imageUrl!!, imageName!!)
+        }
         return binding!!.root
     }
 
@@ -251,34 +258,34 @@ class FragmentDetailedFile : Fragment(), DatePickerDialog.OnDateSetListener, Tim
     }
 
 
-//
-//    private fun downloadFile( url: String, fileName: String) {
-//        val downloadManager = requireContext().getSystemService(Context.DOWNLOAD_SERVICE) as DownloadManager
-//        val uri = Uri.parse(url)
-//
-//        val request = DownloadManager.Request(uri)
-//            .setTitle("File Download") // Название загрузки
-//            .setDescription("Downloading") // Описание загрузки
-//            .setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED) // Отображение уведомления при завершении загрузки
-//            .setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, fileName) // Путь сохранения файла
-//
-//        val downloadId = downloadManager.enqueue(request) // Запуск загрузки
-//
-//        // Обработка завершения загрузки
-//        val onCompleteReceiver = object : BroadcastReceiver() {
-//            override fun onReceive(context: Context?, intent: Intent?) {
-//                if (DownloadManager.ACTION_DOWNLOAD_COMPLETE == intent?.action) {
-//                    val id = intent.getLongExtra(DownloadManager.EXTRA_DOWNLOAD_ID, -1)
-//                    if (id == downloadId) {
-//                        // Файл успешно загружен
-//                        // Выполните здесь необходимые действия после загрузки файла
-//                    }
-//                }
-//            }
-//        }
-//
-//        requireActivity().registerReceiver(onCompleteReceiver, IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE))
-//    }
+
+    private fun downloadFile( url: String, fileName: String) {
+        val downloadManager = requireContext().getSystemService(Context.DOWNLOAD_SERVICE) as DownloadManager
+        val uri = Uri.parse(url)
+
+        val request = DownloadManager.Request(uri)
+            .setTitle("File Download") // Название загрузки
+            .setDescription("Downloading") // Описание загрузки
+            .setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED) // Отображение уведомления при завершении загрузки
+            .setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, fileName) // Путь сохранения файла
+
+        val downloadId = downloadManager.enqueue(request) // Запуск загрузки
+
+        val onCompleteReceiver = object : BroadcastReceiver() {
+            override fun onReceive(context: Context?, intent: Intent?) {
+                if (DownloadManager.ACTION_DOWNLOAD_COMPLETE == intent?.action) {
+                    val id = intent.getLongExtra(DownloadManager.EXTRA_DOWNLOAD_ID, -1)
+                    if (id == downloadId) {
+                        Toast.makeText(context, "Файл загружен", Toast.LENGTH_SHORT).show()
+                    }
+                }
+            }
+        }
+//        context.registerReceiver(broadcastReceiver, intentFilter, RECEIVER_EXPORTED);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            requireActivity().registerReceiver(onCompleteReceiver, IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE), RECEIVER_EXPORTED)
+        }
+    }
 
 
 
