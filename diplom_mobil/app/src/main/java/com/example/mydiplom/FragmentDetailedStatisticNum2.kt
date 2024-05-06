@@ -10,6 +10,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.mydiplom.adapters.RecycleAdapterStatisticNum1
 import com.example.mydiplom.adapters.RecycleAdapterStatisticNum2
 import com.example.mydiplom.data.Mark
 import com.example.mydiplom.data.MarkDavlenie
@@ -20,6 +21,8 @@ import com.github.mikephil.charting.data.Entry
 import com.github.mikephil.charting.data.LineData
 import com.github.mikephil.charting.data.LineDataSet
 import com.github.mikephil.charting.formatter.ValueFormatter
+import com.google.android.material.datepicker.MaterialDatePicker
+import im.dacer.androidcharts.LineView
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -30,6 +33,7 @@ import java.util.Calendar
 import java.util.Date
 import java.util.Locale
 import java.util.TimeZone
+import androidx.core.util.Pair
 
 
 class FragmentDetailedStatisticNum2 : Fragment() {
@@ -44,9 +48,17 @@ class FragmentDetailedStatisticNum2 : Fragment() {
 
     private var callCounter = 2
     private var errorOccurred = false
-//    val results = mutableListOf<List<Mark>>()
+
     private lateinit var  list1: List<Mark>
     private lateinit var  list2: List<Mark>
+
+
+    private lateinit var  valuelist1: ArrayList<Float>
+    private lateinit var  valuelist2: ArrayList<Float>
+    val dates = ArrayList<String>()
+    private lateinit var values : ArrayList<ArrayList<Float>>
+
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -100,6 +112,28 @@ class FragmentDetailedStatisticNum2 : Fragment() {
             }
         })
 
+
+
+        binding!!.bthDatePickedDetailedStatisticNum2.setOnClickListener{
+            val picker = MaterialDatePicker.Builder.dateRangePicker()
+//                .setTheme(R.style.ThemeMaterialCalendar)
+                .setTitleText("Выберите период")
+                .setSelection(Pair(null, null))
+                .build()
+
+            picker.show(this.childFragmentManager, "TAG")
+
+            picker.addOnPositiveButtonClickListener {
+                binding!!.labelDatePickedDetailedStatisticNum2.setText(convertTimeToDate(it.first) + " - " + convertTimeToDate(it.second))
+                updateData(convertTimeToDate(it.first),convertTimeToDate(it.second))
+
+            }
+            picker.addOnNegativeButtonClickListener{
+                picker.dismiss()
+            }
+        }
+
+
         return binding!!.root
     }
 
@@ -110,15 +144,20 @@ class FragmentDetailedStatisticNum2 : Fragment() {
             if (errorOccurred) {
                 return
             }
-            Log.d("RetrofitClient","list1 " + list1)
-            Log.d("RetrofitClient","list2 " + list2)
 
             recyclerView = binding!!.recycleListMarksDetailedStatisticNum2
             recyclerView.layoutManager = LinearLayoutManager(context)
             recyclerView.setHasFixedSize(true)
 
             datalist = arrayListOf<MarkDavlenie>()
-            entries=mutableListOf<Entry>()
+
+            valuelist1 = arrayListOf<Float>()
+            valuelist2 = arrayListOf<Float>()
+
+            values = arrayListOf()
+
+            val dInput  = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.getDefault())
+            val dOutput = SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.getDefault())
 
             for(i in list1.indices){
                 val dataClass = MarkDavlenie(
@@ -134,41 +173,81 @@ class FragmentDetailedStatisticNum2 : Fragment() {
                     list1[i].value)
                 datalist.add(dataClass)
 
-                val e = Entry(convertDateStringToMilliseconds(dataClass.date), list1[i].value_number?.toFloat() ?: 0f)
-                entries.add(e)
+                dates.add(dOutput.format(dInput.parse(list1[i].date)))
+                valuelist1.add(list1[i].value_number!!.toFloat())
+                valuelist2.add(list2[i].value_number!!.toFloat())
 
             }
 
+            values.add(valuelist1)
+            values.add(valuelist2)
+            val lineView: LineView = requireActivity().findViewById(com.example.mydiplom.R.id.line_viewNum2)
 
-            Log.d("RetrofitClient","entries  " + entries)
 
-            val dataSet = LineDataSet(entries, "").apply {
-                setDrawCircles(true) // Разрешить отображение точек
-                setCircleColor(Color.RED) // Установить цвет точек
-                setCircleRadius(4f) // Установить размер точек
-                setValueTextSize(12f)
-            }
-
-            val lineData = LineData(dataSet)
-
-            val lineChart = binding!!.line2
-
-            val xAxis = lineChart.xAxis
-            xAxis.isGranularityEnabled = true
-            xAxis.granularity = 1f
-            xAxis.valueFormatter = FragmentDetailedStatisticNum1.DateAxisValueFormatter()
-            xAxis.position = XAxis.XAxisPosition.BOTTOM
-            xAxis.setLabelRotationAngle(30f)
-
-            lineChart.data = lineData
+            lineView.setBottomTextList(dates);
+            lineView.setDrawDotLine(true);
+            lineView.setShowPopup(LineView.SHOW_POPUPS_All);
+            lineView.setBottomTextList(dates);
+            lineView.setColorArray(intArrayOf(Color.BLUE))
+            lineView.setFloatDataList(values);
 
 
 
-            lineChart.invalidate()
             datalist.reverse()
             recyclerView.adapter = RecycleAdapterStatisticNum2(datalist,  viewModel)
         }
     }
+
+    private fun updateData(date1: String, date2:String){
+        val retrofit = Retrofit.Builder()
+            .baseUrl("http://10.0.2.2:3000")
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
+        val service: ApiController = retrofit.create(ApiController::class.java)
+
+        var kindOfMarkId = viewModel.kindOfMarkIdStatistic.value ?: 1
+
+        Log.d("RetrofitClient","marksDataupdateeeee  date1 " + date1)
+        Log.d("RetrofitClient","marksDataupdateeeee  date2 " + date2)
+
+        callCounter = 2
+
+//        val call1: Call<List<Mark>> = service.marksForUser(1, 1)
+        val call1: Call<List<Mark>> = service.marksForUserByDate(1, 1,date1, date2)
+        call1.enqueue(object : Callback<List<Mark>> {
+            override fun onResponse(call: Call<List<Mark>>, response: Response<List<Mark>>) {
+                val marksData = response.body() ?: emptyList()
+                list1 = marksData
+                callCounter -=1
+                checkResults()
+
+            }
+            override fun onFailure(call: Call<List<Mark>>, t: Throwable) {
+                Log.d("RetrofitClient","Receive user from server problem " + t)
+                errorOccurred = true
+            }
+        })
+
+        val call2: Call<List<Mark>> = service.marksForUserByDate(1, 2,date1, date2)
+//        val call2: Call<List<Mark>> = service.marksForUser(1, 2)
+        call2.enqueue(object : Callback<List<Mark>> {
+            override fun onResponse(call: Call<List<Mark>>, response: Response<List<Mark>>) {
+                val marksData = response.body() ?: emptyList()
+                list2 = marksData
+                callCounter -=1
+                checkResults()
+
+            }
+            override fun onFailure(call: Call<List<Mark>>, t: Throwable) {
+                Log.d("RetrofitClient","Receive user from server problem " + t)
+                errorOccurred = true
+            }
+        })
+
+    }
+
+
+
 
 
 

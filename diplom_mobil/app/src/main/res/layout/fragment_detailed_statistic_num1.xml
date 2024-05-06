@@ -26,19 +26,49 @@
 
     <!--    </ScrollView>-->
 
+<!--    <com.github.mikephil.charting.charts.LineChart-->
+<!--        android:id="@+id/line"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="350dp"-->
 
-    <com.github.mikephil.charting.charts.LineChart
-        android:id="@+id/line"
+
+<!--        app:layout_constraintEnd_toStartOf="@+id/guideline16"-->
+<!--        app:layout_constraintStart_toStartOf="@+id/guideline15"-->
+<!--        app:layout_constraintTop_toTopOf="parent">-->
+
+
+<!--    </com.github.mikephil.charting.charts.LineChart>-->
+
+    <HorizontalScrollView
+        android:id="@+id/line_viewContainer"
         android:layout_width="match_parent"
-        android:layout_height="350dp"
-
-
+        android:layout_height="match_parent"
         app:layout_constraintEnd_toStartOf="@+id/guideline16"
         app:layout_constraintStart_toStartOf="@+id/guideline15"
         app:layout_constraintTop_toTopOf="parent">
+        <view
+            android:layout_width="match_parent"
+            android:layout_height="300dp"
+            class="im.dacer.androidcharts.LineView"
+            android:id="@+id/line_view"
+            />
+    </HorizontalScrollView>
+
+<!--    <RelativeLayout-->
+<!--        android:id="@+id/line_viewContainer"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="match_parent"-->
+<!--        app:layout_constraintEnd_toStartOf="@+id/guideline16"-->
+<!--        app:layout_constraintStart_toStartOf="@+id/guideline15"-->
+<!--        app:layout_constraintTop_toTopOf="parent">-->
+
+<!--        <im.dacer.androidcharts.LineView-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="300dp"-->
+<!--            android:id="@+id/line_view"/>-->
+<!--    </RelativeLayout>-->
 
 
-    </com.github.mikephil.charting.charts.LineChart>
 
 
     <TextView
@@ -49,7 +79,7 @@
         android:text="Выберите период для сортировки"
         app:layout_constraintEnd_toStartOf="@+id/guideline16"
         app:layout_constraintStart_toStartOf="@+id/guideline15"
-        app:layout_constraintTop_toBottomOf="@+id/line" />
+        app:layout_constraintTop_toBottomOf="@+id/line_viewContainer" />
 
 
     <Button
@@ -82,6 +112,8 @@
         app:layout_constraintEnd_toStartOf="@+id/guideline16"
         app:layout_constraintStart_toStartOf="@+id/guideline15"
         app:layout_constraintTop_toBottomOf="@+id/textView" />
+
+
 
 
 
