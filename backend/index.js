@@ -1,6 +1,7 @@
 const express = require('express')
 const mysql = require('mysql')
 const multer = require('multer');
+var cors = require('cors');
 
 const app = express()
 
@@ -18,6 +19,12 @@ db.sequelize.sync({force: false});
 
 
 
+var corsOptions = {
+    origin: 'http://localhost:4200', // указываем, откуда будут приходить запросы
+    credentials: true, // разрешаем обрабатывать запросы
+    optionSuccessStatus: 200 // при успешной обработке запроса будет возвращён статус 200
+};
+app.use(cors(corsOptions));
 
 
 const storage = multer.diskStorage({
@@ -45,14 +52,6 @@ exports.upload = multer({
   }
 ).single('file')
 
-
-// var cors = require('cors');
-// var corsOptions = {
-//     origin: 'http://localhost:4200', // указываем, откуда будут приходить запросы
-//     credentials: true, // разрешаем обрабатывать запросы
-//     optionSuccessStatus: 200 // при успешной обработке запроса будет возвращён статус 200
-// };
-// app.use(cors(corsOptions));
 
 app.use('/files', express.static('files'));
 

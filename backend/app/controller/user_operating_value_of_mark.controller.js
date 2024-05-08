@@ -16,16 +16,25 @@ exports.findAll = (req, res) => {
 };
 
 exports.findAllForUser = (req, res) => {
-    UserOperatingValueOfMark.findAll({
-        where: {
-            user_id: req.params.userId
-    }})
+    // UserOperatingValueOfMark.findAll({
+    //     where: {
+    //         user_id: req.params.userId
+    // }})
+    //     .then(objects => {
+    //         globalFunctions.sendResult(res, objects);
+            
+    //     })
+    //     .catch(err => {
+    //         // возврат найденной ошибки
+    //         globalFunctions.sendError(res, err);
+    //     })
+
+        db.sequelize.query('SELECT * FROM `user_operating_value_of_mark` WHERE `user_operating_value_of_mark`.`user_id` = :userId AND `user_operating_value_of_mark`.`date` = (SELECT MAX(`user_operating_value_of_mark`.`date`) FROM `user_operating_value_of_mark` WHERE `user_operating_value_of_mark`.`user_id` = :userId);',
+        { replacements: { userId: req.params.userId}, type: db.sequelize.QueryTypes.SELECT })
         .then(objects => {
             globalFunctions.sendResult(res, objects);
-            
         })
         .catch(err => {
-            // возврат найденной ошибки
             globalFunctions.sendError(res, err);
         })
 };
