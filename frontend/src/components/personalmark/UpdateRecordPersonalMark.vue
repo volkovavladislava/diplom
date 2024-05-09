@@ -49,7 +49,7 @@ import 'bootstrap/dist/js/bootstrap.bundle.min.js';
     console.log(data.value)
 
     const value1= ref(data.value.value_string)
-    const date= ref( moment(data.value.date).format('YYYY-MM-DD HH:mm'))
+    const date= ref( moment.utc(data.value.date).format('YYYY-MM-DD HH:mm'))
 
     const userId = ref(1)
 

@@ -11,8 +11,9 @@ import UpdateRecordPersonalMark from "./components/personalmark/UpdateRecordPers
 import ListPrompt from "./components/prompt/ListPrompt";
 import UpdatePrompt from "./components/prompt/UpdatePrompt";
 import AddPrompt from "./components/prompt/AddPrompt";
-
-
+import ListFile from "./components/file/ListFile";
+import UpdateFile from "./components/file/UpdateFile";
+import AddFile from "./components/file/AddFile";
 
 // определяем маршруты
 const routes = [
@@ -113,6 +114,32 @@ const routes = [
         props: true,
         meta: {
             title: "Обновление записи"
+        }
+    },
+    {
+        path: "/listFile", // указание маршрута, по которому будем переходить к списку пользователей
+        name: "listFile", // имя маршрута
+        alias: "/listFile", // указание дополнительного маршрута
+        component: ListFile, // компонент, на основании которого будет отрисовываться страница
+        meta: {
+            title: "Список файлов"
+        }
+    },{
+        path: "/addFile", // указание маршрута, по которому будем переходить к списку пользователей
+        name: "addFile", // имя маршрута
+        alias: "/addFile", // указание дополнительного маршрута
+        component: AddFile, // компонент, на основании которого будет отрисовываться страница
+        meta: {
+            title: "Добавление файла"
+        }
+    },{
+        path: "/updateFile/:id", // указание маршрута, по которому будем переходить к списку пользователей
+        name: "updateFile", // имя маршрута
+        alias: "/updateFile", // указание дополнительного маршрута
+        component: UpdateFile, // компонент, на основании которого будет отрисовываться страница
+        props: true,
+        meta: {
+            title: "Обновление файла"
         }
     },
 ];

@@ -10,7 +10,7 @@
           <a class="nav-link" href="/listPrompt">Мои записи</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="#">Мои файлы</a>
+          <a class="nav-link" href="/listFile">Мои файлы</a>
         </li>
         <li class="nav-item">
           <a class="nav-link" href="/listPersonalMarks">Мои персональные показатели</a>

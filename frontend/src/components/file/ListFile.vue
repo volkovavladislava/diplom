@@ -4,15 +4,15 @@
 
     
             <div class="row justify-content-md-center ">
-                <h5 class="text-center fs-3 col-md-5"> Список записей</h5>
+                <h5 class="text-center fs-3 col-md-5"> Список файлов</h5>
             </div>
 
             <div  class="col-md-7">
-                <button type="button" class="btn btn-outline-secondary bthM"  @click="redirectToAddPromptPage()">Добавить запись</button>
+                <button type="button" class="btn btn-outline-secondary bthM"  @click="redirectToAddFilePage()">Добавить файл</button>
             </div>
 
-            <div  class="col-md-7" v-if="prompts.length">
-                <div class="card"    v-for="i  in prompts" :key="i.id"  @click="redirectToUpdatePromptPage(i.id, i)" >
+            <div  class="col-md-7" v-if="files.length">
+                <div class="card"    v-for="i  in files" :key="i.id"  @click="redirectToUpdateFilePage(i.id, i)" >
                         <div class="card-content">
                         <div class="row align-items-center">
                             <div class="col">
@@ -38,35 +38,34 @@
   const router = useRouter();
 
   const userId = ref(1)
-  const prompts = ref([])
+  const files = ref([])
 
-    const redirectToUpdatePromptPage = (id, data) => {
+    const redirectToUpdateFilePage = (id, data) => {
         const encodedData = encodeURIComponent(JSON.stringify(data));
-        router.push({ path: '/updatePrompt/' + id, query: { data: encodedData } });
+        router.push({ path: '/updateFile/' + id, query: { data: encodedData } });
     };
 
-    const redirectToAddPromptPage = () => {
-        router.push({ path: '/addPrompt' });
+    const redirectToAddFilePage = () => {
+        router.push({ path: '/addFile' });
     };
 
 
-  const getListPrompt = async () => {
+  const getListFile = async () => {
       try {
-          const response = await http.get('/promptByUser/' + userId.value);
-          prompts.value = []
+          const response = await http.get('/fileByUser/' + userId.value);
+          files.value = []
           response.data.forEach(value => {
-                prompts.value.push(value)         
+                files.value.push(value)         
               
           });
 
-          console.log(prompts.value)
       } catch (error) {
           console.error(error);
       }
   }
 
   onMounted(async () => {
-    await getListPrompt();
+    await getListFile();
 });
 </script>
 

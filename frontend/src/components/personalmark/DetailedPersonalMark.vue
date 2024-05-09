@@ -10,7 +10,7 @@
                         <div class="card-content">
                         <div class="row align-items-center">
                             <div class="col">
-                           {{ moment(i.date).format('YYYY-MM-DD HH:mm')}}
+                           {{ moment.utc(i.date).format('YYYY-MM-DD HH:mm')}}
                             </div>
                             <div class="col ">
                             {{i.value_string}}

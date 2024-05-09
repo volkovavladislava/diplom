@@ -2,11 +2,11 @@
     <div class="container" >
 
     
-            <p v-if="!isFormValid" style="color: #eb4034;" class="labelm">Поля название и дата должны быть обязательно заполнены</p>
+            <p v-if="!isFormValid" style="color: #eb4034;" class="labelm">Поля название, дата ии файл должны быть обязательно заполнены</p>
 
             <div  class="labelm" >
                 <div class="row justify-content-md-center ">
-                    <h5 class="text-center fs-4 col-md-5 labelm" >Добавление новой записи</h5>
+                    <h5 class="text-center fs-4 col-md-5 labelm" >Добавление нового файла</h5>
                 </div>
                 
                 <div class="row justify-content-md-center ">
@@ -16,14 +16,18 @@
                             <input type="text" class="form-control" id="inputName"  v-model="name"> 
                         </div>
                         <div class="mb-3 labelm">
-                            <label for="inputName" class="form-label">Описание</label>
-                            <input type="text" class="form-control" id="inputName"  v-model="description"> 
+                            <label for="inputName" class="form-label">Комментарий</label>
+                            <input type="text" class="form-control" id="inputName"  v-model="comment"> 
                         </div>
                         <div class="mb-3 labelm">
                             <label for="inputDateBirth" class="form-label">Дата </label>
                             <input type="datetime-local" class="form-control" id="inputDateBirth"  v-model="date"> 
                         </div>
-                        <button type="button" class="btn btn-outline-success bthM" @click="addPrompt()">Добавить запись</button>
+                        <div class="mb-3 labelm">
+                            <label for="inputName" class="form-label">Файл</label>
+                            <input type="file" class="form-control" id="inputName" @change="handleFileUpload" > 
+                        </div>
+                        <button type="button" class="btn btn-outline-success bthM" @click="addFile()">Добавить запись с файлом</button>
                         <div class="alert alert-success" role="alert" v-if="showAlert">
                             Успешно!
                         </div>
@@ -45,8 +49,10 @@ import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 
 
     const name= ref(null)
-    const description= ref(null)
+    const comment= ref(null)
     const date= ref(null)
+    const file= ref(null)
+
 
     const userId = ref(1)
 
@@ -54,17 +60,24 @@ import 'bootstrap/dist/js/bootstrap.bundle.min.js';
     const showAlert = ref(false);
 
 
-    async function addPrompt() {
-        if (name.value && date.value) {
+    function handleFileUpload(event) {
+        file.value = event.target.files[0];
+    }
+
+
+    async function addFile() {
+        if (name.value && date.value && file.value) {
             isFormValid.value = true;
             try {
-                var a = {
-                    userId: userId.value,
-                    name: name.value,
-                    date: date.value,
-                    description: description.value
-                };
-                await http.put('/addPrompt/' + userId.value, a);
+                const formData = new FormData();
+                formData.append('file', file.value);
+                // var a = {
+                //     userId: userId.value,
+                //     name: name.value,
+                //     date: date.value,
+                //     comment: comment.value
+                // };
+                await http.put('/addFile/' + userId.value, formData, "t" ,date.value, name.value, comment.value);
                 showAlert.value = true
                 setTimeout(() => {
                     showAlert.value = false;
