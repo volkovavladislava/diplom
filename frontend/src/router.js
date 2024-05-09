@@ -7,6 +7,12 @@ import ListPersonalMarks from "./components/personalmark/ListPersonalMark";
 import AddPersonalMark from "./components/personalmark/AddPersonalMark";
 import DetailedPersonalMark from "./components/personalmark/DetailedPersonalMark";
 import AddRecordPersonalMark from "./components/personalmark/AddRecordPersonalMark";
+import UpdateRecordPersonalMark from "./components/personalmark/UpdateRecordPersonalMark";
+import ListPrompt from "./components/prompt/ListPrompt";
+import UpdatePrompt from "./components/prompt/UpdatePrompt";
+import AddPrompt from "./components/prompt/AddPrompt";
+
+
 
 // определяем маршруты
 const routes = [
@@ -72,8 +78,43 @@ const routes = [
         meta: {
             title: "Добавление значения собственного показателя"
         }
+    },{
+        path: "/updateRecordPersonalMark/:id", // указание маршрута, по которому будем переходить к списку пользователей
+        name: "updateRecordPersonalMark", // имя маршрута
+        alias: "/updateRecordPersonalMark", // указание дополнительного маршрута
+        component: UpdateRecordPersonalMark, // компонент, на основании которого будет отрисовываться страница
+        props: true,
+        meta: {
+            title: "Добавление значения собственного показателя"
+        }
     },
-    
+    {
+        path: "/listPrompt", // указание маршрута, по которому будем переходить к списку пользователей
+        name: "listPrompt", // имя маршрута
+        alias: "/listPrompt", // указание дополнительного маршрута
+        component: ListPrompt, // компонент, на основании которого будет отрисовываться страница
+        meta: {
+            title: "Список записей"
+        }
+    },
+    {
+        path: "/addPrompt", // указание маршрута, по которому будем переходить к списку пользователей
+        name: "addPrompt", // имя маршрута
+        alias: "/addPrompt", // указание дополнительного маршрута
+        component: AddPrompt, // компонент, на основании которого будет отрисовываться страница
+        meta: {
+            title: "Добавление записи"
+        }
+    },{
+        path: "/updatePrompt/:id", // указание маршрута, по которому будем переходить к списку пользователей
+        name: "updatePrompt", // имя маршрута
+        alias: "/updatePrompt", // указание дополнительного маршрута
+        component: UpdatePrompt, // компонент, на основании которого будет отрисовываться страница
+        props: true,
+        meta: {
+            title: "Обновление записи"
+        }
+    },
 ];
 
 const router = createRouter({

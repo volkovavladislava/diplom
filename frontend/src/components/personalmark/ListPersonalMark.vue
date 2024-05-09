@@ -62,9 +62,9 @@
   const router = useRouter();
   const userId = ref(1)
 
-    const redirectToAddPersonalMarkPage = () => {
-        router.push({ path: '/addPersonalMark'});
-    };
+  const redirectToAddPersonalMarkPage = () => {
+      router.push({ path: '/addPersonalMark'});
+  };
 
 
 
@@ -86,8 +86,6 @@
                 kindOfMarks.value.push(value)         
               
           });
-
-          console.log(kindOfMarks.value)
       } catch (error) {
           console.error(error);
       }

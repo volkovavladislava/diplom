@@ -19,8 +19,9 @@
                             <label for="inputDateBirth" class="form-label">Дата замера</label>
                             <input type="datetime-local" class="form-control" id="inputDateBirth"  v-model="date"> 
                         </div>
-                        <button type="button" class="btn btn-outline-success bthM" @click="addMark()">Добавить данные</button>
-                        <div class="alert alert-success" role="alert" v-if="showAlert">
+                        <button type="button" class="btn btn-outline-success bthM" @click="updateMark()">Обновить запись</button>
+                        <button type="button" class="btn btn-outline-danger" @click="deleteMark()">Удалить запись</button>
+                        <div class="alert alert-success labelm" role="alert" v-if="showAlert">
                             Успешно!
                         </div>
                     </div>
@@ -40,11 +41,15 @@ import { useRouter } from 'vue-router'
 import http from "../../http-common";
 import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 
+    const moment = require('moment');
+
     const router = useRouter();
     const data = ref(JSON.parse(decodeURIComponent(router.currentRoute.value.query.data, null, 2)))
 
-    const value1= ref(null)
-    const date= ref(null)
+    console.log(data.value)
+
+    const value1= ref(data.value.value_string)
+    const date= ref( moment(data.value.date).format('YYYY-MM-DD HH:mm'))
 
     const userId = ref(1)
 
@@ -52,19 +57,19 @@ import 'bootstrap/dist/js/bootstrap.bundle.min.js';
     const showAlert = ref(false);
 
 
-    async function addMark() {
+    async function updateMark() {
         if (value1.value && date.value) {
             isFormValid.value = true;
             try {
                 var a = {
                     userId: userId.value,
-                    kind_of_mark_id: data.value.id,
+                    kind_of_mark_id: data.value.kind_of_mark_id,
                     date: date.value,
                     value_number: null,
                     value_string: value1.value,
                     value_enum: null
                 };
-                await http.put('/addMark/' + data.value.id, a);
+                await http.put('/updateMark/' + data.value.id, a);
                 showAlert.value = true
                 setTimeout(() => {
                     showAlert.value = false;
@@ -75,8 +80,18 @@ import 'bootstrap/dist/js/bootstrap.bundle.min.js';
         } else {isFormValid.value = false;}
     }
 
-    
-  
+    async function deleteMark() {
+            try {
+                await http.post('/deleteMark/' + data.value.id);
+                showAlert.value = true
+                setTimeout(() => {
+                    showAlert.value = false;
+                    router.push({ path: '/listPersonalMarks'});
+                }, 1000);
+            } catch (error) {
+                console.error(error);
+            }
+    }
 
 </script>
 
