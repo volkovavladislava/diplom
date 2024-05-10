@@ -23,7 +23,9 @@
                             <label for="inputDateBirth" class="form-label">Дата </label>
                             <input type="datetime-local" class="form-control" id="inputDateBirth"  v-model="date"> 
                         </div>
-                        <button type="button" class="btn btn-outline-success bthM" @click="updatePrompt()">Обновить запись</button>
+                        <button type="button" class="btn btn-outline-success " @click="updatePrompt()">Обновить запись</button>
+                        <br/>
+                        <br/>
                         <button type="button" class="btn btn-outline-danger" @click="deletePrompt()">Удалить запись</button>
                         <div class="alert alert-success labelm" role="alert" v-if="showAlert">
                             Успешно!

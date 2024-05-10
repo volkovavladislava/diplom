@@ -21,7 +21,7 @@
                             <label for="inputDateBirth" class="form-label">Дата замера</label>
                             <input type="datetime-local" class="form-control" id="inputDateBirth"  v-model="date"> 
                         </div>
-                        <button type="button" class="btn btn-outline-success bthM" @click="addMark()">Добавить данные</button>
+                        <button type="button" class="btn btn-outline-success" @click="addMark()">Добавить данные</button>
                         <div class="alert alert-success" role="alert" v-if="showAlert">
                             Успешно!
                         </div>
@@ -47,9 +47,11 @@
                             <label for="inputDateBirth" class="form-label">Дата замера</label>
                             <input type="datetime-local" class="form-control" id="inputDateBirth"  v-model="date"> 
                         </div>
-                        <button type="button" class="btn btn-outline-success bthM" @click="addMarkEnum()">Добавить данные</button>
-                        <div class="alert alert-success" role="alert" v-if="showAlert">
-                            Успешно!
+                         <div class="mb-3 labelm">
+                            <button type="button" class="btn btn-outline-success " @click="addMarkEnum()">Добавить данные</button>
+                            <div class="alert alert-success" role="alert" v-if="showAlert">
+                                Успешно!
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -74,7 +76,7 @@
                             <label for="inputDateBirth" class="form-label">Дата замера</label>
                             <input type="datetime-local" class="form-control" id="inputDateBirth"  v-model="date"> 
                         </div>
-                        <button type="button" class="btn btn-outline-success bthM" @click="addMarkDavlenie()">Добавить данные</button>
+                        <button type="button" class="btn btn-outline-success " @click="addMarkDavlenie()">Добавить данные</button>
                         <div class="alert alert-success" role="alert" v-if="showAlert">
                             Успешно!
                         </div>

@@ -19,7 +19,9 @@
                             <label for="inputDateBirth" class="form-label">Дата замера</label>
                             <input type="datetime-local" class="form-control" id="inputDateBirth"  v-model="date"> 
                         </div>
-                        <button type="button" class="btn btn-outline-success bthM" @click="updateMark()">Обновить запись</button>
+                        <button type="button" class="btn btn-outline-success " @click="updateMark()">Обновить запись</button>
+                        <br/>
+                        <br/>
                         <button type="button" class="btn btn-outline-danger" @click="deleteMark()">Удалить запись</button>
                         <div class="alert alert-success labelm" role="alert" v-if="showAlert">
                             Успешно!

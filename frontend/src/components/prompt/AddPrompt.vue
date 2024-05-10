@@ -23,7 +23,7 @@
                             <label for="inputDateBirth" class="form-label">Дата </label>
                             <input type="datetime-local" class="form-control" id="inputDateBirth"  v-model="date"> 
                         </div>
-                        <button type="button" class="btn btn-outline-success bthM" @click="addPrompt()">Добавить запись</button>
+                        <button type="button" class="btn btn-outline-success " @click="addPrompt()">Добавить запись</button>
                         <div class="alert alert-success" role="alert" v-if="showAlert">
                             Успешно!
                         </div>

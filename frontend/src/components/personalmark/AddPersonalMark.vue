@@ -10,7 +10,7 @@
                         <input type="text" class="form-control" id="inputName"  v-model="name">
                     </div>
                     
-                    <button type="button" class="btn btn-outline-success bthM" @click="addPersonalMark()">Добавить данные</button>
+                    <button type="button" class="btn btn-outline-success " @click="addPersonalMark()">Добавить данные</button>
                     <div class="alert alert-success" role="alert" v-if="showAlert">
                         Успешно!
                     </div>

@@ -35,7 +35,7 @@
                   </div>
                   <div class="">
                     <button type="button" class="btn  btn-outline-secondary bthM" @click="redirectToAddMarkPage(kindOfMark.id, kindOfMark)">Добавить данные</button>
-                    <button type="button" class="btn btn-outline-secondary bthM">Просмотр статистики</button>
+                    <button type="button" class="btn btn-outline-secondary bthM" @click="redirectToStatisticMarkPage(kindOfMark.id, kindOfMark)">Просмотр статистики</button>
                   </div>
 
                   
@@ -61,6 +61,12 @@
 
 
 
+
+  const redirectToStatisticMarkPage = (id, data) => {
+    console.log(data)
+    const encodedData = encodeURIComponent(JSON.stringify(data));
+    router.push({ path: '/statisticMark/' + id, query: { data: encodedData } });
+  };
 
   const redirectToAddMarkPage = (id, data) => {
     console.log(data)

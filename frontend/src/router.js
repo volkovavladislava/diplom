@@ -2,6 +2,7 @@ import { createWebHistory, createRouter } from "vue-router";
 // импорт компонентов
 import ListSystemMarks from "./components/marks/ListSystemMarks";
 import AddMark from "./components/marks/AddMark";
+import StatisticMark from "./components/marks/StatisticMark";
 import UserProfile from "./components/user/UserProfile";
 import ListPersonalMarks from "./components/personalmark/ListPersonalMark"; 
 import AddPersonalMark from "./components/personalmark/AddPersonalMark";
@@ -42,7 +43,18 @@ const routes = [
         meta: {
             title: "Добавление записи по показателю"
         }
-    },{
+    },
+    {
+        path: "/statisticMark/:id", // указание маршрута, по которому будем переходить к списку пользователей
+        name: "statisticMark", // имя маршрута
+        alias: "/statisticMark", // указание дополнительного маршрута
+        component: StatisticMark, // компонент, на основании которого будет отрисовываться страница
+        props: true, 
+        meta: {
+            title: "Список  показателя"
+        }
+    },
+    {
         path: "/listPersonalMarks", // указание маршрута, по которому будем переходить к списку пользователей
         name: "listPersonalMarks", // имя маршрута
         alias: "/listPersonalMarks", // указание дополнительного маршрута

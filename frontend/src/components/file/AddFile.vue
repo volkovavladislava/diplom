@@ -27,7 +27,7 @@
                             <label for="inputName" class="form-label">Файл</label>
                             <input type="file" class="form-control" id="inputName" @change="handleFileUpload" > 
                         </div>
-                        <button type="button" class="btn btn-outline-success bthM" @click="addFile()">Добавить запись с файлом</button>
+                        <button type="button" class="btn btn-outline-success " @click="addFile()">Добавить запись с файлом</button>
                         <div class="alert alert-success" role="alert" v-if="showAlert">
                             Успешно!
                         </div>

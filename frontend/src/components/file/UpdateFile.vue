@@ -24,12 +24,6 @@
                             <input type="datetime-local" class="form-control" id="inputDateBirth"  v-model="date"> 
                         </div>
 
-                        
-                         
-
-                        
-                        
-                        
                     </div>
                     <div  class="col-md-5 " style="margin-left: 40px; margin-top: 8px">
                         <div>
