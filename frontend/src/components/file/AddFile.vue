@@ -2,7 +2,7 @@
     <div class="container" >
 
     
-            <p v-if="!isFormValid" style="color: #eb4034;" class="labelm">Поля название, дата ии файл должны быть обязательно заполнены</p>
+            <p v-if="!isFormValid" style="color: #eb4034;" class="labelm">Поля название, дата и файл должны быть обязательно заполнены</p>
 
             <div  class="labelm" >
                 <div class="row justify-content-md-center ">
@@ -65,19 +65,22 @@ import 'bootstrap/dist/js/bootstrap.bundle.min.js';
     }
 
 
+
     async function addFile() {
         if (name.value && date.value && file.value) {
             isFormValid.value = true;
             try {
                 const formData = new FormData();
                 formData.append('file', file.value);
-                // var a = {
-                //     userId: userId.value,
-                //     name: name.value,
-                //     date: date.value,
-                //     comment: comment.value
-                // };
-                await http.put('/addFile/' + userId.value, formData, "t" ,date.value, name.value, comment.value);
+                formData.append('name', name.value);
+                formData.append('date', date.value);
+                formData.append('comment', comment.value);
+
+                await http.post('/addFileC/' + userId.value, formData, {
+                        headers: {
+                            'Content-Type': 'multipart/form-data'
+                        }
+                    });
                 showAlert.value = true
                 setTimeout(() => {
                     showAlert.value = false;

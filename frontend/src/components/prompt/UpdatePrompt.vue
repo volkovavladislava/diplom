@@ -74,6 +74,7 @@ import 'bootstrap/dist/js/bootstrap.bundle.min.js';
                 showAlert.value = true
                 setTimeout(() => {
                     showAlert.value = false;
+                    router.push({ path: '/listPrompt'});
                 }, 1000);
             } catch (error) {
                 console.error(error);

@@ -3,12 +3,14 @@
 
       <div class="row justify-content-md-center labelm">
 
+
+
         <div  class="col-md-7">
-          <div class="accordion " id="accordionFlushExample">
+          <div class="accordion " id="accordionExample">
 
             <div class="accordion-item"  v-for="(kindOfMark, index) in kindOfMarks" :key="index">
-              <h2 class="accordion-header" :id="'headingOne-' + index">
-                <button class="accordion-button collapsed" type="button" :data-bs-toggle="'collapse'" :data-bs-target="'#collapseOne-' + index" aria-expanded="false" aria-controls="collapseOne">
+              <h2 class="accordion-header" :id="'headingOne' + index">
+                <button class="accordion-button collapsed" type="button" :data-bs-toggle="'collapse'" :data-bs-target="'#collapseOne' + index" aria-expanded="true" :aria-controls="'collapseOne'+ index">
                    <div  class="col-md-3">
                       {{kindOfMark.name}}
                    </div>
@@ -26,7 +28,7 @@
                   
                 </button>
               </h2>
-              <div :id="'collapseOne-' + index" class="accordion-collapse collapse " aria-labelledby="headingOne" data-bs-parent="#accordionExample">
+              <div :id="'collapseOne' + index" class="accordion-collapse collapse " :aria-labelledby="'headingOne'+ index" data-bs-parent="#accordionExample">
                 <div class="accordion-body">
                   <div class="">
                     Выберите добавить данные по показателю или посмотреть статистику.

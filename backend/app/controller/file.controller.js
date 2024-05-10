@@ -5,6 +5,12 @@ var globalFunctions = require('../config/global.functions.js');
 const multer = require('multer');
 const path = require('path');
 
+var multiparty = require('multiparty');
+var fs = require('fs');
+var uuid = require('uuid');
+
+
+
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
       cb(null, 'files');
@@ -158,4 +164,167 @@ exports.delete = (req, res) => {
     }).catch(err => {
         globalFunctions.sendError(res, err);
     });
+};
+
+
+
+
+exports.createC = async (req, res) => {
+    // создаём объект для чтения данных, переданных со стороны клиента (передавали объект FormData)
+    var form = new multiparty.Form();
+
+    // читаем данные
+    await form.parse(req, async (err, fields, files) => {
+        if (!err) {
+            var mimeType = files.file[0].headers['content-type']; // тип файла указывается так: image/png
+            expansion = mimeType.split('/')[1]; // из "image/png" нужно извлечь только расширение
+
+            var newName = uuid.v4() + "." + expansion; // вызываем функцию v4() для того, чтобы уникальный идентификатор был сгенерирован случайным образом
+            var link = 'file-' + newName;
+            var a = './files/' + link;
+            fs.copyFile(files.file[0].path, a, (err) => {
+                if (err) {
+                    throw err;
+                }
+            });
+
+            var name = fields.name[0];
+            var date = fields.date[0];
+            var comment = fields.comment[0];
+            
+            File.create({
+                user_id: req.params.userId,
+                link: link,
+                mime_type: mimeType,
+                date: date,
+                name: name,
+                comment: comment
+            }).then(object => {
+                globalFunctions.sendResult(res, object);
+            }).catch(err => {
+                globalFunctions.sendError(res, err);
+            })
+        }
+        else{
+            globalFunctions.sendError(res, err);
+        }
+    });
+};
+
+
+exports.updateFileC = async (req, res) => {
+    // создаём объект для чтения данных, переданных со стороны клиента (передавали объект FormData)
+    var form = new multiparty.Form();
+
+    // читаем данные
+    await form.parse(req, async (err, fields, files) => {
+        if (!err) {
+            var mimeType = files.file[0].headers['content-type']; // тип файла указывается так: image/png
+            expansion = mimeType.split('/')[1]; // из "image/png" нужно извлечь только расширение
+
+            var newName = uuid.v4() + "." + expansion; // вызываем функцию v4() для того, чтобы уникальный идентификатор был сгенерирован случайным образом
+            var link = 'file-' + newName;
+            var a = './files/' + link;
+            console.log(a)
+
+            fs.copyFile(files.file[0].path, a, (err) => {
+                if (err) {
+                    throw err;
+                }
+            });
+
+            var name = fields.name[0];
+            var date = fields.date[0];
+            var comment = fields.comment[0];
+            
+            File.update({
+                user_id: req.params.userId,
+                link: link,
+                mime_type: mimeType,
+                date: date,
+                name: name,
+                comment: comment
+            },
+            {
+                where: {
+                    id: req.params.fileId
+                }
+            }).then(object => {
+                globalFunctions.sendResult(res, object);
+            }).catch(err => {
+                globalFunctions.sendError(res, err);
+            })
+        }
+        else{
+            globalFunctions.sendError(res, err);
+        }
+    });
+};
+
+
+
+exports.deleteC = (req, res) => {
+    File.findByPk(req.params.fileId)
+    .then(async (object) => {
+        // удаляем файл
+        await fs.unlinkSync( './files/' + object.dataValues.link);
+        await File.destroy({
+            where: {
+                id: req.params.fileId
+            }
+        }).then(() => {
+            globalFunctions.sendResult(res, 'Запись удалена');
+        }).catch(err => {
+            globalFunctions.sendError(res, err);
+        });
+    }).catch(err => {
+        globalFunctions.sendError(res, err);
+    });
+};
+
+
+
+exports.findByIdC = (req, res) => {
+    File.findByPk(req.params.id)
+    .then(async objects => {
+            var object = objects.dataValues;
+            // читаем содержимое файла для отправки на сторону клиентского приложения
+            var contents = fs.readFileSync('./files/' + object.link, {encoding: 'base64'});
+            console.log("contents " + contents)
+            var data = {
+                id: object.id,
+                name: object.name,
+                file: contents,
+                mime_type: object.mime_type,
+                user_id: object.user_id,
+                date: object.date,
+                comment: object.comment
+            };
+            globalFunctions.sendResult(res, data);
+    })
+    .catch(err => {
+        globalFunctions.sendError(res, err);
+    })
+};
+
+
+
+exports.updateWithoutFileC = async (req, res) => {
+
+    File.update({
+        user_id: req.body.userId,
+        date: req.body.date,
+        name: req.body.name,
+        comment: req.body.comment
+    },
+    {
+        where: {
+            id: req.params.fileId
+        }
+    }).then(object => {
+        globalFunctions.sendResult(res, object);
+    }).catch(err => {
+        globalFunctions.sendError(res, err);
+    })
+        
 };

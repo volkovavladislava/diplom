@@ -46,7 +46,6 @@ import 'bootstrap/dist/js/bootstrap.bundle.min.js';
     const router = useRouter();
     const data = ref(JSON.parse(decodeURIComponent(router.currentRoute.value.query.data, null, 2)))
 
-    console.log(data.value)
 
     const value1= ref(data.value.value_string)
     const date= ref( moment.utc(data.value.date).format('YYYY-MM-DD HH:mm'))
@@ -73,6 +72,7 @@ import 'bootstrap/dist/js/bootstrap.bundle.min.js';
                 showAlert.value = true
                 setTimeout(() => {
                     showAlert.value = false;
+                    router.push({ path: '/listPersonalMarks'});
                 }, 1000);
             } catch (error) {
                 console.error(error);
