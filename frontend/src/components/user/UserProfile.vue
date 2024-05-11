@@ -28,7 +28,7 @@
                 </div>
                 <p v-if="!isFormValid" style="color: #eb4034;">Поля имя, рост, вес и дата рождения должны быть обязательно заполнены</p>
 
-                <button type="button" class="btn btn-outline-success bthM" @click="updateUser()">Обновить данные</button>
+                <button type="button" class="btn btn-outline-success " @click="updateUser()">Обновить данные</button>
             </div>
 
             <div class="row justify-content-md-center labelm">
@@ -56,7 +56,7 @@
                     <label for="inputDateBirth" class="form-label">Холестерин</label>
                     <input type="number" class="form-control" id="inputDateBirth"   v-model="profileCholesterol"> 
                 </div>
-                <button type="button" class="btn btn-outline-success bthM" @click="updateUserOperatingValue()">Обновить рабочие показатели</button>
+                <button type="button" class="btn btn-outline-success " @click="updateUserOperatingValue()">Обновить рабочие показатели</button>
             </div>
         </div>
 

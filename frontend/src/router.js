@@ -2,6 +2,7 @@ import { createWebHistory, createRouter } from "vue-router";
 // импорт компонентов
 import ListSystemMarks from "./components/marks/ListSystemMarks";
 import AddMark from "./components/marks/AddMark";
+import UpdateMark from "./components/marks/UpdateMark";
 import StatisticMark from "./components/marks/StatisticMark";
 import UserProfile from "./components/user/UserProfile";
 import ListPersonalMarks from "./components/personalmark/ListPersonalMark"; 
@@ -42,6 +43,15 @@ const routes = [
         props: true, 
         meta: {
             title: "Добавление записи по показателю"
+        }
+    },{
+        path: "/updateRecordMark/:id", 
+        name: "updateRecordMark", 
+        alias: "/updateRecordMark", 
+        component: UpdateMark,
+        props: true, 
+        meta: {
+            title: "Редактирование записи по показателю"
         }
     },
     {

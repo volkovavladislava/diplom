@@ -148,8 +148,9 @@ class FragmentUpdateRecordMarkNum2 : Fragment(), DatePickerDialog.OnDateSetListe
                     Toast.makeText(context, "Ошибка", Toast.LENGTH_SHORT).show()
                 }
             })
-            val bundle = bundleOf("title" to viewModel.kindOfMarkNameStatistic.value )
-            findNavController().navigate(R.id.fragmentDetailedStatisticNum2, bundle)
+//            val bundle = bundleOf("title" to viewModel.kindOfMarkNameStatistic.value )
+//            findNavController().navigate(R.id.fragmentDetailedStatisticNum2, bundle)
+            findNavController().popBackStack()
         }
 
 

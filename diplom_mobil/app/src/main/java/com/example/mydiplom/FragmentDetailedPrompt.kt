@@ -138,7 +138,8 @@ class FragmentDetailedPrompt : Fragment(), DatePickerDialog.OnDateSetListener, T
                     Toast.makeText(context, "Ошибка", Toast.LENGTH_SHORT).show()
                 }
             })
-            findNavController().navigate(R.id.fragmentListReminders)
+//            findNavController().navigate(R.id.fragmentListReminders)
+            findNavController().popBackStack()
         }
 
 

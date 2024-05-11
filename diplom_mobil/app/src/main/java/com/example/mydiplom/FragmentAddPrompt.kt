@@ -1,9 +1,12 @@
 package com.example.mydiplom
 
 import android.Manifest
+import android.accounts.Account
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
+import android.content.ContentResolver
 import android.content.ContentValues
+import android.database.Cursor
 import android.os.Bundle
 import android.provider.CalendarContract
 import android.util.Log
@@ -14,6 +17,7 @@ import android.widget.DatePicker
 import android.widget.TimePicker
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.database.getStringOrNull
 import androidx.fragment.app.Fragment
 import com.example.mydiplom.data.AddPrompt
 import com.example.mydiplom.databinding.FragmentAddPromptBinding
@@ -181,6 +185,7 @@ class FragmentAddPrompt : Fragment(), DatePickerDialog.OnDateSetListener, TimePi
 
 
         Log.d("RetrofitClient","date " + date)
+        val calendars = getCalendars()
 
         val cr = requireContext().contentResolver
         val values = ContentValues().apply {
@@ -188,14 +193,60 @@ class FragmentAddPrompt : Fragment(), DatePickerDialog.OnDateSetListener, TimePi
             put(CalendarContract.Events.DESCRIPTION, description)
             put(CalendarContract.Events.DTSTART, date)
             put(CalendarContract.Events.DTEND, date + 60 * 60 * 1000)
-            put(CalendarContract.Events.CALENDAR_ID, 1)
+            put(CalendarContract.Events.CALENDAR_ID, calendars.first().id)
             put(CalendarContract.Events.EVENT_LOCATION, "")
             put(CalendarContract.Events.EVENT_TIMEZONE, TimeZone.getDefault().id)
         }
         val uri = cr.insert(CalendarContract.Events.CONTENT_URI, values)
         Log.d("RetrofitClient","uri " + uri)
+        syncCalendar(calendars.first())
         val eventId = uri?.lastPathSegment?.toLongOrNull() ?: -1
         return eventId
+    }
+
+    class ListCalendars {
+        var id : Long = 0
+        var name = ""
+        var accountName = ""
+        var accountType = ""
+    }
+
+    fun getCalendars(): ArrayList<ListCalendars> {
+        val calList = ArrayList<ListCalendars>()
+//        if (checkPermission()) {
+            val projection = arrayOf(
+                CalendarContract.Calendars._ID,
+                CalendarContract.Calendars.NAME,
+                CalendarContract.Calendars.ACCOUNT_NAME,
+                CalendarContract.Calendars.ACCOUNT_TYPE
+            )
+            val selection = "${CalendarContract.Calendars.CALENDAR_ACCESS_LEVEL} = ${CalendarContract.Calendars.CAL_ACCESS_OWNER}"
+            val cursor: Cursor? = requireContext().contentResolver.query(
+                CalendarContract.Calendars.CONTENT_URI,
+                projection,
+                selection,
+                null,
+                CalendarContract.Calendars._ID + " ASC"
+            )
+            if (cursor != null) while (cursor.moveToNext()){
+                val calendar = ListCalendars()
+                calendar.id = cursor.getLong(0)
+                calendar.name = cursor.getStringOrNull(1) ?: ""
+                calendar.accountName = cursor.getString(2)
+                calendar.accountType = cursor.getString(3)
+                calList.add(calendar)
+            }
+            cursor?.close()
+//        }
+        return calList
+    }
+
+    private fun syncCalendar(calendar: ListCalendars) {
+        val account = Account(calendar.accountName, calendar.accountType)
+        val extras = Bundle()
+        extras.putBoolean(ContentResolver.SYNC_EXTRAS_MANUAL, true)
+        val authority = CalendarContract.Calendars.CONTENT_URI.authority
+        ContentResolver.requestSync(account, authority, extras)
     }
 
     fun convertDateTimeToMilliseconds(dateTime: String, pattern: String = "yyyy-MM-dd HH:mm"): Long {

@@ -143,7 +143,8 @@ class FragmentUpdateRecordHandMadeMark : Fragment(), DatePickerDialog.OnDateSetL
                     Toast.makeText(context, "Ошибка", Toast.LENGTH_SHORT).show()
                 }
             })
-            findNavController().navigate(R.id.fragmentDetailedHandMadeMark)
+//            findNavController().navigate(R.id.fragmentDetailedHandMadeMark)
+            findNavController().popBackStack()
         }
 
         return binding!!.root

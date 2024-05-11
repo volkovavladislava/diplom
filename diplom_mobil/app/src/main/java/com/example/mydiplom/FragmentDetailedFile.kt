@@ -196,7 +196,8 @@ class FragmentDetailedFile : Fragment(), DatePickerDialog.OnDateSetListener, Tim
                     Toast.makeText(context, "Ошибка", Toast.LENGTH_SHORT).show()
                 }
             })
-            findNavController().navigate(R.id.fragmentListFiles)
+//            findNavController().navigate(R.id.fragmentListFiles)
+            findNavController().popBackStack()
         }
 
 

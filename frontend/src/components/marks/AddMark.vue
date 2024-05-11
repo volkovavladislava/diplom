@@ -1,9 +1,5 @@
 <template>
     <div class="container" >
-
-        
-            
-        <!-- <div :class="{'myshow': showModal}"> -->
             <p v-if="!isFormValid" style="color: #eb4034;" class="labelm">Поля должны быть обязательно заполнены</p>
 
             <div v-if="data.enum_kind_of_mark_id == 1" class="labelm" >
@@ -84,10 +80,6 @@
                 </div>
             </div>
 
-        <!-- </div> -->
-
-
-            
     </div>
 
 
