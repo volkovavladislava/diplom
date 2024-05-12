@@ -90,6 +90,10 @@ favorite_mark(app);
 var mark_value = require('./app/route/mark_value.route.js');
 mark_value(app);
 
+
+var auth = require('./app/route/auth.route.js');
+auth(app);
+
 app.listen(port, () =>{
     console.log("sdsd")
     // const KindOfMarkController = require('./app/controller/kind_of_mark.controller.js');

@@ -78,6 +78,7 @@ import http from "../../http-common";
 import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 import { useRouter } from 'vue-router'
 
+
     const moment = require('moment');
     const router = useRouter();
     const data = ref(JSON.parse(decodeURIComponent(router.currentRoute.value.query.data, null, 2)))
@@ -168,7 +169,6 @@ import { useRouter } from 'vue-router'
       try {
           const response = await http.get('/fileC/' + id);
           imgFile.value = response.data.file
-          console.log(imgFile.value)
           mimeType.value = response.data.mime_type
 
       } catch (error) {

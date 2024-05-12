@@ -86,10 +86,14 @@
 
 <script setup>
 
-import { ref, onMounted  } from 'vue';
+import { ref, onMounted, computed  } from 'vue';
 import { useRouter, useRoute } from 'vue-router'
 import http from "../../http-common";
 import 'bootstrap/dist/js/bootstrap.bundle.min.js';
+import { useStore } from 'vuex';
+
+	const store = useStore();
+	const currentUser = computed(() => store.state.auth.user);
 
     const router = useRouter();
     const data = ref(JSON.parse(decodeURIComponent(router.currentRoute.value.query.data, null, 2)))
@@ -100,7 +104,7 @@ import 'bootstrap/dist/js/bootstrap.bundle.min.js';
     const value2= ref(null)
     const date= ref(null)
 
-    const userId = ref(1)
+    // const userId = ref(1)
 
     const isFormValid = ref(true);
     const showAlert = ref(false);
@@ -129,7 +133,7 @@ import 'bootstrap/dist/js/bootstrap.bundle.min.js';
             // console.log( data)
             try {
                 var a = {
-                    userId: userId.value,
+                    userId: currentUser.value.id,
                     kind_of_mark_id: data.value.id,
                     date: date.value,
                     value_number: value1.value,
@@ -152,7 +156,7 @@ import 'bootstrap/dist/js/bootstrap.bundle.min.js';
             isFormValid.value = true;
             try {
                 var a = {
-                    userId: userId.value,
+                    userId: currentUser.value.id,
                     date: date.value,
                     value_number1: value1.value,
                     value_number2: value2.value,
@@ -175,7 +179,7 @@ import 'bootstrap/dist/js/bootstrap.bundle.min.js';
             
     //         try {
     //             var a = {
-    //                 userId: userId.value,
+    //                 userId: currentUser.value.id,
     //                 kind_of_mark_id: data.value.id,
     //                 date: date.value,
     //                 value_number: null,

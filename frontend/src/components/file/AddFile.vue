@@ -43,9 +43,13 @@
 
 <script setup>
 
-import { ref  } from 'vue';
+import { ref,computed  } from 'vue';
 import http from "../../http-common";
 import 'bootstrap/dist/js/bootstrap.bundle.min.js';
+import { useStore } from 'vuex';
+
+	const store = useStore();
+	const currentUser = computed(() => store.state.auth.user);
 
 
     const name= ref(null)
@@ -54,7 +58,7 @@ import 'bootstrap/dist/js/bootstrap.bundle.min.js';
     const file= ref(null)
 
 
-    const userId = ref(1)
+    // const userId = ref(1)
 
     const isFormValid = ref(true);
     const showAlert = ref(false);
@@ -76,7 +80,7 @@ import 'bootstrap/dist/js/bootstrap.bundle.min.js';
                 formData.append('date', date.value);
                 formData.append('comment', comment.value);
 
-                await http.post('/addFileC/' + userId.value, formData, {
+                await http.post('/addFileC/' + currentUser.value.id, formData, {
                         headers: {
                             'Content-Type': 'multipart/form-data'
                         }

@@ -17,6 +17,9 @@ import ListFile from "./components/file/ListFile";
 import UpdateFile from "./components/file/UpdateFile";
 import AddFile from "./components/file/AddFile";
 
+import Login from "./components/authorization/Login";
+import Register from "./components/authorization/Register";
+
 // определяем маршруты
 const routes = [
     {
@@ -36,6 +39,22 @@ const routes = [
             title: "Профиль"
         }
     },{
+        path: "/login",
+        name: "login-user",
+        component: Login,
+        meta: {
+            title: "Вход в систему"
+        }
+    },
+    {
+        path: "/register",
+        name: "register-user",
+        component: Register,
+        meta: {
+            title: "Регистрация"
+        }
+    },
+    {
         path: "/addRecordMark/:id", 
         name: "addRecordMark", 
         alias: "/addRecordMark", 

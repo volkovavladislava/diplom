@@ -16,25 +16,47 @@
           <a class="nav-link" href="/listPersonalMarks">Мои персональные показатели</a>
         </li>
       </ul>
-      <a class="nav-link active" aria-current="page" href="/profile">Профиль</a>
+      <!-- <a class="nav-link active" aria-current="page" href="/profile">Профиль</a> -->
+      <div v-if="currentUser">
+        <a class="nav-link active" aria-current="page" href="/profile">Профиль</a>
+
+        <a href @click.prevent="logOut" class="navbar-brand text-light">
+            Выйти
+        </a>
+        </div>
+    <div v-else>
+        <router-link to="/login" class="navbar-brand text-light">
+            Войти
+        </router-link>
+    </div>
     </div>
   </div>
 </nav>
-  </template>
+</template>
   
-  <script>
-      export default {
-          name: "NavBar",
-          data() {
-              return {
-  
-              };
-          }
-      };
-  </script>
-  
-  <style>
-    .item {
-      margin-right: 5px;
+<script>
+  export default {
+    name: "NavBar",
+    data() {
+        return {};
+
+    },
+    computed: { // вычисляемые свойства
+        currentUser() {
+            return this.$store.state.auth.user;
+        }
+    },
+    methods: {
+        logOut() {
+            this.$store.dispatch('auth/logout'); // обращаемся к методу logout, который определён в auth.service.js
+            window.location.href = '/login'; // // Используем такую конструкцию, а не this.$router.push, так как требуется перезагрузить страницу для обновления локального хранилища
+        }
     }
-  </style>
+};
+</script>
+  
+<style>
+  .item {
+    margin-right: 5px;
+  }
+</style>

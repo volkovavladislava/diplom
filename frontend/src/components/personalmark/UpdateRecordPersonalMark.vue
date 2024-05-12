@@ -38,10 +38,14 @@
 
 <script setup>
 
-import { ref  } from 'vue';
+import { ref,computed  } from 'vue';
 import { useRouter } from 'vue-router'
 import http from "../../http-common";
 import 'bootstrap/dist/js/bootstrap.bundle.min.js';
+import { useStore } from 'vuex';
+
+	const store = useStore();
+	const currentUser = computed(() => store.state.auth.user);
 
     const moment = require('moment');
 
@@ -52,7 +56,7 @@ import 'bootstrap/dist/js/bootstrap.bundle.min.js';
     const value1= ref(data.value.value_string)
     const date= ref( moment.utc(data.value.date).format('YYYY-MM-DD HH:mm'))
 
-    const userId = ref(1)
+    // const userId = ref(1)
 
     const isFormValid = ref(true);
     const showAlert = ref(false);
@@ -63,7 +67,7 @@ import 'bootstrap/dist/js/bootstrap.bundle.min.js';
             isFormValid.value = true;
             try {
                 var a = {
-                    userId: userId.value,
+                    userId: currentUser.value.id,
                     kind_of_mark_id: data.value.kind_of_mark_id,
                     date: date.value,
                     value_number: null,

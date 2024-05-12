@@ -24,14 +24,18 @@
 </template>
 
 <script setup>
-import { ref  } from 'vue';
+import { ref, computed  } from 'vue';
 import http from "../../http-common";
+import { useStore } from 'vuex';
+    
+    const store = useStore();
+    const currentUser = computed(() => store.state.auth.user);
 
     const isFormValid = ref(true);
     const showAlert = ref(false);
 
     const name= ref(null)
-    const userId = ref(1)
+    // const userId = ref(1)
 
     async function addPersonalMark() {
         if (name.value) {
@@ -39,11 +43,11 @@ import http from "../../http-common";
             try {
                 var a = {
                     name: name.value,
-                    user_id: userId.value,
+                    user_id: currentUser.value.id,
                     enum_kind_of_mark_id: 2
                     
                 };
-                await http.put('/addHandMadeKindOfMark/' + userId.value, a);
+                await http.put('/addHandMadeKindOfMark/' + currentUser.value.id, a);
                 showAlert.value = true
                 setTimeout(() => {
                     showAlert.value = false;

@@ -54,13 +54,17 @@
 </template>
   
 <script setup>
-  import { ref, onMounted } from 'vue';
+  import { ref, onMounted,computed } from 'vue';
   import http from "../../http-common";
   import { useRouter } from 'vue-router';
+  import { useStore } from 'vuex';
+
+	const store = useStore();
+	const currentUser = computed(() => store.state.auth.user);
 
   const kindOfMarks = ref([])
   const router = useRouter();
-  const userId = ref(1)
+  // const userId = ref(1)
 
   const redirectToAddPersonalMarkPage = () => {
       router.push({ path: '/addPersonalMark'});
@@ -80,7 +84,7 @@
 
   const getListKindOfMark = async () => {
       try {
-          const response = await http.get('/listKindOfMarkOfHandMade/' + userId.value);
+          const response = await http.get('/listKindOfMarkOfHandMade/' + currentUser.value.id);
           kindOfMarks. value = []
           response.data.forEach(value => {
                 kindOfMarks.value.push(value)         
@@ -94,7 +98,7 @@
   async function addFavorite(id){
     try {
         var data = {
-            user_id: 1,
+            user_id: currentUser.value.id,
             kind_of_mark_id: id
         };
         await http.put('/addFavoriteKindOfMark', data);
@@ -107,7 +111,7 @@
   async function deleteFavorite(id){
      try {
         var data = {
-            user_id: 1,
+            user_id: currentUser.value.id,
             kind_of_mark_id: id
         };
         await http.post('/deleteFavoriteKindOfMark', data);

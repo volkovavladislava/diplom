@@ -125,7 +125,7 @@
 
 <script setup>
 
-import { ref, onMounted  } from 'vue';
+import { ref, onMounted,computed  } from 'vue';
 import { useRouter } from 'vue-router'
 import http from "../../http-common";
 import {
@@ -139,12 +139,16 @@ import {
   Legend
 } from 'chart.js'
 import { Line } from 'vue-chartjs'
+import { useStore } from 'vuex';
+
+	const store = useStore();
+	const currentUser = computed(() => store.state.auth.user);
 
     const moment = require('moment');
     const router = useRouter();
     const data = ref(JSON.parse(decodeURIComponent(router.currentRoute.value.query.data, null, 2)))
 
-    const userId = ref(1)
+    // const userId = ref(1)
     const marks = ref([])
     const marks2 = ref([])
 
@@ -178,7 +182,7 @@ import { Line } from 'vue-chartjs'
 
     const getMarks = async () => {
         try {
-            const response = await http.get('/marksForUser/userId=' + userId.value + '/kindOfMarkId=' + data.value.id);
+            const response = await http.get('/marksForUser/userId=' + currentUser.value.id + '/kindOfMarkId=' + data.value.id);
             
             const a = {
                 label: data.value.name,
@@ -210,8 +214,8 @@ import { Line } from 'vue-chartjs'
 
             
             if( data.value.enum_kind_of_mark_id == 5){
-                const response1 = await http.get('/marksForUser/userId=' + userId.value + '/kindOfMarkId=' + 1);
-                const response2 = await http.get('/marksForUser/userId=' + userId.value + '/kindOfMarkId=' + 2);
+                const response1 = await http.get('/marksForUser/userId=' + currentUser.value.id + '/kindOfMarkId=' + 1);
+                const response2 = await http.get('/marksForUser/userId=' + currentUser.value.id + '/kindOfMarkId=' + 2);
 
                 const a = {
                     label: "Систолоческое давление",
@@ -262,7 +266,7 @@ import { Line } from 'vue-chartjs'
                 date2.value = moment.utc().format('YYYY-MM-DD HH:mm')  
             }
 
-            const response = await http.get('/marksForUserByDate/userId=' + userId.value + '/kindOfMarkId=' + data.value.id + '/date1=' + date1.value + '/date2=' + date2.value);
+            const response = await http.get('/marksForUserByDate/userId=' + currentUser.value.id + '/kindOfMarkId=' + data.value.id + '/date1=' + date1.value + '/date2=' + date2.value);
             
             const a = {
                 label: data.value.name,
@@ -304,8 +308,8 @@ import { Line } from 'vue-chartjs'
             
             if( data.value.enum_kind_of_mark_id == 5){
             
-                const response1 = await http.get('/marksForUserByDate/userId=' + userId.value + '/kindOfMarkId=' + 1 + '/date1=' + date1.value + '/date2=' + date2.value);
-                const response2 = await http.get('/marksForUserByDate/userId=' + userId.value + '/kindOfMarkId=' + 2 + '/date1=' + date1.value + '/date2=' + date2.value);
+                const response1 = await http.get('/marksForUserByDate/userId=' + currentUser.value.id + '/kindOfMarkId=' + 1 + '/date1=' + date1.value + '/date2=' + date2.value);
+                const response2 = await http.get('/marksForUserByDate/userId=' + currentUser.value.id + '/kindOfMarkId=' + 2 + '/date1=' + date1.value + '/date2=' + date2.value);
                 console.log(response1.data)
                 console.log(response2.data)
                 const a = {

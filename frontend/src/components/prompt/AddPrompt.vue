@@ -39,19 +39,24 @@
 
 <script setup>
 
-import { ref  } from 'vue';
+import { ref, computed  } from 'vue';
 import http from "../../http-common";
 import 'bootstrap/dist/js/bootstrap.bundle.min.js';
+import { useStore } from 'vuex';
 
+    const store = useStore();
+    const currentUser = computed(() => store.state.auth.user);
 
     const name= ref(null)
     const description= ref(null)
     const date= ref(null)
 
-    const userId = ref(1)
+    // const userId = ref(1)
 
     const isFormValid = ref(true);
     const showAlert = ref(false);
+
+   
 
 
     async function addPrompt() {
@@ -59,12 +64,12 @@ import 'bootstrap/dist/js/bootstrap.bundle.min.js';
             isFormValid.value = true;
             try {
                 var a = {
-                    userId: userId.value,
+                    userId: currentUser.value.id,
                     name: name.value,
                     date: date.value,
                     description: description.value
                 };
-                await http.put('/addPrompt/' + userId.value, a);
+                await http.put('/addPrompt/' + currentUser.value.id, a);
                 showAlert.value = true
                 setTimeout(() => {
                     showAlert.value = false;

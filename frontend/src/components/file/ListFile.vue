@@ -30,14 +30,18 @@
 </template>
 
 <script setup>
-  import { ref, onMounted } from 'vue';
+  import { ref, onMounted,computed } from 'vue';
   import http from "../../http-common";
   import { useRouter } from 'vue-router';
+  import { useStore } from 'vuex';
+
+	const store = useStore();
+	const currentUser = computed(() => store.state.auth.user);
 
   const moment = require('moment');
   const router = useRouter();
 
-  const userId = ref(1)
+//   const userId = ref(1)
   const files = ref([])
 
     const redirectToUpdateFilePage = (id, data) => {
@@ -52,7 +56,7 @@
 
   const getListFile = async () => {
       try {
-          const response = await http.get('/fileByUser/' + userId.value);
+          const response = await http.get('/fileByUser/' + currentUser.value.id);
           files.value = []
           response.data.forEach(value => {
                 files.value.push(value)         

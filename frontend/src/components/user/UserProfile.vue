@@ -67,9 +67,16 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue';
+import { ref, onMounted, computed } from 'vue';
 import http from "../../http-common";
+import { useStore } from 'vuex';
+import { useRouter } from 'vue-router';
 
+
+const store = useStore();
+const router = useRouter();
+
+const currentUser = computed(() => store.state.auth.user);
 
 const user = ref({
     name: null,
@@ -96,7 +103,7 @@ const isFormValid = ref(true);
 
 const getUser = async () => {
     try {
-        const response = await http.get('/user/' + 1);
+        const response = await http.get('/user/' + currentUser.value.id);
         user.value.name = response.data.name;
         user.value.height = response.data.height;
         user.value.weight = response.data.weight;
@@ -111,7 +118,7 @@ const getUser = async () => {
 
 const getUserOperatingValue = async () => {
     try {
-        const response = await http.get('/userOpertingValue/' + 1);
+        const response = await http.get('/userOpertingValue/' + currentUser.value.id);
          response.data.forEach(value => {
             switch(value.kind_of_mark_id) {
                 case 1:
@@ -152,7 +159,7 @@ async function updateUser() {
                 password: user.value.password,
                 login: user.value.login
             };
-            await http.put('/updateUser/' + 1, data);
+            await http.put('/updateUser/' + currentUser.value.id, data);
             
         } catch (error) {
             console.error(error);
@@ -167,7 +174,7 @@ async function updateUserOperatingValue() {
         const currentDate = new Date();
         try {
             var data = {
-                user_id: 1,
+                user_id: currentUser.value.id,
                 value1:profilePressureSystolic.value,
                 value2:profilePressureDiastolic.value,
                 value3:profilePulse.value,
@@ -175,7 +182,7 @@ async function updateUserOperatingValue() {
                 value5:profileCholesterol.value,
                 date:  currentDate.toLocaleDateString()
             };
-            await http.put('/updateUserOperatingValue/' + 1, data);
+            await http.put('/updateUserOperatingValue/' + currentUser.value.id, data);
 
            
         } catch (error) {
@@ -186,6 +193,10 @@ async function updateUserOperatingValue() {
 
 
 onMounted(async () => {
+    if (!currentUser.value) {
+        router.push('/login');
+    }
+
     await getUser();
     await getUserOperatingValue();
 });

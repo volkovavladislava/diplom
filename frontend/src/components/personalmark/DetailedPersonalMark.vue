@@ -26,13 +26,16 @@
 
 <script setup>
 
-  import { ref, onMounted } from 'vue';
+  import { ref, onMounted, computed } from 'vue';
   import http from "../../http-common";
-
   import { useRouter,useRoute } from 'vue-router';
+  import { useStore } from 'vuex';
+
+	const store = useStore();
+	const currentUser = computed(() => store.state.auth.user);
 
   const moment = require('moment');
-  const userId = ref(1)
+//   const userId = ref(1)
 
   const router = useRouter();
   const data = ref(JSON.parse(decodeURIComponent(router.currentRoute.value.query.data, null, 2)))
@@ -50,7 +53,7 @@
 
  const getListRecordsMark = async () => {
       try {
-          const response = await http.get('/marksForUser/userId=' + userId.value + '/kindOfMarkId=' + id.value);
+          const response = await http.get('/marksForUser/userId=' + currentUser.value.id + '/kindOfMarkId=' + id.value);
           marks.value = []
           response.data.forEach(value => {
                 marks.value.push(value)         
