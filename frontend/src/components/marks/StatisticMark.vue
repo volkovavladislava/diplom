@@ -351,7 +351,7 @@ import { Line } from 'vue-chartjs'
     }
     
 
-     const redirectToUpdaterecordMarkPage = (id, data) => {
+    const redirectToUpdaterecordMarkPage = (id, data) => {
         const encodedData = encodeURIComponent(JSON.stringify(data));
         router.push({ path: '/updateRecordMark/' + id, query: { data: encodedData } });
     };

@@ -48,7 +48,7 @@ class FragmentAddPrompt : Fragment(), DatePickerDialog.OnDateSetListener, TimePi
     var savedHour = 0
     var savedMinute = 0
 
-    var id = -1L
+    var id: Long? = null
 
     private val permissionLauncher = registerForActivityResult(
         ActivityResultContracts.RequestMultiplePermissions()
