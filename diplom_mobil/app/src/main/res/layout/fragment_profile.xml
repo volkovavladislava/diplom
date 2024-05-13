@@ -118,6 +118,17 @@
         app:layout_constraintStart_toStartOf="@+id/guideline"
         app:layout_constraintTop_toBottomOf="@+id/profileDate" />
 
+    <Button
+        android:id="@+id/bthLogoutProfile"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:text="Выйти из профиля"
+        android:backgroundTint="#E16D6D"
+        app:layout_constraintEnd_toStartOf="@+id/guideline2"
+        app:layout_constraintStart_toStartOf="@+id/guideline"
+        app:layout_constraintTop_toBottomOf="@+id/bthUpdateProfile" />
+
     <TextView
         android:id="@+id/textView4"
         android:layout_width="wrap_content"
@@ -127,7 +138,7 @@
         android:text="Рабочие показатели"
         app:layout_constraintEnd_toStartOf="@+id/guideline2"
         app:layout_constraintStart_toStartOf="@+id/guideline"
-        app:layout_constraintTop_toBottomOf="@+id/bthUpdateProfile" />
+        app:layout_constraintTop_toBottomOf="@+id/bthLogoutProfile" />
 
     <TextView
         android:id="@+id/profilePressureSystolicLabel"

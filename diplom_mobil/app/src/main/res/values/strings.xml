@@ -8,6 +8,7 @@
     <string name="str_menu_see_reminder">Мои записи</string>
     <string name="str_menu_see_profile">Профиль</string>
     <string name="str_menu_see_blog">Полезные статьи</string>
+    <string name="title_activity_login">LoginActivity</string>
 
 
 </resources>

@@ -10,14 +10,17 @@ import com.example.mydiplom.data.Blog
 import com.example.mydiplom.data.File
 import com.example.mydiplom.data.KindOfMark
 import com.example.mydiplom.data.KindOfMarkValues
+import com.example.mydiplom.data.LoginRequest
 import com.example.mydiplom.data.Mark
 import com.example.mydiplom.data.MarkDeleteDavlenie
 import com.example.mydiplom.data.MarkUpdate
 import com.example.mydiplom.data.MarkUpdateDavlenie
 import com.example.mydiplom.data.Prompt
 import com.example.mydiplom.data.PromptUpdate
+import com.example.mydiplom.data.RegistrationRequest
 import com.example.mydiplom.data.UpdateOperatingValue
 import com.example.mydiplom.data.User
+import com.example.mydiplom.data.UserAuth
 import com.example.mydiplom.data.UserOperatingValue
 import com.example.mydiplom.data.UserUpdate
 import okhttp3.MultipartBody
@@ -32,6 +35,20 @@ import retrofit2.http.Part
 import retrofit2.http.Path
 
 interface ApiController {
+
+
+
+    @POST("/api/register")
+     fun register(@Body registerRequest: RegistrationRequest): Call<Void>
+
+    @POST("/api/login")
+    fun login(@Body loginRequest: LoginRequest): Call<UserAuth>
+
+
+
+
+
+
 
     @GET("/api/listKindOfMarkOfSystem")
     fun getListKindOfMarkOfSystem(): Call<List<KindOfMark>>

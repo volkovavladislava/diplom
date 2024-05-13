@@ -1,17 +1,23 @@
 package com.example.mydiplom
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.activity.viewModels
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import com.example.mydiplom.data.UpdateOperatingValue
 import com.example.mydiplom.data.User
 import com.example.mydiplom.data.UserOperatingValue
 import com.example.mydiplom.data.UserUpdate
 import com.example.mydiplom.databinding.FragmentProfileBinding
+import com.example.mydiplom.viewmodel.SharedViewModel
+import okhttp3.Interceptor
+import okhttp3.OkHttpClient
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -24,6 +30,7 @@ import java.util.Date
 class FragmentProfile : Fragment() {
 
     private var binding: FragmentProfileBinding? = null
+    private val viewModel: SharedViewModel by activityViewModels()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
     }
@@ -36,13 +43,23 @@ class FragmentProfile : Fragment() {
         binding = FragmentProfileBinding.inflate(inflater, container, false)
 
 //        baseUrl("http://192.168.0.32:3000")
+        val interceptor = Interceptor { chain ->
+            val request = chain.request().newBuilder()
+                .addHeader("x-access-token", viewModel.token.value)
+                .build()
+            chain.proceed(request)
+        }
+        val client = OkHttpClient.Builder()
+            .addInterceptor(interceptor)
+            .build()
         val retrofit = Retrofit.Builder()
             .baseUrl("http://10.0.2.2:3000")
+            .client(client)
             .addConverterFactory(GsonConverterFactory.create())
             .build()
         val service: ApiController = retrofit.create(ApiController::class.java)
 
-        val call: Call<User> = service.getUser(1)
+        val call: Call<User> = service.getUser(viewModel.userLoginId.value!!)
         call.enqueue(object : Callback<User> {
             override fun onResponse(call: Call<User>, response: Response<User>) {
                 if (response.isSuccessful) {
@@ -62,7 +79,7 @@ class FragmentProfile : Fragment() {
         })
 
 
-        val call1: Call<List<UserOperatingValue>> = service.getUserOpertingValue(1)
+        val call1: Call<List<UserOperatingValue>> = service.getUserOpertingValue(viewModel.userLoginId.value!!)
 
         call1.enqueue(object : Callback<List<UserOperatingValue>> {
             override fun onResponse(call: Call<List<UserOperatingValue>>, response: Response<List<UserOperatingValue>>) {
@@ -93,7 +110,7 @@ class FragmentProfile : Fragment() {
             val sugar = binding!!.profileSugar.text.toString().toDouble()
             val cholesterol = binding!!.profileCholesterol.text.toString().toDouble()
 
-            val valueUpdate = UpdateOperatingValue(1, pressureSystolic, pressureDiastolic, pulse, sugar, cholesterol, SimpleDateFormat("yyyy-MM-dd HH:mm").format(Date()))
+            val valueUpdate = UpdateOperatingValue(viewModel.userLoginId.value!!, pressureSystolic, pressureDiastolic, pulse, sugar, cholesterol, SimpleDateFormat("yyyy-MM-dd HH:mm").format(Date()))
             val call2: Call<Void> = service.updateUserOperatingValue(valueUpdate.user_id, valueUpdate)
 
             call2.enqueue(object : Callback<Void> {
@@ -122,7 +139,7 @@ class FragmentProfile : Fragment() {
                 val date = binding!!.profileDate.text.toString()
 
                 val userUpdate = UserUpdate(
-                    userId = 1,
+                    userId = viewModel.userLoginId.value!!,
                     name = name,
                     height = height,
                     weight = weight,
@@ -153,6 +170,11 @@ class FragmentProfile : Fragment() {
             }
         }
 
+
+        binding!!.bthLogoutProfile.setOnClickListener {
+            startActivity(Intent(requireContext(), LoginActivity::class.java))
+            requireActivity().finish()
+        }
 
 
         return binding!!.root

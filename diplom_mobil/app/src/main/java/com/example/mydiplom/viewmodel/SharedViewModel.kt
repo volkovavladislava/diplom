@@ -8,6 +8,8 @@ import androidx.lifecycle.ViewModel
 import com.example.mydiplom.ApiController
 import com.example.mydiplom.data.AddFavoriteKindOfMark
 import com.example.mydiplom.data.KindOfMark
+import com.example.mydiplom.data.User
+import com.example.mydiplom.data.UserAuth
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -33,7 +35,9 @@ class SharedViewModel : ViewModel() {
 
     var userId = 1
 
-
+    var userLogin = MutableLiveData<UserAuth>()
+    val token = MutableLiveData<String?>()
+    val userLoginId = MutableLiveData<Int?>()
 
 
     val updateEnumId= MutableLiveData<Int>()
