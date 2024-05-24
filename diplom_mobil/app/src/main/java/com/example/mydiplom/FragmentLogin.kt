@@ -64,10 +64,10 @@ class FragmentLogin : Fragment() {
                 override fun onResponse(call: Call<UserAuth>, response: Response<UserAuth>) {
                     if (response.isSuccessful) {
                         var user = response.body()
-                        loginTV.setText(user!!.accessToken)
+//                        loginTV.setText(user!!.accessToken)
 
                         val intent = Intent(requireContext(), MainActivity::class.java).apply {
-                            putExtra("token", user.accessToken)
+                            putExtra("token", user!!.accessToken)
                             putExtra("id", user.id.toInt())
                         }
                         startActivity(intent)

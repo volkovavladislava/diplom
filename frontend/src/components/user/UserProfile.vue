@@ -29,6 +29,9 @@
                 <p v-if="!isFormValid" style="color: #eb4034;">Поля имя, рост, вес и дата рождения должны быть обязательно заполнены</p>
 
                 <button type="button" class="btn btn-outline-success " @click="updateUser()">Обновить данные</button>
+                <div class="alert alert-success" role="alert" v-if="showAlert1">
+                    Успешно!
+                </div>
             </div>
 
             <div class="row justify-content-md-center labelm">
@@ -49,7 +52,7 @@
                     <input type="number" class="form-control" id="inputWeight"   v-model="profilePulse"> 
                 </div>
                 <div class="mb-3 labelm" >
-                    <label for="inputDateBirth" class="form-label">Сахар</label>
+                    <label for="inputDateBirth" class="form-label">Глюкоза</label>
                     <input type="number" class="form-control" id="inputDateBirth"   v-model="profileSugar"> 
                 </div>
                 <div class="mb-3 labelm" >
@@ -57,6 +60,9 @@
                     <input type="number" class="form-control" id="inputDateBirth"   v-model="profileCholesterol"> 
                 </div>
                 <button type="button" class="btn btn-outline-success " @click="updateUserOperatingValue()">Обновить рабочие показатели</button>
+                <div class="alert alert-success" role="alert" v-if="showAlert2">
+                    Успешно!
+                </div>
             </div>
         </div>
 
@@ -75,6 +81,9 @@ import { useRouter } from 'vue-router';
 
 const store = useStore();
 const router = useRouter();
+
+const showAlert1 = ref(false);
+const showAlert2 = ref(false);
 
 const currentUser = computed(() => store.state.auth.user);
 
@@ -160,7 +169,10 @@ async function updateUser() {
                 login: user.value.login
             };
             await http.put('/updateUser/' + currentUser.value.id, data);
-            
+            showAlert1.value = true
+            setTimeout(() => {
+                showAlert1.value = false;
+            }, 1000);
         } catch (error) {
             console.error(error);
         }
@@ -172,6 +184,10 @@ async function updateUser() {
 
 async function updateUserOperatingValue() {
         const currentDate = new Date();
+        const year = currentDate.getFullYear();
+        const month = String(currentDate.getMonth() + 1).padStart(2, '0'); 
+        const day = String(currentDate.getDate()).padStart(2, '0');
+        const formattedDate = `${year}-${month}-${day}`;
         try {
             var data = {
                 user_id: currentUser.value.id,
@@ -180,10 +196,13 @@ async function updateUserOperatingValue() {
                 value3:profilePulse.value,
                 value4:profileSugar.value,
                 value5:profileCholesterol.value,
-                date:  currentDate.toLocaleDateString()
+                date:  formattedDate
             };
             await http.put('/updateUserOperatingValue/' + currentUser.value.id, data);
-
+            showAlert2.value = true
+            setTimeout(() => {
+                showAlert2.value = false;
+            }, 1000);
            
         } catch (error) {
             console.error(error);

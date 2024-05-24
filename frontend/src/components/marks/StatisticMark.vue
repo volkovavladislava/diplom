@@ -91,6 +91,7 @@
                  </div>
                  <div class="">
                     <button type="button" class="btn btn-outline-secondary" @click="getMarksByDate()">Обновить данные</button>
+                    &nbsp;
                     <button type="button" class="btn btn-outline-secondary" >Показать совет</button>
                  </div>
                  <div class="">
@@ -198,6 +199,7 @@ import { useStore } from 'vuex';
                 })
                 dataGraf.datasets.push(a)
                 metka.value = 1
+                marks.value.reverse()
             }
 
             
@@ -209,6 +211,7 @@ import { useStore } from 'vuex';
                 })
                 dataGraf.datasets.push(a)
                 metka.value = 1
+                marks.value.reverse()
             }
 
 
@@ -243,6 +246,9 @@ import { useStore } from 'vuex';
                 dataGraf.datasets.push(a)
                 dataGraf.datasets.push(b)
                 metka.value = 1
+
+                marks.value.reverse()
+                marks2.value.reverse()
 
             }
 

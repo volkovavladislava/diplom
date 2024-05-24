@@ -59,8 +59,8 @@
                 marks.value.push(value)         
               
           });
+          marks.value.reverse()
 
-          console.log(marks.value.length)
       } catch (error) {
           console.error(error);
       }

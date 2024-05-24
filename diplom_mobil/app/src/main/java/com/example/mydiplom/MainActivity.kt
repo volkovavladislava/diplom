@@ -48,7 +48,11 @@ class MainActivity : AppCompatActivity() {
             val request = chain.request().newBuilder()
                 .addHeader("x-access-token", viewModel.token.value)
                 .build()
-            chain.proceed(request)
+            val result = chain.proceed(request)
+//            if (result.code() == 403) {
+//                viewModel.notifyTokenExpired()
+//            }
+            result
         }
         val client = OkHttpClient.Builder()
             .addInterceptor(interceptor)

@@ -74,6 +74,10 @@ import { useStore } from 'vuex';
         if (name.value && date.value && file.value) {
             isFormValid.value = true;
             try {
+                if(comment.value == null){
+                    comment.value =""
+                }
+
                 const formData = new FormData();
                 formData.append('file', file.value);
                 formData.append('name', name.value);

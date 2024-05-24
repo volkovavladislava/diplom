@@ -46,6 +46,7 @@ exports.findAllForUser = (req, res) => {
 exports.update = (req, res) => {
 
     const mas = [];
+    console.log(req.body.date)
 
     if(req.body.value1 != null){mas.push({kind_of_mark_id : 1 , user_id : req.body.user_id, value : req.body.value1, date : req.body.date})}
     if(req.body.value2 != null){mas.push({kind_of_mark_id : 2 , user_id : req.body.user_id, value : req.body.value2, date : req.body.date})}

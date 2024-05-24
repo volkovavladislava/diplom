@@ -50,7 +50,7 @@ class FragmentDetailedStatisticNum1 : Fragment() {
     private var entries = mutableListOf<Entry>()
 
 
-    val dates = ArrayList<String>()
+    var dates = ArrayList<String>()
 //    val values = ArrayList<ArrayList<Float>>()
     private lateinit var values : ArrayList<ArrayList<Float>>
 
@@ -91,6 +91,7 @@ class FragmentDetailedStatisticNum1 : Fragment() {
                     datalist = arrayListOf<Mark>()
                     valuelist = arrayListOf<Float>()
                     values = arrayListOf()
+                    dates = arrayListOf<String>()
 
                     val dInput  = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.getDefault())
                     val dOutput = SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.getDefault())
@@ -233,6 +234,7 @@ class FragmentDetailedStatisticNum1 : Fragment() {
                     datalist = arrayListOf<Mark>()
                     valuelist = arrayListOf<Float>()
                     values = arrayListOf()
+                    dates = arrayListOf<String>()
 
                     val dInput  = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.getDefault())
                     val dOutput = SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.getDefault())

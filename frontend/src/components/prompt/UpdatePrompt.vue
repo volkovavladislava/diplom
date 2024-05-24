@@ -70,6 +70,9 @@ import { useStore } from 'vuex';
         if (name.value && date.value) {
             isFormValid.value = true;
             try {
+                if(description.value == null){
+                    description.value =""
+                }
                 var a = {
                     userId: currentUser.value.id,
                     name: name.value,
