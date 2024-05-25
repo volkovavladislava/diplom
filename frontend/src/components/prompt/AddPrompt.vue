@@ -70,7 +70,8 @@ import { useStore } from 'vuex';
                     userId: currentUser.value.id,
                     name: name.value,
                     date: date.value,
-                    description: description.value
+                    description: description.value,
+                    calendar_id: null
                 };
                 await http.put('/addPrompt/' + currentUser.value.id, a);
                 showAlert.value = true

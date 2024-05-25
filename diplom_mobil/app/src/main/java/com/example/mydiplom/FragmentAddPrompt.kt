@@ -6,6 +6,7 @@ import android.app.DatePickerDialog
 import android.app.TimePickerDialog
 import android.content.ContentResolver
 import android.content.ContentValues
+import android.content.pm.PackageManager
 import android.database.Cursor
 import android.os.Bundle
 import android.provider.CalendarContract
@@ -16,11 +17,17 @@ import android.view.ViewGroup
 import android.widget.DatePicker
 import android.widget.TimePicker
 import android.widget.Toast
+import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.content.ContextCompat
 import androidx.core.database.getStringOrNull
 import androidx.fragment.app.Fragment
 import com.example.mydiplom.data.AddPrompt
 import com.example.mydiplom.databinding.FragmentAddPromptBinding
+import kotlinx.coroutines.CancellableContinuation
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.suspendCancellableCoroutine
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -31,6 +38,8 @@ import java.util.Calendar
 import java.util.Date
 import java.util.Locale
 import java.util.TimeZone
+import kotlin.coroutines.resume
+import kotlin.coroutines.resumeWithException
 
 
 class FragmentAddPrompt : Fragment(), DatePickerDialog.OnDateSetListener, TimePickerDialog.OnTimeSetListener{
@@ -48,27 +57,43 @@ class FragmentAddPrompt : Fragment(), DatePickerDialog.OnDateSetListener, TimePi
     var savedHour = 0
     var savedMinute = 0
 
-    var id: Long? = null
+    var id: Long = 0
 
-    private val permissionLauncher = registerForActivityResult(
-        ActivityResultContracts.RequestMultiplePermissions()
-    ) { permissions ->
-        val cameraGranted = permissions[Manifest.permission.READ_CALENDAR] ?: false
-        val locationGranted = permissions[Manifest.permission.WRITE_CALENDAR] ?: false
-
-        if (cameraGranted && locationGranted) {
-            id = addEventToCalendar()
-            Log.d("RetrofitClient","id " + id)
-        } else {
-
-        }
-    }
+//    private val permissionLauncher = registerForActivityResult(
+//        ActivityResultContracts.RequestMultiplePermissions()
+//    ) { permissions ->
+//        val cameraGranted = permissions[Manifest.permission.READ_CALENDAR] ?: false
+//        val locationGranted = permissions[Manifest.permission.WRITE_CALENDAR] ?: false
+//
+//        if (cameraGranted && locationGranted) {
+//            id = addEventToCalendar()
+//            Log.d("RetrofitClient","id " + id)
+//        } else {
+//
+//        }
+//    }
+    private lateinit var permissionLauncher: ActivityResultLauncher<Array<String>>
+    private var continuation: CancellableContinuation<Long>? = null
 
     private var binding: FragmentAddPromptBinding? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        permissionLauncher = registerForActivityResult(
+            ActivityResultContracts.RequestMultiplePermissions()
+        ) { permissions ->
+            val cameraGranted = permissions[Manifest.permission.READ_CALENDAR] ?: false
+            val locationGranted = permissions[Manifest.permission.WRITE_CALENDAR] ?: false
+
+            if (cameraGranted && locationGranted) {
+                val id = addEventToCalendar()
+                continuation?.resume(id)
+                Log.d("RetrofitClient","id " + id)
+            } else {
+                continuation?.resumeWithException(Exception("Permissions denied"))
+            }
+        }
     }
 
     override fun onCreateView(
@@ -102,35 +127,90 @@ class FragmentAddPrompt : Fragment(), DatePickerDialog.OnDateSetListener, TimePi
 
                 val check = binding!!.checkBox.isChecked
 
-                if (check) {
-                    permissionLauncher.launch(
-                        arrayOf(
-                            Manifest.permission.READ_CALENDAR,
-                            Manifest.permission.WRITE_CALENDAR
-                        )
-                    )
+//                if (check) {
+//                    permissionLauncher.launch(
+//                        arrayOf(
+//                            Manifest.permission.READ_CALENDAR,
+//                            Manifest.permission.WRITE_CALENDAR
+//                        )
+//                    )
+//                }
+//
+//                val addPrompt =
+//                    AddPrompt(userId = 1, name = name, description = description, date = date, id)
+//                val call: Call<Void> = service.addPrompt(addPrompt.userId, addPrompt)
+//
+//                call.enqueue(object : Callback<Void> {
+//                    override fun onResponse(call: Call<Void>, response: Response<Void>) {
+//                        if (response.isSuccessful) {
+//                            Toast.makeText(context, "Данные успешно добавлены", Toast.LENGTH_SHORT)
+//                                .show()
+//                        } else {
+//                            Toast.makeText(context, "Что-то пошло не так", Toast.LENGTH_SHORT)
+//                                .show()
+//                        }
+//                    }
+//
+//                    override fun onFailure(call: Call<Void>, t: Throwable) {
+//                        Log.d("RetrofitClient", "Receive user from server problem " + t)
+//                        Toast.makeText(context, "Ошибка", Toast.LENGTH_SHORT).show()
+//                    }
+//                })
+
+
+
+            GlobalScope.launch {
+                try {
+                    if (check) {
+                        val calendarId = requestPermissionsIfNeeded()
+                        Log.d("RetrofitClient","calendarId " + calendarId)
+                        val addPrompt = AddPrompt(userId = 1, name = name, description = description, date = date, calendar_id = calendarId)
+                        val call: Call<Void> = service.addPrompt(addPrompt.userId, addPrompt)
+
+                        call.enqueue(object : Callback<Void> {
+                            override fun onResponse(call: Call<Void>, response: Response<Void>) {
+                                if (response.isSuccessful) {
+                                    Toast.makeText(context, "Данные успешно добавлены", Toast.LENGTH_SHORT)
+                                        .show()
+                                } else {
+                                    Toast.makeText(context, "Что-то пошло не так", Toast.LENGTH_SHORT)
+                                        .show()
+                                }
+                            }
+
+                            override fun onFailure(call: Call<Void>, t: Throwable) {
+                                Log.d("RetrofitClient", "Receive user from server problem " + t)
+                                Toast.makeText(context, "Ошибка", Toast.LENGTH_SHORT).show()
+                            }
+                        })
+
+                    }else{
+                        val addPrompt = AddPrompt(userId = 1, name = name, description = description, date = date, calendar_id = null)
+                        val call: Call<Void> = service.addPrompt(addPrompt.userId, addPrompt)
+
+                        call.enqueue(object : Callback<Void> {
+                            override fun onResponse(call: Call<Void>, response: Response<Void>) {
+                                if (response.isSuccessful) {
+                                    Toast.makeText(context, "Данные успешно добавлены", Toast.LENGTH_SHORT)
+                                        .show()
+                                } else {
+                                    Toast.makeText(context, "Что-то пошло не так", Toast.LENGTH_SHORT)
+                                        .show()
+                                }
+                            }
+
+                            override fun onFailure(call: Call<Void>, t: Throwable) {
+                                Log.d("RetrofitClient", "Receive user from server problem " + t)
+                                Toast.makeText(context, "Ошибка", Toast.LENGTH_SHORT).show()
+                            }
+                        })
+                    }
+                } catch (e: Exception) {
+                    // Обработка отказа в разрешениях
+                    Log.d("RetrofitClient", "Permissions denied")
                 }
+            }
 
-                val addPrompt =
-                    AddPrompt(userId = 1, name = name, description = description, date = date)
-                val call: Call<Void> = service.addPrompt(addPrompt.userId, addPrompt)
-
-                call.enqueue(object : Callback<Void> {
-                    override fun onResponse(call: Call<Void>, response: Response<Void>) {
-                        if (response.isSuccessful) {
-                            Toast.makeText(context, "Данные успешно добавлены", Toast.LENGTH_SHORT)
-                                .show()
-                        } else {
-                            Toast.makeText(context, "Что-то пошло не так", Toast.LENGTH_SHORT)
-                                .show()
-                        }
-                    }
-
-                    override fun onFailure(call: Call<Void>, t: Throwable) {
-                        Log.d("RetrofitClient", "Receive user from server problem " + t)
-                        Toast.makeText(context, "Ошибка", Toast.LENGTH_SHORT).show()
-                    }
-                })
             }
             else{
                 Toast.makeText(context, "Сначала добавьте название и дату", Toast.LENGTH_SHORT).show()
@@ -141,6 +221,31 @@ class FragmentAddPrompt : Fragment(), DatePickerDialog.OnDateSetListener, TimePi
         return binding!!.root
 
     }
+
+    private suspend fun requestPermissionsIfNeeded(): Long {
+        return if (ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.READ_CALENDAR) != PackageManager.PERMISSION_GRANTED ||
+            ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.WRITE_CALENDAR) != PackageManager.PERMISSION_GRANTED) {
+            suspendCancellableCoroutine { cont ->
+                continuation = cont
+                permissionLauncher.launch(
+                    arrayOf(
+                        Manifest.permission.READ_CALENDAR,
+                        Manifest.permission.WRITE_CALENDAR
+                    )
+                )
+            }
+        } else {
+            addEventToCalendar() // Если разрешения уже предоставлены
+        }
+    }
+
+
+
+
+
+
+
+
 
 
     private fun getDateTimeCalendar(){
@@ -198,9 +303,10 @@ class FragmentAddPrompt : Fragment(), DatePickerDialog.OnDateSetListener, TimePi
             put(CalendarContract.Events.EVENT_TIMEZONE, TimeZone.getDefault().id)
         }
         val uri = cr.insert(CalendarContract.Events.CONTENT_URI, values)
-        Log.d("RetrofitClient","uri " + uri)
         syncCalendar(calendars.first())
         val eventId = uri?.lastPathSegment?.toLongOrNull() ?: -1
+
+
         return eventId
     }
 

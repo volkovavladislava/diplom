@@ -74,6 +74,9 @@ class FragmentDetailedPrompt : Fragment(), DatePickerDialog.OnDateSetListener, T
                         binding!!.detailedPromptName.setText(it.name.toString())
                         binding!!.detailedPromptDescription.setText(it.description.toString())
                         binding!!.detailedPromptDate.setText(formatDate(it.date.toString()))
+                        if(it.calendar_id != null){
+                            binding!!.checkBoxDetailedPrompt.isChecked = true
+                        }
                     }
                 }
                 else{}

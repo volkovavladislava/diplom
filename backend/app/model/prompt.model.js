@@ -25,6 +25,10 @@ module.exports = (sequelize, Sequelize) => {
                 // type: Sequelize.DATE,
                 type:DataTypes.DATE,
                 allowNull: false
+            },
+            calendar_id: {
+                type: Sequelize.INTEGER(11),
+                allowNull: true
             }
             
         });

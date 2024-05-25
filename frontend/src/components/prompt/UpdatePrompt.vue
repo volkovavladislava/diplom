@@ -23,6 +23,10 @@
                             <label for="inputDateBirth" class="form-label">Дата </label>
                             <input type="datetime-local" class="form-control" id="inputDateBirth"  v-model="date"> 
                         </div>
+                        <div class="mb-3 labelm">
+                            <label for="inputDateBirth" class="form-label" v-if="calendarId">Есть напоминание в мобильном приложении </label>
+                            <label for="inputDateBirth" class="form-label" v-else>Нет напоминания в мобильном приложении </label>
+                        </div>
                         <button type="button" class="btn btn-outline-success " @click="updatePrompt()">Обновить запись</button>
                         <br/>
                         <br/>
@@ -59,6 +63,7 @@ import { useStore } from 'vuex';
     const name= ref(data.value.name)
     const description= ref(data.value.description)
     const date= ref( moment.utc(data.value.date).format('YYYY-MM-DD HH:mm'))
+    const calendarId= ref(data.value.calendar_id)
 
     // const userId = ref(1)
 
@@ -77,7 +82,8 @@ import { useStore } from 'vuex';
                     userId: currentUser.value.id,
                     name: name.value,
                     date: date.value,
-                    description: description.value
+                    description: description.value,
+                    calendar_id: calendarId.value
                 };
                 await http.put('/updatePrompt/' + data.value.id, a);
                 showAlert.value = true

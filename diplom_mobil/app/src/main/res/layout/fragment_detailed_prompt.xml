@@ -91,6 +91,16 @@ tools:context=".FragmentDetailedPrompt">
     app:layout_constraintStart_toStartOf="@+id/guideline7"
     app:layout_constraintTop_toBottomOf="@+id/detailedPromptDate" />
 
+    <CheckBox
+        android:id="@+id/checkBoxDetailedPrompt"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:text="Напоминание про событие"
+        app:layout_constraintEnd_toStartOf="@+id/guideline8"
+        app:layout_constraintStart_toStartOf="@+id/guideline7"
+        app:layout_constraintTop_toBottomOf="@+id/bthAddDateDetailedPrompt" />
+
 
 <Button
     android:id="@+id/bthAddDetailedPromptToBD"
@@ -100,7 +110,7 @@ tools:context=".FragmentDetailedPrompt">
     android:text="Обновить запись"
     app:layout_constraintEnd_toStartOf="@+id/guideline8"
     app:layout_constraintStart_toStartOf="@+id/guideline7"
-    app:layout_constraintTop_toBottomOf="@+id/bthAddDateDetailedPrompt" />
+    app:layout_constraintTop_toBottomOf="@+id/checkBoxDetailedPrompt" />
 
     <Button
         android:id="@+id/bthDeleteDetailedPrompt"

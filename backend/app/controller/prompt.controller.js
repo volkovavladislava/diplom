@@ -7,13 +7,7 @@ var globalFunctions = require('../config/global.functions.js');
 exports.findAll = (req, res) => {
     Prompt.findAll()
         .then(objects => {
-            // возврат найденных записей
-            // console.log("objects ")
-            // console.log(objects)
-            // console.log("res ")
-            // console.log( res)
             globalFunctions.sendResult(res, objects);
-            
         })
         .catch(err => {
             // возврат найденной ошибки
@@ -29,6 +23,7 @@ exports.create = (req, res) => {
         name: req.body.name,
         description: req.body.description,
         date: req.body.date,
+        calendar_id: req.body.calendar_id,
     }).then(object => {
         globalFunctions.sendResult(res, object);
     }).catch(err => {
@@ -68,7 +63,8 @@ exports.update = (req, res) => {
     Prompt.update({
             name: req.body.name,
             description: req.body.description,
-            date: req.body.date
+            date: req.body.date,
+            calendar_id:    req.body.calendar_id,
         },
         {
             where: {

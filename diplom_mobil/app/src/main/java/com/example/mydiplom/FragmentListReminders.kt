@@ -64,7 +64,7 @@ class FragmentListReminders : Fragment(),  RecycleAdapterPrompt.Listener{
                     datalist = arrayListOf<Prompt>()
 
                     for(i in prompts.indices){
-                        val dataClass = Prompt(prompts[i].id,prompts[i].userId,prompts[i].name,prompts[i].description, prompts[i].date)
+                        val dataClass = Prompt(prompts[i].id,prompts[i].userId,prompts[i].name,prompts[i].description, prompts[i].date,prompts[i].calendar_id)
                         datalist.add(dataClass)
                     }
 
