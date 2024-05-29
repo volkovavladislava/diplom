@@ -138,11 +138,26 @@ exports.loginGuest = (req, res) => {
         const passtime = now - user.date_guest_password;
 
         if(Math.floor(passtime / 1000 / 60) > 40){
+            
+            console.log("Временный пароль устарел")
+            User.update({
+                guest_password: null ,
+                date_guest_password: null
+            },
+            {
+                where: {
+                    id: user.id
+                }
+            })
+            // ).then(a => {    
+            //     globalFunctions.sendResult(res, a);
+            // }).catch(err => {
+            //     globalFunctions.sendError(res, err);
+            // })
             res.status(403).send({
                 accessToken: null,
                 message: "Временный пароль устарел. Требуется сгенерировать новый."
             });
-            console.log("Временный пароль устарел")
             return;
         }
 
@@ -156,23 +171,109 @@ exports.loginGuest = (req, res) => {
             date_birth: user.date_birth,
             gender: user.gender
         };
-        //globalFunctions.sendResult(res, object);
+        globalFunctions.sendResult(res, object);
 
-        User.update({
-            guest_password: null ,
-            date_guest_password: null
-        },
-        {
-            where: {
-                id: user.id
-            }
+        // User.update({
+        //     guest_password: null ,
+        //     date_guest_password: null
+        // },
+        // {
+        //     where: {
+        //         id: user.id
+        //     }
+        // }
+        // ).then(a => {    
+        //     globalFunctions.sendResult(res, object);
+        // }).catch(err => {
+        //     globalFunctions.sendError(res, err);
+        // })
+
+    })
+    .catch(err => {
+        globalFunctions.sendError(res, err);
+    });
+    
+    
+};
+
+
+
+exports.logoutGuest = (req, res) => {
+    
+    User.update({
+        guest_password: null ,
+        date_guest_password: null
+    },
+    {
+        where: {
+            id: req.body.id
         }
-        ).then(a => {    
-            globalFunctions.sendResult(res, object);
-        }).catch(err => {
-            globalFunctions.sendError(res, err);
-        })
+    }
+    ).then(a => {    
+        globalFunctions.sendResult(res, a);
+    }).catch(err => {
+        globalFunctions.sendError(res, err);
+    })
+    
+};
 
+
+exports.checkGuest = (req, res) => {
+    
+    User.findOne({
+        where: {
+            login: req.body.login
+        }
+    }).then(user => {
+        
+        if (!user) {
+            res.status(404).send({ message: "Неверно введенный логин и/или пароль" });
+            return;
+        }
+
+        if (user.guest_password == null) {
+            res.status(404).send({ message: "Неверно введенный логин и/или пароль" });
+            return;
+        }
+
+
+        const now = new Date();
+        const passtime = now - user.date_guest_password;
+
+        if(Math.floor(passtime / 1000 / 60) > 40){
+            res.status(403).send({
+                accessToken: null,
+                message: "Временный пароль устарел. Требуется сгенерировать новый."
+            });
+            console.log("Временный пароль устарел")
+            User.update({
+                guest_password: null ,
+                date_guest_password: null
+            },
+            {
+                where: {
+                    id: user.id
+                }
+            }
+            ).then(a => {    
+                globalFunctions.sendResult(res, a);
+            }).catch(err => {
+                globalFunctions.sendError(res, err);
+            })
+            // return;
+        }
+
+
+        var object = {
+            id: user.id,
+            name: user.name,
+            login: user.login,
+            height: user.height,
+            weight: user.weight,
+            date_birth: user.date_birth,
+            gender: user.gender
+        };
+        globalFunctions.sendResult(res, object);
     })
     .catch(err => {
         globalFunctions.sendError(res, err);

@@ -1,5 +1,7 @@
 <template>
 <div class="" style="overflow-x: hidden;">
+    <button type="button" class="btn btn-outline-danger top-left-button" @click="logOutGuest()">Выйти из гостевого доступа</button>
+
     <div class="row justify-content-md-center " style="margin-top: 20px">
             <h5 class="text-center fs-4 col-md-5 " >Статистика по показателю {{data.name}}</h5>
         </div>
@@ -360,17 +362,49 @@ import { Line } from 'vue-chartjs'
     }
     
 
+    const logOutGuest = async () => {
+      try {
+            var a = {
+                id: currentUser.value.id 
+            };
+            await http.post('/logoutGuest', a);
+            router.push({ path: '/guestMode' });
+          
+      } catch (error) {
+          console.error(error);
+      }
+  }
+
+  const checkGuest = async () => {
+        try {
+            var a = {
+                login: currentUser.value.login,
+            };
+             await http.post('/checkGuest' , a);
+        } catch (error) {
+            if(error.response.status == 401 || error.response.status == 404 || error.response.status == 403){
+                router.push({ path: '/guestMode' });
+            }
+        }
+    }
+
     
 
 
 onMounted(async () => {
-    //
+    await checkGuest();
     await getMarks();
 });
 
 </script>
 
 <style scoped>
+.top-left-button {
+    position: absolute;
+    top: 800px;
+    left: 30px;
+}
+
 
 .container1 {
   display: flex;
@@ -385,7 +419,7 @@ onMounted(async () => {
   /* overflow-y: auto; */
   /*  grid-column: 1; */
   max-width: 400px;
-  margin-left: 180px;
+  margin-left: 400px;
   margin-right: 160px;
 }
 

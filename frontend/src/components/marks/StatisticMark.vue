@@ -388,7 +388,7 @@ onMounted(async () => {
   /* overflow-y: auto; */
   /*  grid-column: 1; */
   max-width: 400px;
-  margin-left: 180px;
+  margin-left: 400px;
   margin-right: 160px;
 }
 

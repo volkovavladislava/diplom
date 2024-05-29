@@ -15,4 +15,8 @@ module.exports = (app) => {
 
     app.post('/api/loginGuest', user.loginGuest);
 
+    app.post('/api/logoutGuest', user.logoutGuest);
+
+    app.post('/api/checkGuest', user.checkGuest);
+
 };

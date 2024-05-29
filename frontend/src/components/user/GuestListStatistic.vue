@@ -1,5 +1,7 @@
 <template>
     <div class="container labelm">
+        <button type="button" class="btn btn-outline-danger top-left-button" @click="logOutGuest()">Выйти из гостевого доступа</button>
+
         <div class="row justify-content-md-center labelm">
 
     
@@ -43,7 +45,7 @@
 
 <script setup>
 import { useRouter } from 'vue-router'
-import { ref  } from 'vue';
+import { ref, onMounted  } from 'vue';
 import http from "../../http-common";
 
     const router = useRouter();
@@ -105,10 +107,47 @@ import http from "../../http-common";
       }
   }
 
+  const logOutGuest = async () => {
+      try {
+            var a = {
+                id: data.value.id 
+            };
+            await http.post('/logoutGuest', a);
+            router.push({ path: '/guestMode' });
+          
+      } catch (error) {
+          console.error(error);
+      }
+  }
+
+
+    const checkGuest = async () => {
+        try {
+            var a = {
+                login: data.value.login,
+            };
+             await http.post('/checkGuest' , a);
+        } catch (error) {
+            if(error.response.status == 401 || error.response.status == 404 || error.response.status == 403){
+                router.push({ path: '/guestMode' });
+            }
+        }
+    }
+
+onMounted(async () => {
+    await checkGuest();
+});
+
 
 </script>
 
 <style scoped>
+
+.top-left-button {
+    position: absolute;
+    top: 800px;
+    left: 30px;
+}
 
 .card {
   border-radius: 8px;

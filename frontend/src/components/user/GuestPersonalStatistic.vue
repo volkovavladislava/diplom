@@ -1,5 +1,7 @@
 <template>
     <div class="container labelm">
+        <button type="button" class="btn btn-outline-danger top-left-button" @click="logOutGuest()">Выйти из гостевого доступа</button>
+
         <div class="row justify-content-md-center labelm">
 
             <div class="row justify-content-md-center labelm">
@@ -56,13 +58,47 @@
       }
   }
 
-  onMounted(async () => {
+  const logOutGuest = async () => {
+      try {
+            var a = {
+                id: currentUser.value.id 
+            };
+            await http.post('/logoutGuest', a);
+            router.push({ path: '/guestMode' });
+          
+      } catch (error) {
+          console.error(error);
+      }
+  }
+
+  const checkGuest = async () => {
+        try {
+            var a = {
+                login: currentUser.value.login,
+            };
+             await http.post('/checkGuest' , a);
+        } catch (error) {
+            if(error.response.status == 401 || error.response.status == 404 || error.response.status == 403){
+                router.push({ path: '/guestMode' });
+            }
+        }
+    }
+
+    
+
+onMounted(async () => {
+    await checkGuest();
     await getListRecordsMark();
 });
 
 </script>
 
 <style>
+.top-left-button {
+    position: absolute;
+    top: 800px;
+    left: 30px;
+}
 
 .labelm {
     margin-top: 30px;
