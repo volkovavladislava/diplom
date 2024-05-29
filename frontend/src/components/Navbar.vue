@@ -15,6 +15,9 @@
         <li class="nav-item">
           <a class="nav-link" href="/listPersonalMarks">Мои персональные показатели</a>
         </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/guestMode">Гостевой доступ</a>
+        </li>
       </ul>
       <!-- <a class="nav-link active" aria-current="page" href="/profile">Профиль</a> -->
       <div v-if="currentUser">

@@ -16,6 +16,10 @@ import AddPrompt from "./components/prompt/AddPrompt";
 import ListFile from "./components/file/ListFile";
 import UpdateFile from "./components/file/UpdateFile";
 import AddFile from "./components/file/AddFile";
+import GuestMode from "./components/user/GuestMode";
+import GuestListStatistic from "./components/user/GuestListStatistic";
+import GuestStatistic from "./components/user/GuestStatistic";
+import GuestPersonalStatistic  from "./components/user/GuestPersonalStatistic";
 
 import Login from "./components/authorization/Login";
 import Register from "./components/authorization/Register";
@@ -183,6 +187,45 @@ const routes = [
             title: "Обновление файла"
         }
     },
+    {
+        path: "/guestMode", // указание маршрута, по которому будем переходить к списку пользователей
+        name: "guestMode", // имя маршрута
+        alias: "/guestMode", // указание дополнительного маршрута
+        component: GuestMode, // компонент, на основании которого будет отрисовываться страница
+        meta: {
+            title: "Гостевой доступ"
+        }
+    }
+    ,
+    {
+        path: "/guestListStatistic", // указание маршрута, по которому будем переходить к списку пользователей
+        name: "guestListStatistic", // имя маршрута
+        alias: "/guestListStatistic", // указание дополнительного маршрута
+        component: GuestListStatistic, // компонент, на основании которого будет отрисовываться страница
+        meta: {
+            title: "Гостевой доступ"
+        }
+    },
+    {
+        path: "/guestStatistic", // указание маршрута, по которому будем переходить к списку пользователей
+        name: "guestStatistic", // имя маршрута
+        alias: "/guestStatistic", // указание дополнительного маршрута
+        component: GuestStatistic, // компонент, на основании которого будет отрисовываться страница
+        props: true,
+        meta: {
+            title: "Гостевой доступ"
+        }
+    },
+    {
+        path: "/guestPersonalStatistic", // указание маршрута, по которому будем переходить к списку пользователей
+        name: "guestPersonalStatistic", // имя маршрута
+        alias: "/guestPersonalStatistic", // указание дополнительного маршрута
+        component: GuestPersonalStatistic, // компонент, на основании которого будет отрисовываться страница
+        props: true,
+        meta: {
+            title: "Гостевой доступ"
+        }
+    }
 ];
 
 const router = createRouter({

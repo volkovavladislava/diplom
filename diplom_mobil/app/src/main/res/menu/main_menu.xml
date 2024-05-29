@@ -46,10 +46,10 @@
             android:id="@+id/fragmentCamera"
             android:title="Открыть камеру">
         </item>
-<!--        <item-->
-<!--            android:id="@+id/fragmentLogin"-->
-<!--            android:title="Тест логина">-->
-<!--        </item>-->
+        <item
+            android:id="@+id/fragmentGuestMode"
+            android:title="Гостевой доступ">
+        </item>
 
 
     </group>

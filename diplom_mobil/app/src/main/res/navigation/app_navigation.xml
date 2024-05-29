@@ -157,7 +157,12 @@
         android:name="com.example.mydiplom.FragmentUpdateRecordMarkNum2"
         android:label="Редактирование записи"
         tools:layout="@layout/fragment_update_record_mark_num2" />
-<!--    <fragment-->
+    <fragment
+        android:id="@+id/fragmentGuestMode"
+        android:name="com.example.mydiplom.FragmentGuestMode"
+        android:label="Генерация пароля"
+        tools:layout="@layout/fragment_guest_mode" />
+    <!--    <fragment-->
 <!--        android:id="@+id/fragmentLogin"-->
 <!--        android:name="com.example.mydiplom.FragmentLogin"-->
 <!--        android:label="fragment_login"-->

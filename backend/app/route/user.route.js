@@ -11,4 +11,8 @@ module.exports = (app) => {
     // Получение пользователя по id
     app.get('/api/user/:id', user.findById);
 
+    app.get('/api/userGuest/:id', user.generateGuest);
+
+    app.post('/api/loginGuest', user.loginGuest);
+
 };

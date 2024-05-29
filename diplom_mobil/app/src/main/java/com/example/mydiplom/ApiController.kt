@@ -21,6 +21,7 @@ import com.example.mydiplom.data.RegistrationRequest
 import com.example.mydiplom.data.UpdateOperatingValue
 import com.example.mydiplom.data.User
 import com.example.mydiplom.data.UserAuth
+import com.example.mydiplom.data.UserGuestMode
 import com.example.mydiplom.data.UserOperatingValue
 import com.example.mydiplom.data.UserUpdate
 import okhttp3.MultipartBody
@@ -80,6 +81,9 @@ interface ApiController {
 
     @GET("/api/user/{userId}")
     fun getUser(@Path("userId") userId: Int): Call<User>
+
+    @GET("/api/userGuest/{id}")
+    fun getUserGuestPassword(@Path("id") userId: Int): Call<UserGuestMode>
 
 
 

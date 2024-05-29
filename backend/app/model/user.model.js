@@ -35,6 +35,14 @@ module.exports = (sequelize, Sequelize) => {
             login: {
                 type: Sequelize.STRING(255),
                 allowNull: false
+            },
+            guest_password: {
+                type: Sequelize.STRING(255),
+                allowNull: true
+            },
+            date_guest_password: {
+                type: Sequelize.DATE,
+                allowNull: true
             }
         });
 
