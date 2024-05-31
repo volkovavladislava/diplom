@@ -145,8 +145,8 @@ onMounted(async () => {
 
 .top-left-button {
     position: absolute;
-    top: 800px;
-    left: 30px;
+    top: 650px;
+    left: 1250px;
 }
 
 .card {

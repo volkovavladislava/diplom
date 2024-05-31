@@ -16,6 +16,12 @@
                             <input type="text" class="form-control" id="inputWeight"  v-model="value1"> 
                         </div>
                         <div class="mb-3 labelm">
+                            <label for="inputSelect" class="form-label">Выберите ситуацию, после которой происходил замер</label>
+                            <select id="inputSelect"  class="form-control" v-model="situation">
+                                <option v-for="i  in listOfSituations" :key="i.value">{{ i.key }} </option>
+                            </select>
+                        </div>
+                        <div class="mb-3 labelm">
                             <label for="inputDateBirth" class="form-label">Дата замера</label>
                             <input type="datetime-local" class="form-control" id="inputDateBirth"  v-model="date"> 
                         </div>
@@ -49,21 +55,32 @@ import { useStore } from 'vuex';
 
     const value1= ref(null)
     const date= ref(null)
+    const situation= ref(null)
 
     // const userId = ref(1)
 
     const isFormValid = ref(true);
     const showAlert = ref(false);
 
+    const listOfSituations = ref([
+        { key: "спокойное", value: 1 },
+        { key: "после нагрузки", value: 2 },
+        { key: "после еды", value: 3 },
+        { key: "после стресса", value: 4 },
+        { key: "после сна", value: 5 },
+        { key: "после приема лекарства", value: 6 }
+    ]);
 
     async function addMark() {
         if (value1.value && date.value) {
             isFormValid.value = true;
             try {
+                const s = listOfSituations.value.find(item => item.key === situation.value)
                 var a = {
                     userId: currentUser.value.id,
                     kind_of_mark_id: data.value.id,
                     date: date.value,
+                    situation: s.value,
                     value_number: null,
                     value_string: value1.value,
                     value_enum: null

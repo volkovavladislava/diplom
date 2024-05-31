@@ -14,6 +14,12 @@
                             <input type="number" class="form-control" id="inputWeight"  v-model="value1"> 
                         </div>
                         <div class="mb-3 labelm">
+                            <label for="inputSelect" class="form-label">Выберите ситуацию, после которой происходил замер</label>
+                            <select id="inputSelect"  class="form-control" v-model="situation">
+                                <option v-for="i  in listOfSituations" :key="i.value">{{ i.key }} </option>
+                            </select>
+                        </div>
+                        <div class="mb-3 labelm">
                             <label for="inputDateBirth" class="form-label">Дата замера</label>
                             <input type="datetime-local" class="form-control" id="inputDateBirth"  v-model="date"> 
                         </div>
@@ -37,6 +43,12 @@
                             <label for="inputSelect" class="form-label">Значение</label>
                             <select id="inputSelect"  class="form-control" v-model="value1">
                                 <option v-for="i  in enumValues" :key="i.value">{{ i.key }} </option>
+                            </select>
+                        </div>
+                        <div class="mb-3 labelm">
+                            <label for="inputSelect" class="form-label">Выберите ситуацию, после которой происходил замер</label>
+                            <select id="inputSelect"  class="form-control" v-model="situation">
+                                <option v-for="i  in listOfSituations" :key="i.value">{{ i.key }} </option>
                             </select>
                         </div>
                         <div class="mb-3 labelm">
@@ -67,6 +79,12 @@
                         <div class="mb-3 labelm">
                             <label for="inputWeight" class="form-label">Значение диастолическое</label>
                             <input type="number" class="form-control" id="inputWeight"  v-model="value2"> 
+                        </div>
+                        <div class="mb-3 labelm">
+                            <label for="inputSelect" class="form-label">Выберите ситуацию, после которой происходил замер</label>
+                            <select id="inputSelect"  class="form-control" v-model="situation">
+                                <option v-for="i  in listOfSituations" :key="i.value">{{ i.key }} </option>
+                            </select>
                         </div>
                         <div class="mb-3 labelm">
                             <label for="inputDateBirth" class="form-label">Дата замера</label>
@@ -104,6 +122,8 @@ import { useStore } from 'vuex';
     const value1= ref(null)
     const value2= ref(null)
     const date= ref(null)
+    const situation= ref(null)
+
 
     // const userId = ref(1)
 
@@ -112,6 +132,15 @@ import { useStore } from 'vuex';
 
 
     const enumValues = ref([]);
+
+    const listOfSituations = ref([
+        { key: "спокойное", value: 1 },
+        { key: "после нагрузки", value: 2 },
+        { key: "после еды", value: 3 },
+        { key: "после стресса", value: 4 },
+        { key: "после сна", value: 5 },
+        { key: "после приема лекарства", value: 6 }
+    ]);
 
     const getEnumvalues = async () => {
         try {
@@ -133,10 +162,12 @@ import { useStore } from 'vuex';
             isFormValid.value = true;
             // console.log( data)
             try {
+                const s = listOfSituations.value.find(item => item.key === situation.value)
                 var a = {
                     userId: currentUser.value.id,
                     kind_of_mark_id: data.value.id,
                     date: date.value,
+                    situation: s.value,
                     value_number: value1.value,
                     value_string: null,
                     value_enum: null
@@ -156,9 +187,11 @@ import { useStore } from 'vuex';
         if (value1.value && date.value && value2.value) {
             isFormValid.value = true;
             try {
+                const s = listOfSituations.value.find(item => item.key === situation.value)
                 var a = {
                     userId: currentUser.value.id,
                     date: date.value,
+                    situation: s.value,
                     value_number1: value1.value,
                     value_number2: value2.value,
                 };
@@ -179,10 +212,12 @@ import { useStore } from 'vuex';
             const b = enumValues.value.find(item => item.key === value1.value)
             
             try {
+                const s = listOfSituations.value.find(item => item.key === situation.value)
                 var a = {
                     userId: currentUser.value.id,
                     kind_of_mark_id: data.value.id,
                     date: date.value,
+                    situation: s.value,
                     value_number: null,
                     value_string: null,
                     value_enum: b.value

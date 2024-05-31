@@ -15,6 +15,9 @@
                             <div class="col ">
                             {{i.value_string}}
                             </div>
+                            <div class="col ">
+                              {{ listOfSituationsForLabel[i.situation-1] }}
+                            </div>
                         </div>
                         </div>
                     </div>
@@ -43,6 +46,25 @@
   const id = ref(route.params.id)
 
   const marks = ref([])
+
+
+  // const listOfSituations = ref([
+  //       { key: "спокойное", value: 1 },
+  //       { key: "после нагрузки", value: 2 },
+  //       { key: "после еды", value: 3 },
+  //       { key: "после стресса", value: 4 },
+  //       { key: "после сна", value: 5 },
+  //       { key: "после приема лекарства", value: 6 }
+  //   ]);
+
+    const listOfSituationsForLabel = ref([
+        "спокойное",
+        "после нагрузки" ,
+        "после еды",
+        "после стресса",
+        "после сна",
+        "после приема лекарства"
+    ]);
 
 
   const redirectToUpdatePersonalMarkPage = (id, data) => {

@@ -17,6 +17,7 @@
                  </div>
                  <div class="">
                     <button type="button" class="btn btn-outline-secondary" @click="getMarksByDate()">Обновить данные</button>
+                    &nbsp;
                     <button type="button" class="btn btn-outline-secondary" >Показать совет</button>
                  </div>
                  <div class="">
@@ -31,6 +32,9 @@
                                     </div>
                                     <div class="col ">
                                         {{i.value_number}}
+                                    </div>
+                                    <div class="col ">
+                                        {{ listOfSituationsForLabel[i.situation-1] }}
                                     </div>
                                 </div>
                                 </div>
@@ -55,6 +59,7 @@
                  </div>
                  <div class="">
                     <button type="button" class="btn btn-outline-secondary" @click="getMarksByDate()">Обновить данные</button>
+                    &nbsp;
                     <button type="button" class="btn btn-outline-secondary" >Показать совет</button>
                  </div>
                  <div class="">
@@ -69,6 +74,9 @@
                                     </div>
                                     <div class="col ">
                                         {{i.value}}
+                                    </div>
+                                    <div class="col ">
+                                        {{ listOfSituationsForLabel[i.situation-1] }}
                                     </div>
                                 </div>
                                 </div>
@@ -103,7 +111,7 @@
                         <div class="card"    v-for="(i, index)  in marks" :key="i.id"  >
                                 <div class="card-content">
                                 <div class="row align-items-center">
-                                    <div class="col" style="min-width: 200px;">
+                                    <div class="col" style="min-width: 120px;">
                                         {{ moment.utc(i.date).format('YYYY-MM-DD HH:mm')}}
                                     </div>
                                     <div class="col">
@@ -111,6 +119,9 @@
                                     </div>
                                     <div class="col">
                                         {{marks2[index].value_number}}
+                                    </div>
+                                    <div class="col ">
+                                        {{ listOfSituationsForLabel[i.situation-1] }}
                                     </div>
                                 </div>
                                 </div>
@@ -180,6 +191,16 @@ import { Line } from 'vue-chartjs'
         Tooltip,
         Legend
     )
+
+
+    const listOfSituationsForLabel = ref([
+        "спокойное",
+        "после нагрузки" ,
+        "после еды",
+        "после стресса",
+        "после сна",
+        "после приема лекарства"
+    ]);
     
 
     const getMarks = async () => {
@@ -401,8 +422,8 @@ onMounted(async () => {
 <style scoped>
 .top-left-button {
     position: absolute;
-    top: 800px;
-    left: 30px;
+    top: 650px;
+    left: 1250px;
 }
 
 
@@ -419,7 +440,7 @@ onMounted(async () => {
   /* overflow-y: auto; */
   /*  grid-column: 1; */
   max-width: 400px;
-  margin-left: 400px;
+  margin-left: 150px;
   margin-right: 160px;
 }
 

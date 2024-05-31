@@ -17,6 +17,9 @@
                             <div class="col ">
                             {{i.value_string}}
                             </div>
+                            <div class="col ">
+                              {{ listOfSituationsForLabel[i.situation-1] }}
+                            </div>
                         </div>
                         </div>
                     </div>
@@ -40,6 +43,14 @@
   const kindOfMarkData = ref(JSON.parse(decodeURIComponent(router.currentRoute.value.query.data1, null, 2)))
   const currentUser = ref(JSON.parse(decodeURIComponent(router.currentRoute.value.query.data2, null, 2)))
 
+    const listOfSituationsForLabel = ref([
+        "спокойное",
+        "после нагрузки" ,
+        "после еды",
+        "после стресса",
+        "после сна",
+        "после приема лекарства"
+    ]);
 
   const marks = ref([])
 
@@ -96,8 +107,8 @@ onMounted(async () => {
 <style>
 .top-left-button {
     position: absolute;
-    top: 800px;
-    left: 30px;
+    top: 650px;
+    left: 1250px;
 }
 
 .labelm {
