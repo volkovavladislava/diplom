@@ -40,6 +40,42 @@
         app:layout_constraintStart_toStartOf="@+id/guideline3"
         app:layout_constraintTop_toBottomOf="@+id/addMarkNum1Label" />
 
+
+    <TextView
+        android:id="@+id/addMarkNum1ChooseSituationLabel"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:text="Выберите ситуацию, после которой был замер"
+        app:layout_constraintEnd_toStartOf="@+id/guideline4"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="@+id/guideline3"
+        app:layout_constraintTop_toBottomOf="@+id/addMarkNum1" />
+
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/addMarkNum1ChooseSituation"
+        android:layout_marginTop="10dp"
+        style="@style/Widget.Material3.TextInputLayout.FilledBox.ExposedDropdownMenu"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toStartOf="@+id/guideline4"
+        app:layout_constraintStart_toStartOf="@+id/guideline3"
+        app:layout_constraintTop_toBottomOf="@+id/addMarkNum1ChooseSituationLabel">
+
+        <AutoCompleteTextView
+            android:id="@+id/textField2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="none"
+            android:backgroundTint="#FEF7FF"
+            app:dropDownBackgroundTint="#FEF7FF"
+            android:background="#FEF7FF"/>
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+
+
     <TextView
         android:id="@+id/addMarkNum1DateLabel"
         android:layout_width="0dp"
@@ -48,7 +84,7 @@
         android:text="Дата "
         app:layout_constraintEnd_toStartOf="@+id/guideline4"
         app:layout_constraintStart_toStartOf="@+id/guideline3"
-        app:layout_constraintTop_toBottomOf="@+id/addMarkNum1" />
+        app:layout_constraintTop_toBottomOf="@+id/addMarkNum1ChooseSituation" />
 
     <EditText
         android:id="@+id/addMarkNum1Date"

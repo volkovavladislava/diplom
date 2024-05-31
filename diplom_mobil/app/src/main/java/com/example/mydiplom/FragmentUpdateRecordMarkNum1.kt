@@ -17,6 +17,7 @@ import androidx.navigation.fragment.findNavController
 import com.example.mydiplom.data.MarkUpdate
 import com.example.mydiplom.databinding.FragmentUpdateRecordMarkNum1Binding
 import com.example.mydiplom.viewmodel.SharedViewModel
+import com.google.android.material.textfield.MaterialAutoCompleteTextView
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -39,6 +40,24 @@ class FragmentUpdateRecordMarkNum1 : Fragment(), DatePickerDialog.OnDateSetListe
     var savedYear = 0
     var savedHour = 0
     var savedMinute = 0
+
+    val listOfSituations = mutableMapOf(
+        "спокойное" to 1,
+        "после нагрузки" to 2,
+        "после еды" to 3,
+        "после стресса" to 4,
+        "после сна" to 5,
+        "после приема лекарства" to 6
+    )
+
+    val listOfSituationsForLabel: ArrayList<String?> = arrayListOf(
+        "спокойное",
+        "после нагрузки" ,
+        "после еды",
+        "после стресса",
+        "после сна",
+        "после приема лекарства"
+    )
 
     private var binding: FragmentUpdateRecordMarkNum1Binding? = null
     private val viewModel: SharedViewModel by activityViewModels()
@@ -64,10 +83,14 @@ class FragmentUpdateRecordMarkNum1 : Fragment(), DatePickerDialog.OnDateSetListe
         var updateNum1UserId = viewModel.updateNum1UserId.value
         var updateNum1KindOfMarkId = viewModel.updateNum1KindOfMarkId.value
         var updateNum1Date = viewModel.updateNum1Date.value
+        var updateNum1Situation = viewModel.updateNum1Situation.value!!
         var updateNum1ValueDouble = viewModel.updateNum1ValueDouble.value
 
         binding!!.updateMarkNum1Date.setText(formatDate(updateNum1Date.toString()))
         binding!!.updateMarkValueNum1.setText(updateNum1ValueDouble.toString())
+        binding!!.textField6.setText(listOfSituationsForLabel[updateNum1Situation-1])
+
+        (binding!!.updateMarkNum1ChooseSituation.editText as? MaterialAutoCompleteTextView)?.setSimpleItems(listOfSituationsForLabel.toTypedArray())
 
 
         val context = activity ?: return binding!!.root
@@ -83,9 +106,9 @@ class FragmentUpdateRecordMarkNum1 : Fragment(), DatePickerDialog.OnDateSetListe
             if( !binding!!.updateMarkValueNum1.text.isNullOrEmpty()  && !binding!!.updateMarkNum1Date.text.isNullOrEmpty()) {
                 val value = binding!!.updateMarkValueNum1.text.toString().toDouble()
                 val date = binding!!.updateMarkNum1Date.text.toString()
+                val situation = binding!!.textField6.text.toString()
 
-
-                val markUpdate = MarkUpdate(user_id = updateNum1UserId!!,kind_of_mark_id = updateNum1KindOfMarkId!!,  date = date, value, null,null)
+                val markUpdate = MarkUpdate(user_id = updateNum1UserId!!,kind_of_mark_id = updateNum1KindOfMarkId!!,  date = date,situation = listOfSituations[situation], value, null,null)
 
                 val call: Call<Void> = service.updateMark(updateNum1Id!!, markUpdate)
                 call.enqueue(object : Callback<Void> {

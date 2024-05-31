@@ -44,6 +44,7 @@ class SharedViewModel : ViewModel() {
     val updateEnumUserId= MutableLiveData<Int>()
     val updateEnumKindOfMarkId= MutableLiveData<Int>()
     val updateEnumDate= MutableLiveData<String>()
+    val updateEnumSituation= MutableLiveData<Int>()
     val updateEnumValueEnum= MutableLiveData<Int>()
     val updateEnumValue= MutableLiveData<String>()
 
@@ -52,6 +53,7 @@ class SharedViewModel : ViewModel() {
     val updateNum1UserId= MutableLiveData<Int>()
     val updateNum1KindOfMarkId= MutableLiveData<Int>()
     val updateNum1Date= MutableLiveData<String>()
+    val updateNum1Situation= MutableLiveData<Int>()
     val updateNum1ValueDouble= MutableLiveData<Double>()
 
     val updateNum2Id1= MutableLiveData<Int>()
@@ -59,6 +61,7 @@ class SharedViewModel : ViewModel() {
     val updateNum2UserId= MutableLiveData<Int>()
     val updateNum2KindOfMarkId= MutableLiveData<Int>()
     val updateNum2Date= MutableLiveData<String>()
+    val updateNum2Situation= MutableLiveData<Int>()
     val updateNum2Value1Double= MutableLiveData<Double>()
     val updateNum2Value2Double= MutableLiveData<Double>()
 

@@ -19,6 +19,7 @@ import com.example.mydiplom.data.MarkUpdate
 import com.example.mydiplom.data.MarkUpdateDavlenie
 import com.example.mydiplom.databinding.FragmentUpdateRecordMarkNum2Binding
 import com.example.mydiplom.viewmodel.SharedViewModel
+import com.google.android.material.textfield.MaterialAutoCompleteTextView
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -41,6 +42,24 @@ class FragmentUpdateRecordMarkNum2 : Fragment(), DatePickerDialog.OnDateSetListe
     var savedYear = 0
     var savedHour = 0
     var savedMinute = 0
+
+    val listOfSituations = mutableMapOf(
+        "спокойное" to 1,
+        "после нагрузки" to 2,
+        "после еды" to 3,
+        "после стресса" to 4,
+        "после сна" to 5,
+        "после приема лекарства" to 6
+    )
+
+    val listOfSituationsForLabel: ArrayList<String?> = arrayListOf(
+        "спокойное",
+        "после нагрузки" ,
+        "после еды",
+        "после стресса",
+        "после сна",
+        "после приема лекарства"
+    )
 
     private var binding: FragmentUpdateRecordMarkNum2Binding? = null
     private val viewModel: SharedViewModel by activityViewModels()
@@ -69,12 +88,17 @@ class FragmentUpdateRecordMarkNum2 : Fragment(), DatePickerDialog.OnDateSetListe
         var updateNum2UserId = viewModel.updateNum2UserId.value
         var updateNum2KindOfMarkId = viewModel.updateNum2KindOfMarkId.value
         var updateNum2Date = viewModel.updateNum2Date.value
+        var updateNum2Situation = viewModel.updateNum2Situation.value!!
         var updateNum2Value1Double = viewModel.updateNum2Value1Double.value
         var updateNum2Value2Double = viewModel.updateNum2Value2Double.value
 
         binding!!.updateMarkNum2Date.setText(formatDate(updateNum2Date.toString()))
         binding!!.updateMarkValue1Num2.setText(updateNum2Value1Double.toString())
         binding!!.updateMarkValue2Num2.setText(updateNum2Value2Double.toString())
+
+        binding!!.textField9.setText(listOfSituationsForLabel[updateNum2Situation-1])
+
+        (binding!!.updateMarkNum2ChooseSituation.editText as? MaterialAutoCompleteTextView)?.setSimpleItems(listOfSituationsForLabel.toTypedArray())
 
         val context = activity ?: return binding!!.root
 
@@ -95,6 +119,7 @@ class FragmentUpdateRecordMarkNum2 : Fragment(), DatePickerDialog.OnDateSetListe
                 val value1 = binding!!.updateMarkValue1Num2.text.toString().toDouble()
                 val value2 = binding!!.updateMarkValue2Num2.text.toString().toDouble()
                 val date = binding!!.updateMarkNum2Date.text.toString()
+                val situation = binding!!.textField9.text.toString()
 
 
                 val markUpdate = MarkUpdateDavlenie(
@@ -104,6 +129,7 @@ class FragmentUpdateRecordMarkNum2 : Fragment(), DatePickerDialog.OnDateSetListe
                     kind_of_mark_id1 = 1,
                     kind_of_mark_id2 = 2,
                     date = date,
+                    situation = listOfSituations[situation],
                     value_number1 = value1 ,
                     value_number2 = value2 )
 

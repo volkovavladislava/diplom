@@ -6,6 +6,7 @@ data class MarkDavlenie(
     val user_id: Int,
     val kind_of_mark_id: Int,
     val date: String,
+    val situation: Int?,
     val value_number1:Double?,
     val value_number2:Double?,
     val value_string:String?,

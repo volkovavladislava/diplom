@@ -17,6 +17,7 @@ import com.example.mydiplom.data.Mark
 import com.example.mydiplom.data.MarkUpdate
 import com.example.mydiplom.databinding.FragmentUpdateRecordHandMadeMarkBinding
 import com.example.mydiplom.viewmodel.SharedViewModel
+import com.google.android.material.textfield.MaterialAutoCompleteTextView
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -40,6 +41,24 @@ class FragmentUpdateRecordHandMadeMark : Fragment(), DatePickerDialog.OnDateSetL
     var savedYear = 0
     var savedHour = 0
     var savedMinute = 0
+
+    val listOfSituations = mutableMapOf(
+        "спокойное" to 1,
+        "после нагрузки" to 2,
+        "после еды" to 3,
+        "после стресса" to 4,
+        "после сна" to 5,
+        "после приема лекарства" to 6
+    )
+
+    val listOfSituationsForLabel: ArrayList<String?> = arrayListOf(
+        "спокойное",
+        "после нагрузки" ,
+        "после еды",
+        "после стресса",
+        "после сна",
+        "после приема лекарства"
+    )
 
     private var binding: FragmentUpdateRecordHandMadeMarkBinding? = null
     private val viewModel: SharedViewModel by activityViewModels()
@@ -73,8 +92,10 @@ class FragmentUpdateRecordHandMadeMark : Fragment(), DatePickerDialog.OnDateSetL
                     markData?.let {
                         binding!!.updateRecordHandMadeMarkValue.setText(it.value_string.toString())
                         binding!!.updateRecordHandMadeMarkDate.setText(formatDate(it.date.toString()))
-
+                        binding!!.textField8.setText(listOfSituationsForLabel[(it.situation!!.toInt()) - 1])
                     }
+
+                    (binding!!.updateRecordHandMadeMarkChooseSituation.editText as? MaterialAutoCompleteTextView)?.setSimpleItems(listOfSituationsForLabel.toTypedArray())
                 }
                 else{}
             }
@@ -82,6 +103,8 @@ class FragmentUpdateRecordHandMadeMark : Fragment(), DatePickerDialog.OnDateSetL
                 Log.d("RetrofitClient","Receive user from server problem " + t)
             }
         })
+
+
 
 
 
@@ -103,9 +126,10 @@ class FragmentUpdateRecordHandMadeMark : Fragment(), DatePickerDialog.OnDateSetL
             if(!binding!!.updateRecordHandMadeMarkValue.text.isNullOrEmpty() && !binding!!.updateRecordHandMadeMarkDate.text.isNullOrEmpty()){
                 val value = binding!!.updateRecordHandMadeMarkValue.text.toString()
                 val date = binding!!.updateRecordHandMadeMarkDate.text.toString()
+                val situation = binding!!.textField8.text.toString()
 
 
-                val markUpdate = MarkUpdate(user_id =1,kind_of_mark_id = handMadeMarkId,  date = date, null, value,null)
+                val markUpdate = MarkUpdate(user_id =1,kind_of_mark_id = handMadeMarkId,  date = date, situation = listOfSituations[situation], null, value,null)
                 val call: Call<Void> = service.updateMark(handMadeMarkRecordId, markUpdate)
                 call.enqueue(object : Callback<Void> {
                     override fun onResponse(call: Call<Void>, response: Response<Void>) {

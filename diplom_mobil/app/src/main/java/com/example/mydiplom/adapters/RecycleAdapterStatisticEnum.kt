@@ -38,6 +38,7 @@ class RecycleAdapterStatisticEnum (private val dataList: ArrayList<Mark>, privat
             this.viewModel.updateEnumUserId.value = dataList[position].user_id
             this.viewModel.updateEnumKindOfMarkId.value = dataList[position].kind_of_mark_id
             this.viewModel.updateEnumDate.value = dataList[position].date
+            this.viewModel.updateEnumSituation.value = dataList[position].situation
             this.viewModel.updateEnumValueEnum.value = dataList[position].value_enum
             this.viewModel.updateEnumValue.value = dataList[position].value
 

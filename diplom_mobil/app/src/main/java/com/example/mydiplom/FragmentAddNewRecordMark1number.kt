@@ -15,6 +15,7 @@ import androidx.fragment.app.activityViewModels
 import com.example.mydiplom.data.AddMark
 import com.example.mydiplom.databinding.FragmentAddNewRecordMark1numberBinding
 import com.example.mydiplom.viewmodel.SharedViewModel
+import com.google.android.material.textfield.MaterialAutoCompleteTextView
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -39,6 +40,25 @@ class FragmentAddNewRecordMark1number : Fragment(), DatePickerDialog.OnDateSetLi
     var savedYear = 0
     var savedHour = 0
     var savedMinute = 0
+
+
+    val listOfSituations = mutableMapOf(
+        "спокойное" to 1,
+        "после нагрузки" to 2,
+        "после еды" to 3,
+        "после стресса" to 4,
+        "после сна" to 5,
+        "после приема лекарства" to 6
+    )
+
+    val listOfSituationsForLabel: ArrayList<String?> = arrayListOf(
+        "спокойное",
+        "после нагрузки" ,
+        "после еды",
+        "после стресса",
+        "после сна",
+        "после приема лекарства"
+    )
 
     private var binding: FragmentAddNewRecordMark1numberBinding? = null
     private val viewModel: SharedViewModel by activityViewModels()
@@ -67,6 +87,10 @@ class FragmentAddNewRecordMark1number : Fragment(), DatePickerDialog.OnDateSetLi
 
         binding!!.addMarkNum1Date.setText(SimpleDateFormat("yyyy-MM-dd HH:mm").format(Date()))
 
+        binding!!.textField2.setText(listOfSituationsForLabel[0])
+        (binding!!.addMarkNum1ChooseSituation.editText as? MaterialAutoCompleteTextView)?.setSimpleItems(listOfSituationsForLabel.toTypedArray())
+
+
 
         val context = activity ?: return binding!!.root
         binding!!.bthAddDateMarkNum1.setOnClickListener{
@@ -80,12 +104,13 @@ class FragmentAddNewRecordMark1number : Fragment(), DatePickerDialog.OnDateSetLi
             if( !binding!!.addMarkNum1.text.isNullOrEmpty()  && !binding!!.addMarkNum1Date.text.isNullOrEmpty()) {
                 val numberValue = binding!!.addMarkNum1.text.toString().toDouble()
                 val date = binding!!.addMarkNum1Date.text.toString()
-
+                val situation = binding!!.textField2.text.toString()
 
                 val mark = AddMark(
                     userId = 1,
                     kind_of_mark_id = kindOfMarkId,
                     date = date,
+                    situation = listOfSituations[situation],
                     value_number = numberValue,
                     null,
                     null

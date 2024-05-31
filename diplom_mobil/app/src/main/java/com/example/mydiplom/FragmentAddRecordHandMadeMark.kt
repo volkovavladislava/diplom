@@ -15,6 +15,7 @@ import androidx.fragment.app.activityViewModels
 import com.example.mydiplom.data.AddMark
 import com.example.mydiplom.databinding.FragmentAddRecordHandMadeMarkBinding
 import com.example.mydiplom.viewmodel.SharedViewModel
+import com.google.android.material.textfield.MaterialAutoCompleteTextView
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -40,6 +41,24 @@ class FragmentAddRecordHandMadeMark : Fragment(), DatePickerDialog.OnDateSetList
     var savedHour = 0
     var savedMinute = 0
 
+    val listOfSituations = mutableMapOf(
+        "спокойное" to 1,
+        "после нагрузки" to 2,
+        "после еды" to 3,
+        "после стресса" to 4,
+        "после сна" to 5,
+        "после приема лекарства" to 6
+    )
+
+    val listOfSituationsForLabel: ArrayList<String?> = arrayListOf(
+        "спокойное",
+        "после нагрузки" ,
+        "после еды",
+        "после стресса",
+        "после сна",
+        "после приема лекарства"
+    )
+
 
     private var binding: FragmentAddRecordHandMadeMarkBinding? = null
     private val viewModel: SharedViewModel by activityViewModels()
@@ -64,6 +83,9 @@ class FragmentAddRecordHandMadeMark : Fragment(), DatePickerDialog.OnDateSetList
 
         binding!!.addNewRecordHandMadeMarkDate.setText(SimpleDateFormat("yyyy-MM-dd HH:mm").format(Date()))
 
+        binding!!.textField5.setText(listOfSituationsForLabel[0])
+        (binding!!.addNewRecordHandMadeMarkChooseSituation.editText as? MaterialAutoCompleteTextView)?.setSimpleItems(listOfSituationsForLabel.toTypedArray())
+
         val context = activity ?: return binding!!.root
         binding!!.bthAddDateNewRecordHandMadeMark.setOnClickListener{
             getDateTimeCalendar()
@@ -81,11 +103,13 @@ class FragmentAddRecordHandMadeMark : Fragment(), DatePickerDialog.OnDateSetList
 
                 val numberValue = binding!!.addNewRecordHandMadeMarkValue.text.toString()
                 val date = binding!!.addNewRecordHandMadeMarkDate.text.toString()
+                val situation = binding!!.textField5.text.toString()
 
                 val mark = AddMark(
                     userId = 1,
                     kind_of_mark_id = handMadeMarkId,
                     date = date,
+                    situation = listOfSituations[situation],
                     null,
                     numberValue,
                     null

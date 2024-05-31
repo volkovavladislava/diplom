@@ -72,6 +72,7 @@ class FragmentDetailedHandMadeMark : Fragment() {
                             marksData[i].user_id,
                             marksData[i].kind_of_mark_id,
                             marksData[i].date,
+                            marksData[i].situation,
                             marksData[i].value_number,
                             marksData[i].value_string,
                             marksData[i].value_enum,

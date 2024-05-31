@@ -43,6 +43,26 @@ class FragmentUpdateRecordMarkEnum : Fragment(), DatePickerDialog.OnDateSetListe
     var savedHour = 0
     var savedMinute = 0
 
+
+    val listOfSituations = mutableMapOf(
+        "спокойное" to 1,
+        "после нагрузки" to 2,
+        "после еды" to 3,
+        "после стресса" to 4,
+        "после сна" to 5,
+        "после приема лекарства" to 6
+    )
+
+    val listOfSituationsForLabel: ArrayList<String?> = arrayListOf(
+        "спокойное",
+        "после нагрузки" ,
+        "после еды",
+        "после стресса",
+        "после сна",
+        "после приема лекарства"
+    )
+
+
     private var binding: FragmentUpdateRecordMarkEnumBinding? = null
     private val viewModel: SharedViewModel by activityViewModels()
 
@@ -73,9 +93,13 @@ class FragmentUpdateRecordMarkEnum : Fragment(), DatePickerDialog.OnDateSetListe
         var updateEnumDate = viewModel.updateEnumDate.value
         var updateEnumValueEnum = viewModel.updateEnumValueEnum.value
         var updateEnumValue = viewModel.updateEnumValue.value
+        var updateEnumSituation = viewModel.updateEnumSituation.value!!
 
         binding!!.updateMarkEnumDate.setText(formatDate(updateEnumDate.toString()))
         binding!!.textField1.setText(updateEnumValue)
+        binding!!.textField7.setText(listOfSituationsForLabel[updateEnumSituation-1])
+
+        (binding!!.updateMarkEnumChooseSituation.editText as? MaterialAutoCompleteTextView)?.setSimpleItems(listOfSituationsForLabel.toTypedArray())
 
 
         val call: Call<List<KindOfMarkValues>> = service.getKindOfMarkValues(updateEnumKindOfMarkId!!)
@@ -111,9 +135,10 @@ class FragmentUpdateRecordMarkEnum : Fragment(), DatePickerDialog.OnDateSetListe
             if( !binding!!.textField1.text.isNullOrEmpty()  && !binding!!.updateMarkEnumDate.text.isNullOrEmpty()) {
                 val enumValue = binding!!.textField1.text.toString()
                 val date = binding!!.updateMarkEnumDate.text.toString()
+                val situation = binding!!.textField7.text.toString()
 
 
-                val markUpdate = MarkUpdate(user_id = updateEnumUserId!!,kind_of_mark_id = updateEnumKindOfMarkId,  date = date, null, null,mutableMap[enumValue])
+                val markUpdate = MarkUpdate(user_id = updateEnumUserId!!,kind_of_mark_id = updateEnumKindOfMarkId,  date = date, situation = listOfSituations[situation],null, null,mutableMap[enumValue])
 
                 val call: Call<Void> = service.updateMark(updateEnumId!!, markUpdate)
                 call.enqueue(object : Callback<Void> {

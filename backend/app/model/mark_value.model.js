@@ -20,6 +20,10 @@ module.exports = (sequelize, Sequelize) => {
                 type: Sequelize.DATE,
                 allowNull: false
             },
+            situation: {
+                type: Sequelize.INTEGER(11),
+                allowNull: true
+            },
             value_number: {
                 type: Sequelize.DOUBLE,
                 allowNull: true

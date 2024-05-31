@@ -42,6 +42,27 @@ class FragmentAddNewRecordMarkEnum : Fragment(), DatePickerDialog.OnDateSetListe
     var savedHour = 0
     var savedMinute = 0
 
+
+    val listOfSituations = mutableMapOf(
+        "спокойное" to 1,
+        "после нагрузки" to 2,
+        "после еды" to 3,
+        "после стресса" to 4,
+        "после сна" to 5,
+        "после приема лекарства" to 6
+    )
+
+    val listOfSituationsForLabel: ArrayList<String?> = arrayListOf(
+        "спокойное",
+        "после нагрузки" ,
+        "после еды",
+        "после стресса",
+        "после сна",
+        "после приема лекарства"
+    )
+
+
+
     private var binding: FragmentAddNewRecordMarkEnumBinding? = null
     private val viewModel: SharedViewModel by activityViewModels()
 
@@ -70,6 +91,9 @@ class FragmentAddNewRecordMarkEnum : Fragment(), DatePickerDialog.OnDateSetListe
         val service: ApiController = retrofit.create(ApiController::class.java)
 
         binding!!.addMarkEnumDate.setText(SimpleDateFormat("yyyy-MM-dd HH:mm").format(Date()))
+
+        binding!!.textField3.setText(listOfSituationsForLabel[0])
+        (binding!!.addMarkEnumChooseSituation.editText as? MaterialAutoCompleteTextView)?.setSimpleItems(listOfSituationsForLabel.toTypedArray())
 
 
         val call: Call<List<KindOfMarkValues>> = service.getKindOfMarkValues(kindOfMarkId)
@@ -106,6 +130,7 @@ class FragmentAddNewRecordMarkEnum : Fragment(), DatePickerDialog.OnDateSetListe
             if( !binding!!.textField.text.isNullOrEmpty()  && !binding!!.addMarkEnumDate.text.isNullOrEmpty()) {
                 val enumValue = binding!!.textField.text.toString()
                 val date = binding!!.addMarkEnumDate.text.toString()
+                val situation = binding!!.textField3.text.toString()
 //                Log.d("RetrofitClient", "enumValue " + enumValue)
 
 
@@ -113,6 +138,7 @@ class FragmentAddNewRecordMarkEnum : Fragment(), DatePickerDialog.OnDateSetListe
                     userId = 1,
                     kind_of_mark_id = kindOfMarkId,
                     date = date,
+                    situation = listOfSituations[situation],
                     null,
                     null,
                     mutableMap[enumValue]

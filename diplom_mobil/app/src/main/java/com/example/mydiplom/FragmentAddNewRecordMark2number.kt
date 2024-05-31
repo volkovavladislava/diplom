@@ -16,6 +16,7 @@ import com.example.mydiplom.data.AddMark
 import com.example.mydiplom.data.AddMarkDavlenie
 import com.example.mydiplom.databinding.FragmentAddNewRecordMark2numberBinding
 import com.example.mydiplom.viewmodel.SharedViewModel
+import com.google.android.material.textfield.MaterialAutoCompleteTextView
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -39,6 +40,25 @@ class FragmentAddNewRecordMark2number : Fragment(), DatePickerDialog.OnDateSetLi
     var savedYear = 0
     var savedHour = 0
     var savedMinute = 0
+
+    val listOfSituations = mutableMapOf(
+        "спокойное" to 1,
+        "после нагрузки" to 2,
+        "после еды" to 3,
+        "после стресса" to 4,
+        "после сна" to 5,
+        "после приема лекарства" to 6
+    )
+
+    val listOfSituationsForLabel: ArrayList<String?> = arrayListOf(
+        "спокойное",
+        "после нагрузки" ,
+        "после еды",
+        "после стресса",
+        "после сна",
+        "после приема лекарства"
+    )
+
 
     private var binding: FragmentAddNewRecordMark2numberBinding? = null
     private val viewModel: SharedViewModel by activityViewModels()
@@ -72,6 +92,9 @@ class FragmentAddNewRecordMark2number : Fragment(), DatePickerDialog.OnDateSetLi
         }
         binding!!.addMarkNum2Date.setText(SimpleDateFormat("yyyy-MM-dd HH:mm").format(Date()))
 
+        binding!!.textField4.setText(listOfSituationsForLabel[0])
+        (binding!!.addMarkNum2ChooseSituation.editText as? MaterialAutoCompleteTextView)?.setSimpleItems(listOfSituationsForLabel.toTypedArray())
+
 
         binding!!.bthAddMark.setOnClickListener {
 
@@ -80,10 +103,12 @@ class FragmentAddNewRecordMark2number : Fragment(), DatePickerDialog.OnDateSetLi
                 val number1Value = binding!!.addMarkNum1.text.toString().toDouble()
                 val number2Value = binding!!.addMarkNum2.text.toString().toDouble()
                 val date = binding!!.addMarkNum2Date.text.toString()
+                val situation = binding!!.textField4.text.toString()
 
                 val mark = AddMarkDavlenie(
                     userId = 1,
                     date = date,
+                    situation = listOfSituations[situation],
                     value_number1 = number1Value,
                     value_number2 = number2Value
                 )

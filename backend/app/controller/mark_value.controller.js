@@ -22,6 +22,7 @@ exports.create = (req, res) => {
         user_id:req.body.userId,
         kind_of_mark_id:req.body.kind_of_mark_id,
         date: req.body.date,
+        situation: req.body.situation,
         value_number: req.body.value_number,
         value_string: req.body.value_string,
         value_enum: req.body.value_enum
@@ -38,6 +39,7 @@ exports.createD = (req, res) => {
         user_id:    req.body.userId,
         kind_of_mark_id:    1,
         date:   req.body.date,
+        situation: req.body.situation,
         value_number: req.body.value_number1,
         value_string: null,
         value_enum: null
@@ -47,6 +49,7 @@ exports.createD = (req, res) => {
         user_id:    req.body.userId,
         kind_of_mark_id:    2,
         date:   req.body.date,
+        situation: req.body.situation,
         value_number: req.body.value_number2,
         value_string: null,
         value_enum: null
@@ -70,6 +73,7 @@ exports.update = (req, res) => {
             user_id:req.body.userId,
             kind_of_mark_id:req.body.kind_of_mark_id,
             date: req.body.date,
+            situation: req.body.situation,
             value_number: req.body.value_number,
             value_string: req.body.value_string,
             value_enum: req.body.value_enum
@@ -95,6 +99,7 @@ exports.updateDavlenie = (req, res) => {
             user_id:    req.body.user_id,
             kind_of_mark_id:    req.body.kind_of_mark_id1,
             date:   req.body.date,
+            situation: req.body.situation,
             value_number:   req.body.value_number1,
             value_string: null,
             value_enum: null
@@ -110,6 +115,7 @@ exports.updateDavlenie = (req, res) => {
             user_id:req.body.user_id,
             kind_of_mark_id:req.body.kind_of_mark_id2,
             date: req.body.date,
+            situation: req.body.situation,
             value_number: req.body.value_number2,
             value_string: null,
             value_enum: null
@@ -147,7 +153,7 @@ exports.MarksForUser= (req, res) => {
     // })
 
 
-    db.sequelize.query('SELECT `mark_value`.`id`, `mark_value`.`user_id`, `mark_value`.`kind_of_mark_id`, `mark_value`.`date`, `mark_value`.`value_number`, `mark_value`.`value_string`, `mark_value`.`value_enum`, `enumeration_value`.`value` AS `value` FROM `mark_value` AS `mark_value` LEFT OUTER JOIN `enumeration_value` AS `enumeration_value` ON `mark_value`.`value_enum` = `enumeration_value`.`id` WHERE `mark_value`.`user_id` = :userId AND `mark_value`.`kind_of_mark_id` = :kindOfMarkId ;', 
+    db.sequelize.query('SELECT `mark_value`.`id`, `mark_value`.`user_id`, `mark_value`.`kind_of_mark_id`, `mark_value`.`date`, `mark_value`.`situation`, `mark_value`.`value_number`, `mark_value`.`value_string`, `mark_value`.`value_enum`, `enumeration_value`.`value` AS `value` FROM `mark_value` AS `mark_value` LEFT OUTER JOIN `enumeration_value` AS `enumeration_value` ON `mark_value`.`value_enum` = `enumeration_value`.`id` WHERE `mark_value`.`user_id` = :userId AND `mark_value`.`kind_of_mark_id` = :kindOfMarkId ;', 
         { replacements: { userId: req.params.userId,  kindOfMarkId: req.params.kindOfMarkId}, type: db.sequelize.QueryTypes.SELECT })
         .then(objects => {
             globalFunctions.sendResult(res, objects);
@@ -175,7 +181,7 @@ exports.MarksForUserByDate= (req, res) => {
     //     }
     // })
 
-    db.sequelize.query('SELECT `mark_value`.`id`, `mark_value`.`user_id`, `mark_value`.`kind_of_mark_id`, `mark_value`.`date`, `mark_value`.`value_number`, `mark_value`.`value_string`, `mark_value`.`value_enum`, `enumeration_value`.`value` AS `value` FROM `mark_value` AS `mark_value` LEFT OUTER JOIN `enumeration_value` AS `enumeration_value` ON `mark_value`.`value_enum` = `enumeration_value`.`id` WHERE `mark_value`.`user_id` = :userId AND `mark_value`.`kind_of_mark_id` = :kindOfMarkId AND `mark_value`.`date` <= :date2 AND `mark_value`.`date` >= :date1;', 
+    db.sequelize.query('SELECT `mark_value`.`id`, `mark_value`.`user_id`, `mark_value`.`kind_of_mark_id`, `mark_value`.`date`, `mark_value`.`situation`, `mark_value`.`value_number`, `mark_value`.`value_string`, `mark_value`.`value_enum`, `enumeration_value`.`value` AS `value` FROM `mark_value` AS `mark_value` LEFT OUTER JOIN `enumeration_value` AS `enumeration_value` ON `mark_value`.`value_enum` = `enumeration_value`.`id` WHERE `mark_value`.`user_id` = :userId AND `mark_value`.`kind_of_mark_id` = :kindOfMarkId AND `mark_value`.`date` <= :date2 AND `mark_value`.`date` >= :date1;', 
         { replacements: { userId: req.params.userId,  kindOfMarkId: req.params.kindOfMarkId, date1: req.params.date1, date2: req.params.date2 }
         , type: db.sequelize.QueryTypes.SELECT })
         .then(objects => {

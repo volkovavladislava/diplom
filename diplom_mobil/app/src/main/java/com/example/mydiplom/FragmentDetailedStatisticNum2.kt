@@ -78,7 +78,7 @@ class FragmentDetailedStatisticNum2 : Fragment() {
         val service: ApiController = retrofit.create(ApiController::class.java)
 
         var kindOfMarkId = viewModel.kindOfMarkIdStatistic.value ?: 1
-
+        callCounter = 2
 
 
         val call1: Call<List<Mark>> = service.marksForUser(1, 1)
@@ -167,6 +167,7 @@ class FragmentDetailedStatisticNum2 : Fragment() {
                     list1[i].user_id,
                     list1[i].kind_of_mark_id,
                     list1[i].date,
+                    list1[i].situation,
                     list1[i].value_number,
                     list2[i].value_number,
                     list1[i].value_string,

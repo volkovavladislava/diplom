@@ -41,6 +41,7 @@ class RecycleAdapterStatisticNum2 (private val dataList: ArrayList<MarkDavlenie>
             this.viewModel.updateNum2UserId.value = dataList[position].user_id
             this.viewModel.updateNum2KindOfMarkId.value = dataList[position].kind_of_mark_id
             this.viewModel.updateNum2Date.value = dataList[position].date
+            this.viewModel.updateNum2Situation.value = dataList[position].situation
             this.viewModel.updateNum2Value1Double.value = dataList[position].value_number1
             this.viewModel.updateNum2Value2Double.value = dataList[position].value_number2
 
