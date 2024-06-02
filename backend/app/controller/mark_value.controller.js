@@ -339,3 +339,8 @@ exports.MarksWithAverageByDate= (req, res) => {
             globalFunctions.sendError(res, err);
         })
 };
+
+
+exports.getAdvice= (req, res) => {
+    
+};

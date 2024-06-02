@@ -27,7 +27,9 @@ module.exports = (app) => {
 
 
     app.get('/api/marksForUserAverage/userId=:userId/kindOfMarkId=:kindOfMarkId', mark_value.MarksWithAverage);
-    
+
     app.get('/api/marksForUserAverageByDate/userId=:userId/kindOfMarkId=:kindOfMarkId/date1=:date1/date2=:date2', mark_value.MarksWithAverageByDate);
+
+    app.get('/api/getAdvice/userId=:userId/kindOfMarkId=:kindOfMarkId/date1=:date1/date2=:date2', mark_value.getAdvice);
 
 };

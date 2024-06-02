@@ -18,6 +18,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.mydiplom.adapters.RecycleAdapterStatisticNum1
 import com.example.mydiplom.data.Mark
+import com.example.mydiplom.data.MarkAverage
 import com.example.mydiplom.databinding.FragmentDetailedStatisticNum1Binding
 import com.example.mydiplom.viewmodel.SharedViewModel
 import com.github.mikephil.charting.components.XAxis
@@ -45,7 +46,7 @@ class FragmentDetailedStatisticNum1 : Fragment() {
     private val viewModel: SharedViewModel by activityViewModels()
 
     private lateinit var recyclerView: RecyclerView
-    private lateinit var  datalist: ArrayList<Mark>
+    private lateinit var  datalist: ArrayList<MarkAverage>
     private lateinit var  valuelist: ArrayList<Float>
     private lateinit var  valuelistAverage: ArrayList<Float>
     private var entries = mutableListOf<Entry>()
@@ -77,28 +78,29 @@ class FragmentDetailedStatisticNum1 : Fragment() {
 
         var kindOfMarkId = viewModel.kindOfMarkIdStatistic.value ?: 1
 
-        val call: Call<List<Mark>> = service.marksForUser(1, kindOfMarkId)
-        call.enqueue(object : Callback<List<Mark>> {
-            override fun onResponse(call: Call<List<Mark>>, response: Response<List<Mark>>) {
+        val call: Call<List<MarkAverage>> = service.marksForUserAverage(1, kindOfMarkId)
+        call.enqueue(object : Callback<List<MarkAverage>> {
+            override fun onResponse(call: Call<List<MarkAverage>>, response: Response<List<MarkAverage>>) {
                 if (response.isSuccessful) {
                     var marksData = response.body()?: emptyList()
-                    Log.d("RetrofitClient","userData  " + marksData)
+//                    Log.d("RetrofitClient","userData  " + marksData)
 
 
                     recyclerView = binding!!.recycleListMarks
                     recyclerView.layoutManager = LinearLayoutManager(context)
                     recyclerView.setHasFixedSize(true)
 
-                    datalist = arrayListOf<Mark>()
+                    datalist = arrayListOf<MarkAverage>()
                     valuelist = arrayListOf<Float>()
                     values = arrayListOf()
                     dates = arrayListOf<String>()
+                    valuelistAverage =  arrayListOf<Float>()
 
                     val dInput  = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.getDefault())
                     val dOutput = SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.getDefault())
 
                     for(i in marksData.indices){
-                        val dataClass = Mark(
+                        val dataClass = MarkAverage(
                             marksData[i].id,
                             marksData[i].user_id,
                             marksData[i].kind_of_mark_id,
@@ -107,16 +109,19 @@ class FragmentDetailedStatisticNum1 : Fragment() {
                             marksData[i].value_number,
                             marksData[i].value_string,
                             marksData[i].value_enum,
-                            marksData[i].value)
+                            marksData[i].value,
+                            marksData[i].moving_average)
                         datalist.add(dataClass)
 
                         dates.add(dOutput.format(dInput.parse(marksData[i].date)))
                         valuelist.add(marksData[i].value_number!!.toFloat())
+                        valuelistAverage.add(marksData[i].moving_average!!.toFloat())
 
                     }
 
 
                     values.add(valuelist)
+                    values.add(valuelistAverage)
 
                     val lineView: LineView  = activity!!.findViewById(com.example.mydiplom.R.id.line_view)
 
@@ -127,8 +132,10 @@ class FragmentDetailedStatisticNum1 : Fragment() {
                     lineView.setDrawDotLine(true);
                     lineView.setShowPopup(LineView.SHOW_POPUPS_All);
                     lineView.setBottomTextList(dates);
-                    lineView.setColorArray(intArrayOf(Color.parseColor("#f0b54f")))
+                    lineView.setColorArray(intArrayOf(Color.parseColor("#f0b54f"),Color.parseColor("#5fc97b")))
                     lineView.setFloatDataList(values);
+
+
 
                     datalist.reverse()
                     recyclerView.adapter = RecycleAdapterStatisticNum1(datalist,  viewModel)
@@ -137,7 +144,7 @@ class FragmentDetailedStatisticNum1 : Fragment() {
                 }
                 else{}
             }
-            override fun onFailure(call: Call<List<Mark>>, t: Throwable) {
+            override fun onFailure(call: Call<List<MarkAverage>>, t: Throwable) {
                 Log.d("RetrofitClient","Receive user from server problem " + t)
             }
         })
@@ -219,11 +226,12 @@ class FragmentDetailedStatisticNum1 : Fragment() {
 
         var kindOfMarkId = viewModel.kindOfMarkIdStatistic.value ?: 1
 
-        Log.d("RetrofitClient","marksDataupdateeeee  date1 " + date1)
-        Log.d("RetrofitClient","marksDataupdateeeee  date2 " + date2)
-        val call: Call<List<Mark>> = service.marksForUserByDate(1, kindOfMarkId,date1, date2)
-        call.enqueue(object : Callback<List<Mark>> {
-            override fun onResponse(call: Call<List<Mark>>, response: Response<List<Mark>>) {
+//        Log.d("RetrofitClient","marksDataupdateeeee  date1 " + date1)
+//        Log.d("RetrofitClient","marksDataupdateeeee  date2 " + date2)
+
+        val call: Call<List<MarkAverage>> = service.marksForUserAverageByDate(1, kindOfMarkId,date1, date2)
+        call.enqueue(object : Callback<List<MarkAverage>> {
+            override fun onResponse(call: Call<List<MarkAverage>>, response: Response<List<MarkAverage>>) {
                 if (response.isSuccessful) {
                     var marksData = response.body()?: emptyList()
                     Log.d("RetrofitClient","marksDataupdateeeee  " + marksData.size)
@@ -233,17 +241,18 @@ class FragmentDetailedStatisticNum1 : Fragment() {
                     recyclerView.layoutManager = LinearLayoutManager(context)
                     recyclerView.setHasFixedSize(true)
 
-                    datalist = arrayListOf<Mark>()
+                    datalist = arrayListOf<MarkAverage>()
                     valuelist = arrayListOf<Float>()
                     values = arrayListOf()
                     dates = arrayListOf<String>()
+                    valuelistAverage =  arrayListOf<Float>()
 
                     val dInput  = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.getDefault())
                     val dOutput = SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.getDefault())
 
 
                     for(i in marksData.indices){
-                        val dataClass = Mark(
+                        val dataClass = MarkAverage(
                             marksData[i].id,
                             marksData[i].user_id,
                             marksData[i].kind_of_mark_id,
@@ -252,16 +261,20 @@ class FragmentDetailedStatisticNum1 : Fragment() {
                             marksData[i].value_number,
                             marksData[i].value_string,
                             marksData[i].value_enum,
-                            marksData[i].value)
+                            marksData[i].value,
+                            marksData[i].moving_average)
                         datalist.add(dataClass)
 
                         dates.add(dOutput.format(dInput.parse(marksData[i].date)))
                         valuelist.add(marksData[i].value_number!!.toFloat())
+                        valuelistAverage.add(marksData[i].moving_average!!.toFloat())
 
                     }
 
 
                     values.add(valuelist)
+                    values.add(valuelistAverage)
+
                     val lineView: LineView  = activity!!.findViewById(com.example.mydiplom.R.id.line_view)
 
 
@@ -269,7 +282,7 @@ class FragmentDetailedStatisticNum1 : Fragment() {
                     lineView.setDrawDotLine(true);
                     lineView.setShowPopup(LineView.SHOW_POPUPS_All);
                     lineView.setBottomTextList(dates);
-                    lineView.setColorArray(intArrayOf(Color.parseColor("#f0b54f")))
+                    lineView.setColorArray(intArrayOf(Color.parseColor("#f0b54f"),Color.parseColor("#5fc97b")))
                     lineView.setFloatDataList(values);
 
 
@@ -279,7 +292,7 @@ class FragmentDetailedStatisticNum1 : Fragment() {
                 }
                 else{}
             }
-            override fun onFailure(call: Call<List<Mark>>, t: Throwable) {
+            override fun onFailure(call: Call<List<MarkAverage>>, t: Throwable) {
                 Log.d("RetrofitClient","Receive user from server problem " + t)
             }
         })

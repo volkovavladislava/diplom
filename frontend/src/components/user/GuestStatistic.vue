@@ -178,7 +178,20 @@ import { Line } from 'vue-chartjs'
 
     const options = {
         responsive: true,
-        maintainAspectRatio: false
+        maintainAspectRatio: false,
+        scales: {
+            x: {
+            ticks: {
+                // Наклон подписей по оси X
+                callback: function(value) {
+                return this.getLabelForValue(value)
+                },
+                autoSkip: false,
+                maxRotation: 20,
+                minRotation: 20
+            }
+            }
+        },
     }
 
 

@@ -34,6 +34,7 @@ import java.util.Date
 import java.util.Locale
 import java.util.TimeZone
 import androidx.core.util.Pair
+import com.example.mydiplom.data.MarkAverage
 
 
 class FragmentDetailedStatisticNum2 : Fragment() {
@@ -49,12 +50,15 @@ class FragmentDetailedStatisticNum2 : Fragment() {
     private var callCounter = 2
     private var errorOccurred = false
 
-    private lateinit var  list1: List<Mark>
-    private lateinit var  list2: List<Mark>
+    private lateinit var  list1: List<MarkAverage>
+    private lateinit var  list2: List<MarkAverage>
 
 
     private lateinit var  valuelist1: ArrayList<Float>
     private lateinit var  valuelist2: ArrayList<Float>
+
+    private lateinit var  valuelistAverage1: ArrayList<Float>
+    private lateinit var  valuelistAverage2: ArrayList<Float>
 
     var dates = ArrayList<String>()
     private lateinit var values : ArrayList<ArrayList<Float>>
@@ -82,32 +86,32 @@ class FragmentDetailedStatisticNum2 : Fragment() {
         callCounter = 2
 
 
-        val call1: Call<List<Mark>> = service.marksForUser(1, 1)
-        call1.enqueue(object : Callback<List<Mark>> {
-            override fun onResponse(call: Call<List<Mark>>, response: Response<List<Mark>>) {
+        val call1: Call<List<MarkAverage>> = service.marksForUserAverage(1, 1)
+        call1.enqueue(object : Callback<List<MarkAverage>> {
+            override fun onResponse(call: Call<List<MarkAverage>>, response: Response<List<MarkAverage>>) {
                 val marksData = response.body() ?: emptyList()
                 list1 = marksData
                 callCounter -=1
                 checkResults()
 
             }
-            override fun onFailure(call: Call<List<Mark>>, t: Throwable) {
+            override fun onFailure(call: Call<List<MarkAverage>>, t: Throwable) {
                 Log.d("RetrofitClient","Receive user from server problem " + t)
                 errorOccurred = true
             }
         })
 
 
-        val call2: Call<List<Mark>> = service.marksForUser(1, 2)
-        call2.enqueue(object : Callback<List<Mark>> {
-            override fun onResponse(call: Call<List<Mark>>, response: Response<List<Mark>>) {
+        val call2: Call<List<MarkAverage>> = service.marksForUserAverage(1, 2)
+        call2.enqueue(object : Callback<List<MarkAverage>> {
+            override fun onResponse(call: Call<List<MarkAverage>>, response: Response<List<MarkAverage>>) {
                 val marksData = response.body() ?: emptyList()
                 list2 = marksData
                 callCounter -=1
                 checkResults()
 
             }
-            override fun onFailure(call: Call<List<Mark>>, t: Throwable) {
+            override fun onFailure(call: Call<List<MarkAverage>>, t: Throwable) {
                 Log.d("RetrofitClient","Receive user from server problem " + t)
                 errorOccurred = true
             }
@@ -155,6 +159,9 @@ class FragmentDetailedStatisticNum2 : Fragment() {
             valuelist1 = arrayListOf<Float>()
             valuelist2 = arrayListOf<Float>()
 
+            valuelistAverage1 =  arrayListOf<Float>()
+            valuelistAverage2 =  arrayListOf<Float>()
+
             values = arrayListOf()
             dates = arrayListOf<String>()
 
@@ -180,10 +187,16 @@ class FragmentDetailedStatisticNum2 : Fragment() {
                 valuelist1.add(list1[i].value_number!!.toFloat())
                 valuelist2.add(list2[i].value_number!!.toFloat())
 
+                valuelistAverage1.add(list1[i].moving_average!!.toFloat())
+                valuelistAverage2.add(list2[i].moving_average!!.toFloat())
+
             }
 
             values.add(valuelist1)
             values.add(valuelist2)
+            values.add(valuelistAverage1)
+            values.add(valuelistAverage2)
+
             val lineView: LineView = requireActivity().findViewById(com.example.mydiplom.R.id.line_viewNum2)
 
 
@@ -191,7 +204,7 @@ class FragmentDetailedStatisticNum2 : Fragment() {
             lineView.setDrawDotLine(true);
             lineView.setShowPopup(LineView.SHOW_POPUPS_All);
             lineView.setBottomTextList(dates);
-            lineView.setColorArray(intArrayOf(Color.parseColor("#f0b54f"), Color.parseColor("#c260f0")))
+            lineView.setColorArray(intArrayOf(Color.parseColor("#f0b54f"), Color.parseColor("#c260f0"), Color.parseColor("#5fc97b"), Color.RED))
             lineView.setFloatDataList(values);
 
 
@@ -216,32 +229,32 @@ class FragmentDetailedStatisticNum2 : Fragment() {
         callCounter = 2
 
 //        val call1: Call<List<Mark>> = service.marksForUser(1, 1)
-        val call1: Call<List<Mark>> = service.marksForUserByDate(1, 1,date1, date2)
-        call1.enqueue(object : Callback<List<Mark>> {
-            override fun onResponse(call: Call<List<Mark>>, response: Response<List<Mark>>) {
+        val call1: Call<List<MarkAverage>> = service.marksForUserAverageByDate(1, 1,date1, date2)
+        call1.enqueue(object : Callback<List<MarkAverage>> {
+            override fun onResponse(call: Call<List<MarkAverage>>, response: Response<List<MarkAverage>>) {
                 val marksData = response.body() ?: emptyList()
                 list1 = marksData
                 callCounter -=1
                 checkResults()
 
             }
-            override fun onFailure(call: Call<List<Mark>>, t: Throwable) {
+            override fun onFailure(call: Call<List<MarkAverage>>, t: Throwable) {
                 Log.d("RetrofitClient","Receive user from server problem " + t)
                 errorOccurred = true
             }
         })
 
-        val call2: Call<List<Mark>> = service.marksForUserByDate(1, 2,date1, date2)
+        val call2: Call<List<MarkAverage>> = service.marksForUserAverageByDate(1, 2,date1, date2)
 //        val call2: Call<List<Mark>> = service.marksForUser(1, 2)
-        call2.enqueue(object : Callback<List<Mark>> {
-            override fun onResponse(call: Call<List<Mark>>, response: Response<List<Mark>>) {
+        call2.enqueue(object : Callback<List<MarkAverage>> {
+            override fun onResponse(call: Call<List<MarkAverage>>, response: Response<List<MarkAverage>>) {
                 val marksData = response.body() ?: emptyList()
                 list2 = marksData
                 callCounter -=1
                 checkResults()
 
             }
-            override fun onFailure(call: Call<List<Mark>>, t: Throwable) {
+            override fun onFailure(call: Call<List<MarkAverage>>, t: Throwable) {
                 Log.d("RetrofitClient","Receive user from server problem " + t)
                 errorOccurred = true
             }

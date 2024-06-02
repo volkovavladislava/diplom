@@ -9,11 +9,12 @@ import androidx.navigation.Navigation
 import androidx.recyclerview.widget.RecyclerView
 import com.example.mydiplom.R
 import com.example.mydiplom.data.Mark
+import com.example.mydiplom.data.MarkAverage
 import com.example.mydiplom.viewmodel.SharedViewModel
 import java.text.SimpleDateFormat
 import java.util.Locale
 
-class RecycleAdapterStatisticNum1 (private val dataList: ArrayList<Mark>,  private val viewModel: SharedViewModel) :
+class RecycleAdapterStatisticNum1 (private val dataList: ArrayList<MarkAverage>, private val viewModel: SharedViewModel) :
     RecyclerView.Adapter<RecycleAdapterStatisticNum1.ViewHolderClass>() {
 
 
