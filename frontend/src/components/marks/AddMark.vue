@@ -158,7 +158,7 @@ import { useStore } from 'vuex';
 
 
     async function addMark() {
-        if (value1.value && date.value) {
+        if (value1.value && date.value && situation.value) {
             isFormValid.value = true;
             // console.log( data)
             try {
@@ -184,7 +184,7 @@ import { useStore } from 'vuex';
     }
 
     async function addMarkDavlenie() {
-        if (value1.value && date.value && value2.value) {
+        if (value1.value && date.value && value2.value && situation.value) {
             isFormValid.value = true;
             try {
                 const s = listOfSituations.value.find(item => item.key === situation.value)
@@ -207,7 +207,7 @@ import { useStore } from 'vuex';
     }
 
     async function addMarkEnum() {
-        if (value1.value && date.value) {
+        if (value1.value && date.value && situation.value) {
             isFormValid.value = true;
             const b = enumValues.value.find(item => item.key === value1.value)
             

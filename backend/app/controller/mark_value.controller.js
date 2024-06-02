@@ -247,3 +247,95 @@ exports.deleteDavlenie = (req, res) => {
         globalFunctions.sendError(res, err);
     })
 };
+
+
+// WITH selected_data AS (
+//     SELECT 
+//         *
+//     FROM 
+//         `mark_value`
+//     WHERE 
+//         `user_id` = 1 
+//         AND `kind_of_mark_id` = 3
+//     ORDER BY 
+//         `date`
+// )
+// SELECT 
+//     `user_id`,
+//     `kind_of_mark_id`,
+//     `date`,
+//     `situation`,
+//     `value_number`,
+//     AVG(`value_number`) OVER (
+//         PARTITION BY `user_id` 
+//         ORDER BY `date` 
+//         ROWS BETWEEN 4 PRECEDING AND CURRENT ROW
+//     ) AS moving_average
+// FROM 
+//     selected_data;
+
+// WITH selected_data AS (SELECT * FROM `mark_value` WHERE `user_id` = 1  AND `kind_of_mark_id` = 3 ORDER BY `date`)
+// SELECT 
+//     `user_id`,
+//     `kind_of_mark_id`,
+//     `date`,
+//     `situation`,
+//     `value_number`,
+//     AVG(`value_number`) OVER (
+//         PARTITION BY `user_id` 
+//         ORDER BY `date` 
+//         ROWS BETWEEN 2 PRECEDING AND 2 following
+//     ) AS moving_average
+// FROM 
+//     selected_data;
+
+
+// WITH selected_data AS (SELECT * FROM `mark_value` WHERE `user_id` = 1  AND `kind_of_mark_id` = 3 ORDER BY `date`)
+// SELECT 
+//     *,
+//     ROUND(AVG(`value_number`) OVER (
+//         PARTITION BY `user_id` 
+//         ORDER BY `date` 
+//         ROWS BETWEEN 2 PRECEDING AND 2 following
+//     ), 0) AS moving_average
+// FROM 
+//     selected_data;
+
+
+// WITH selected_data AS (SELECT `mark_value`.`id`, `mark_value`.`user_id`, `mark_value`.`kind_of_mark_id`, `mark_value`.`date`, `mark_value`.`situation`, `mark_value`.`value_number`, `mark_value`.`value_string`, `mark_value`.`value_enum`,`enumeration_value`.`value` AS `value` FROM `mark_value` LEFT OUTER JOIN `enumeration_value` AS `enumeration_value` ON `mark_value`.`value_enum` = `enumeration_value`.`id` WHERE `mark_value`.`user_id` = 1  AND `mark_value`.`kind_of_mark_id` =  3 ORDER BY `mark_value`.`date`)
+// SELECT 
+//     *,
+//     ROUND(AVG(`value_number`) OVER (
+//         PARTITION BY`user_id` 
+//         ORDER BY `date` 
+//         ROWS BETWEEN 2 PRECEDING AND 2 following
+//     ), 0) AS moving_average
+// FROM 
+//     selected_data;
+
+exports.MarksWithAverage= (req, res) => {
+
+    db.sequelize.query('WITH selected_data AS (SELECT `mark_value`.`id`, `mark_value`.`user_id`, `mark_value`.`kind_of_mark_id`, `mark_value`.`date`, `mark_value`.`situation`, `mark_value`.`value_number`, `mark_value`.`value_string`, `mark_value`.`value_enum`,`enumeration_value`.`value` AS `value` FROM `mark_value` LEFT OUTER JOIN `enumeration_value` AS `enumeration_value` ON `mark_value`.`value_enum` = `enumeration_value`.`id` WHERE `mark_value`.`user_id` = :userId AND `mark_value`.`kind_of_mark_id` = :kindOfMarkId  ORDER BY `date`) SELECT *, ROUND(AVG(`value_number`) OVER (PARTITION BY `user_id` ORDER BY `date` ROWS BETWEEN 2 PRECEDING AND 2 following), 0) AS moving_average FROM selected_data;', 
+        { replacements: { userId: req.params.userId,  kindOfMarkId: req.params.kindOfMarkId}
+        , type: db.sequelize.QueryTypes.SELECT })
+        .then(objects => {
+            globalFunctions.sendResult(res, objects);
+        })
+        .catch(err => {
+            globalFunctions.sendError(res, err);
+        })
+};
+
+
+exports.MarksWithAverageByDate= (req, res) => {
+
+    db.sequelize.query('WITH selected_data AS (SELECT `mark_value`.`id`, `mark_value`.`user_id`, `mark_value`.`kind_of_mark_id`, `mark_value`.`date`, `mark_value`.`situation`, `mark_value`.`value_number`, `mark_value`.`value_string`, `mark_value`.`value_enum`,`enumeration_value`.`value` AS `value` FROM `mark_value` LEFT OUTER JOIN `enumeration_value` AS `enumeration_value` ON `mark_value`.`value_enum` = `enumeration_value`.`id` WHERE `mark_value`.`user_id` = :userId AND `mark_value`.`kind_of_mark_id` = :kindOfMarkId AND `mark_value`.`date` <= :date2 AND `mark_value`.`date` >= :date1 ORDER BY `date`) SELECT *, ROUND(AVG(`value_number`) OVER (PARTITION BY `user_id` ORDER BY `date` ROWS BETWEEN 2 PRECEDING AND 2 following), 0) AS moving_average FROM selected_data;', 
+        { replacements: { userId: req.params.userId,  kindOfMarkId: req.params.kindOfMarkId, date1: req.params.date1, date2: req.params.date2 }
+        , type: db.sequelize.QueryTypes.SELECT })
+        .then(objects => {
+            globalFunctions.sendResult(res, objects);
+        })
+        .catch(err => {
+            globalFunctions.sendError(res, err);
+        })
+};

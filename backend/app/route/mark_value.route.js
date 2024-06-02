@@ -25,4 +25,9 @@ module.exports = (app) => {
 
     app.put('/api/updateMarkDavlenie', mark_value.updateDavlenie);
 
+
+    app.get('/api/marksForUserAverage/userId=:userId/kindOfMarkId=:kindOfMarkId', mark_value.MarksWithAverage);
+    
+    app.get('/api/marksForUserAverageByDate/userId=:userId/kindOfMarkId=:kindOfMarkId/date1=:date1/date2=:date2', mark_value.MarksWithAverageByDate);
+
 };

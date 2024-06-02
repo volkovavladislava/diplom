@@ -47,6 +47,7 @@ class FragmentDetailedStatisticNum1 : Fragment() {
     private lateinit var recyclerView: RecyclerView
     private lateinit var  datalist: ArrayList<Mark>
     private lateinit var  valuelist: ArrayList<Float>
+    private lateinit var  valuelistAverage: ArrayList<Float>
     private var entries = mutableListOf<Entry>()
 
 
@@ -126,7 +127,7 @@ class FragmentDetailedStatisticNum1 : Fragment() {
                     lineView.setDrawDotLine(true);
                     lineView.setShowPopup(LineView.SHOW_POPUPS_All);
                     lineView.setBottomTextList(dates);
-                    lineView.setColorArray(intArrayOf(Color.BLUE))
+                    lineView.setColorArray(intArrayOf(Color.parseColor("#f0b54f")))
                     lineView.setFloatDataList(values);
 
                     datalist.reverse()
@@ -268,7 +269,7 @@ class FragmentDetailedStatisticNum1 : Fragment() {
                     lineView.setDrawDotLine(true);
                     lineView.setShowPopup(LineView.SHOW_POPUPS_All);
                     lineView.setBottomTextList(dates);
-                    lineView.setColorArray(intArrayOf(Color.BLUE))
+                    lineView.setColorArray(intArrayOf(Color.parseColor("#f0b54f")))
                     lineView.setFloatDataList(values);
 
 

@@ -14,7 +14,7 @@
                     <input type="datetime-local" class="form-control" id="inputDate2"  v-model="date2"> 
                  </div>
                  <div class="">
-                    <button type="button" class="btn btn-outline-secondary" @click="getMarksByDate()">Обновить данные</button>
+                    <button type="button" class="btn btn-outline-secondary" @click="getMarksAverageByDate()">Обновить данные</button>
                     &nbsp;
                     <button type="button" class="btn btn-outline-secondary" >Показать совет</button>
                  </div>
@@ -56,7 +56,7 @@
                     <input type="datetime-local" class="form-control" id="inputDate2"  v-model="date2"> 
                  </div>
                  <div class="">
-                    <button type="button" class="btn btn-outline-secondary" @click="getMarksByDate()">Обновить данные</button>
+                    <button type="button" class="btn btn-outline-secondary" @click="getMarksAverageByDate()">Обновить данные</button>
                     &nbsp;
                     <button type="button" class="btn btn-outline-secondary" >Показать совет</button>
                  </div>
@@ -99,7 +99,7 @@
                     <input type="datetime-local" class="form-control" id="inputDate2"  v-model="date2"> 
                  </div>
                  <div class="">
-                    <button type="button" class="btn btn-outline-secondary" @click="getMarksByDate()">Обновить данные</button>
+                    <button type="button" class="btn btn-outline-secondary" @click="getMarksAverageByDate()">Обновить данные</button>
                     &nbsp;
                     <button type="button" class="btn btn-outline-secondary" >Показать совет</button>
                  </div>
@@ -211,9 +211,88 @@ import { useStore } from 'vuex';
         Legend
     )
 
-    const getMarks = async () => {
+    // const getMarks = async () => {
+    //     try {
+    //         const response = await http.get('/marksForUser/userId=' + currentUser.value.id + '/kindOfMarkId=' + data.value.id);
+            
+    //         const a = {
+    //             label: data.value.name,
+    //             backgroundColor: '#f87979',
+    //             data: []
+    //         }
+
+    //         if(data.value.enum_kind_of_mark_id == 1){
+    //             response.data.forEach(value => {
+    //                 marks.value.push(value)         
+    //                 dataGraf.labels.push(moment.utc(value.date).format('YYYY-MM-DD HH:mm'))
+    //                 a.data.push(value.value_number)
+    //             })
+    //             dataGraf.datasets.push(a)
+    //             metka.value = 1
+    //             marks.value.reverse()
+    //         }
+
+            
+    //         if( data.value.enum_kind_of_mark_id == 4){
+    //             response.data.forEach(value => {
+    //                 marks.value.push(value)         
+    //                 dataGraf.labels.push(moment.utc(value.date).format('YYYY-MM-DD HH:mm'))
+    //                 a.data.push(value.value)
+    //             })
+    //             dataGraf.datasets.push(a)
+    //             metka.value = 1
+    //             marks.value.reverse()
+    //         }
+
+
+            
+    //         if( data.value.enum_kind_of_mark_id == 5){
+    //             const response1 = await http.get('/marksForUser/userId=' + currentUser.value.id + '/kindOfMarkId=' + 1);
+    //             const response2 = await http.get('/marksForUser/userId=' + currentUser.value.id + '/kindOfMarkId=' + 2);
+
+    //             const a = {
+    //                 label: "Систолоческое давление",
+    //                 backgroundColor: '#f87979',
+    //                 data: []
+    //             }
+
+    //             const b = {
+    //                 label: "Диастолическое давление",
+    //                 backgroundColor: '#f87979',
+    //                 data: []
+    //             }
+
+
+    //             response1.data.forEach(value => {
+    //                 marks.value.push(value)         
+    //                 dataGraf.labels.push(moment.utc(value.date).format('YYYY-MM-DD HH:mm'))
+    //                 a.data.push(value.value_number)
+    //             })
+    //             response2.data.forEach(value => {
+    //                 marks2.value.push(value)         
+    //                 b.data.push(value.value_number)
+    //             })
+
+    //             dataGraf.datasets.push(a)
+    //             dataGraf.datasets.push(b)
+    //             metka.value = 1
+
+    //             marks.value.reverse()
+    //             marks2.value.reverse()
+
+    //         }
+
+
+            
+    //     } catch (error) {
+    //         console.error(error);
+    //     }
+
+    // }
+
+    const getMarksAverage = async () => {
         try {
-            const response = await http.get('/marksForUser/userId=' + currentUser.value.id + '/kindOfMarkId=' + data.value.id);
+            const response = await http.get('/marksForUserAverage/userId=' + currentUser.value.id + '/kindOfMarkId=' + data.value.id);
             
             const a = {
                 label: data.value.name,
@@ -221,13 +300,24 @@ import { useStore } from 'vuex';
                 data: []
             }
 
+            
+
             if(data.value.enum_kind_of_mark_id == 1){
+                const average = {
+                    label: "Среднее",
+                    backgroundColor: '#9bf081',
+                    data: [],
+                    pointRadius: 5
+                }
+
                 response.data.forEach(value => {
                     marks.value.push(value)         
                     dataGraf.labels.push(moment.utc(value.date).format('YYYY-MM-DD HH:mm'))
                     a.data.push(value.value_number)
+                    average.data.push(value.moving_average)
                 })
                 dataGraf.datasets.push(a)
+                dataGraf.datasets.push(average)
                 metka.value = 1
                 marks.value.reverse()
             }
@@ -237,7 +327,7 @@ import { useStore } from 'vuex';
                 response.data.forEach(value => {
                     marks.value.push(value)         
                     dataGraf.labels.push(moment.utc(value.date).format('YYYY-MM-DD HH:mm'))
-                    a.data.push(value.value)
+                    a.data.push(value.value_enum)
                 })
                 dataGraf.datasets.push(a)
                 metka.value = 1
@@ -247,8 +337,8 @@ import { useStore } from 'vuex';
 
             
             if( data.value.enum_kind_of_mark_id == 5){
-                const response1 = await http.get('/marksForUser/userId=' + currentUser.value.id + '/kindOfMarkId=' + 1);
-                const response2 = await http.get('/marksForUser/userId=' + currentUser.value.id + '/kindOfMarkId=' + 2);
+                const response1 = await http.get('/marksForUserAverage/userId=' + currentUser.value.id + '/kindOfMarkId=' + 1 );
+                const response2 = await http.get('/marksForUserAverage/userId=' + currentUser.value.id + '/kindOfMarkId=' + 2 );
 
                 const a = {
                     label: "Систолоческое давление",
@@ -258,8 +348,22 @@ import { useStore } from 'vuex';
 
                 const b = {
                     label: "Диастолическое давление",
-                    backgroundColor: '#f87979',
+                    backgroundColor: '#c260f0',
                     data: []
+                }
+
+                const average1 = {
+                    label: "Среднее систолическое",
+                    backgroundColor: '#9bf081',
+                    data: [],
+                    pointRadius: 5
+                }
+
+                const average2 = {
+                    label: "Среднее диастолическое",
+                    backgroundColor: '#1f7d02',
+                    data: [],
+                    pointRadius: 5
                 }
 
 
@@ -267,14 +371,18 @@ import { useStore } from 'vuex';
                     marks.value.push(value)         
                     dataGraf.labels.push(moment.utc(value.date).format('YYYY-MM-DD HH:mm'))
                     a.data.push(value.value_number)
+                    average1.data.push(value.moving_average)
                 })
                 response2.data.forEach(value => {
                     marks2.value.push(value)         
                     b.data.push(value.value_number)
+                    average2.data.push(value.moving_average)
                 })
 
                 dataGraf.datasets.push(a)
                 dataGraf.datasets.push(b)
+                dataGraf.datasets.push(average1)
+                dataGraf.datasets.push(average2)
                 metka.value = 1
 
                 marks.value.reverse()
@@ -290,8 +398,7 @@ import { useStore } from 'vuex';
 
     }
 
-    
-    const getMarksByDate = async () => {
+    const getMarksAverageByDate = async () => {
         try {
             metka.value = 0
 
@@ -302,7 +409,7 @@ import { useStore } from 'vuex';
                 date2.value = moment.utc().format('YYYY-MM-DD HH:mm')  
             }
 
-            const response = await http.get('/marksForUserByDate/userId=' + currentUser.value.id + '/kindOfMarkId=' + data.value.id + '/date1=' + date1.value + '/date2=' + date2.value);
+            const response = await http.get('/marksForUserAverageByDate/userId=' + currentUser.value.id + '/kindOfMarkId=' + data.value.id + '/date1=' + date1.value + '/date2=' + date2.value);
             
             const a = {
                 label: data.value.name,
@@ -311,16 +418,26 @@ import { useStore } from 'vuex';
             }
 
             if(data.value.enum_kind_of_mark_id == 1){
+                const average = {
+                    label: "Среднее",
+                    backgroundColor: '#9bf081',
+                    data: [],
+                    pointRadius: 5
+                }
+
                 marks.value=[]
                 dataGraf.labels =[]
                 a.data=[]
+                average.data = []
                 dataGraf.datasets=[]
                 response.data.forEach(value => {
                     marks.value.push(value)         
                     dataGraf.labels.push(moment.utc(value.date).format('YYYY-MM-DD HH:mm'))
                     a.data.push(value.value_number)
+                    average.data.push(value.moving_average)
                 })
                 dataGraf.datasets.push(a)
+                dataGraf.datasets.push(average)
                 metka.value = 1
                 marks.value.reverse()
             }
@@ -334,7 +451,7 @@ import { useStore } from 'vuex';
                 response.data.forEach(value => {
                     marks.value.push(value)         
                     dataGraf.labels.push(moment.utc(value.date).format('YYYY-MM-DD HH:mm'))
-                    a.data.push(value.value)
+                    a.data.push(value.value_enum)
                 })
                 dataGraf.datasets.push(a)
                 metka.value = 1
@@ -345,10 +462,9 @@ import { useStore } from 'vuex';
             
             if( data.value.enum_kind_of_mark_id == 5){
             
-                const response1 = await http.get('/marksForUserByDate/userId=' + currentUser.value.id + '/kindOfMarkId=' + 1 + '/date1=' + date1.value + '/date2=' + date2.value);
-                const response2 = await http.get('/marksForUserByDate/userId=' + currentUser.value.id + '/kindOfMarkId=' + 2 + '/date1=' + date1.value + '/date2=' + date2.value);
-                console.log(response1.data)
-                console.log(response2.data)
+                const response1 = await http.get('/marksForUserAverageByDate/userId=' + currentUser.value.id + '/kindOfMarkId=' + 1 + '/date1=' + date1.value + '/date2=' + date2.value);
+                const response2 = await http.get('/marksForUserAverageByDate/userId=' + currentUser.value.id + '/kindOfMarkId=' + 2 + '/date1=' + date1.value + '/date2=' + date2.value);
+
                 const a = {
                     label: "Систолоческое давление",
                     backgroundColor: '#f87979',
@@ -357,28 +473,47 @@ import { useStore } from 'vuex';
 
                 const b = {
                     label: "Диастолическое давление",
-                    backgroundColor: '#f87979',
+                    backgroundColor: '#c260f0',
                     data: []
+                }
+                const average1 = {
+                    label: "Среднее систолическое",
+                    backgroundColor: '#9bf081',
+                    data: [],
+                    pointRadius: 5
+                }
+
+                const average2 = {
+                    label: "Среднее диастолическое",
+                    backgroundColor: '#1f7d02',
+                    data: [],
+                    pointRadius: 5
                 }
                 marks.value=[]
                 marks2.value=[]
                 dataGraf.labels =[]
                 a.data=[]
                 b.data=[]
+                average1.data=[]
+                average2.data=[]
                 dataGraf.datasets=[]
 
                 response1.data.forEach(value => {
                     marks.value.push(value)         
                     dataGraf.labels.push(moment.utc(value.date).format('YYYY-MM-DD HH:mm'))
                     a.data.push(value.value_number)
+                    average1.data.push(value.moving_average)
                 })
                 response2.data.forEach(value => {
                     marks2.value.push(value)         
                     b.data.push(value.value_number)
+                    average2.data.push(value.moving_average)
                 })
 
                 dataGraf.datasets.push(a)
                 dataGraf.datasets.push(b)
+                dataGraf.datasets.push(average1)
+                dataGraf.datasets.push(average2)
                 metka.value = 1
                 marks.value.reverse()
                 marks2.value.reverse()
@@ -391,6 +526,108 @@ import { useStore } from 'vuex';
         }
 
     }
+
+    
+    // const getMarksByDate = async () => {
+    //     try {
+    //         metka.value = 0
+
+    //         if(date1.value == null){
+    //             date1.value = "1900-01-01 00:00"
+    //         }
+    //         if(date2.value == null){
+    //             date2.value = moment.utc().format('YYYY-MM-DD HH:mm')  
+    //         }
+
+    //         const response = await http.get('/marksForUserByDate/userId=' + currentUser.value.id + '/kindOfMarkId=' + data.value.id + '/date1=' + date1.value + '/date2=' + date2.value);
+            
+    //         const a = {
+    //             label: data.value.name,
+    //             backgroundColor: '#f87979',
+    //             data: []
+    //         }
+
+    //         if(data.value.enum_kind_of_mark_id == 1){
+    //             marks.value=[]
+    //             dataGraf.labels =[]
+    //             a.data=[]
+    //             dataGraf.datasets=[]
+    //             response.data.forEach(value => {
+    //                 marks.value.push(value)         
+    //                 dataGraf.labels.push(moment.utc(value.date).format('YYYY-MM-DD HH:mm'))
+    //                 a.data.push(value.value_number)
+    //             })
+    //             dataGraf.datasets.push(a)
+    //             metka.value = 1
+    //             marks.value.reverse()
+    //         }
+
+            
+    //         if( data.value.enum_kind_of_mark_id == 4){
+    //             marks.value=[]
+    //             dataGraf.labels =[]
+    //             a.data=[]
+    //             dataGraf.datasets=[]
+    //             response.data.forEach(value => {
+    //                 marks.value.push(value)         
+    //                 dataGraf.labels.push(moment.utc(value.date).format('YYYY-MM-DD HH:mm'))
+    //                 a.data.push(value.value)
+    //             })
+    //             dataGraf.datasets.push(a)
+    //             metka.value = 1
+    //             marks.value.reverse()
+    //         }
+
+
+            
+    //         if( data.value.enum_kind_of_mark_id == 5){
+            
+    //             const response1 = await http.get('/marksForUserByDate/userId=' + currentUser.value.id + '/kindOfMarkId=' + 1 + '/date1=' + date1.value + '/date2=' + date2.value);
+    //             const response2 = await http.get('/marksForUserByDate/userId=' + currentUser.value.id + '/kindOfMarkId=' + 2 + '/date1=' + date1.value + '/date2=' + date2.value);
+    //             console.log(response1.data)
+    //             console.log(response2.data)
+    //             const a = {
+    //                 label: "Систолоческое давление",
+    //                 backgroundColor: '#f87979',
+    //                 data: []
+    //             }
+
+    //             const b = {
+    //                 label: "Диастолическое давление",
+    //                 backgroundColor: '#f87979',
+    //                 data: []
+    //             }
+    //             marks.value=[]
+    //             marks2.value=[]
+    //             dataGraf.labels =[]
+    //             a.data=[]
+    //             b.data=[]
+    //             dataGraf.datasets=[]
+
+    //             response1.data.forEach(value => {
+    //                 marks.value.push(value)         
+    //                 dataGraf.labels.push(moment.utc(value.date).format('YYYY-MM-DD HH:mm'))
+    //                 a.data.push(value.value_number)
+    //             })
+    //             response2.data.forEach(value => {
+    //                 marks2.value.push(value)         
+    //                 b.data.push(value.value_number)
+    //             })
+
+    //             dataGraf.datasets.push(a)
+    //             dataGraf.datasets.push(b)
+    //             metka.value = 1
+    //             marks.value.reverse()
+    //             marks2.value.reverse()
+    //         }
+
+
+            
+    //     } catch (error) {
+    //         console.error(error);
+    //     }
+
+    // }
     
 
     const redirectToUpdaterecordMarkPage = (id, data) => {
@@ -400,7 +637,8 @@ import { useStore } from 'vuex';
 
 
 onMounted(async () => {
-    await getMarks();
+    // await getMarks();
+    await getMarksAverage();
 });
 
 </script>

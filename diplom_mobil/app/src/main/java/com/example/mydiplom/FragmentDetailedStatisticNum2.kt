@@ -55,6 +55,7 @@ class FragmentDetailedStatisticNum2 : Fragment() {
 
     private lateinit var  valuelist1: ArrayList<Float>
     private lateinit var  valuelist2: ArrayList<Float>
+
     var dates = ArrayList<String>()
     private lateinit var values : ArrayList<ArrayList<Float>>
 
@@ -190,7 +191,7 @@ class FragmentDetailedStatisticNum2 : Fragment() {
             lineView.setDrawDotLine(true);
             lineView.setShowPopup(LineView.SHOW_POPUPS_All);
             lineView.setBottomTextList(dates);
-            lineView.setColorArray(intArrayOf(Color.BLUE))
+            lineView.setColorArray(intArrayOf(Color.parseColor("#f0b54f"), Color.parseColor("#c260f0")))
             lineView.setFloatDataList(values);
 
 
