@@ -16,7 +16,7 @@
                  <div class="">
                     <button type="button" class="btn btn-outline-secondary" @click="getMarksAverageByDate()">Обновить данные</button>
                     &nbsp;
-                    <button type="button" class="btn btn-outline-secondary" @click="getAdvice()">Показать совет</button>
+                    <button type="button" class="btn btn-outline-secondary" @click="getAdvice()" data-bs-toggle="modal" data-bs-target="#exampleModal">Показать совет</button>
                  </div>
                  <div class="">
                     <label  class="form-label labelm">Ваши записи:</label>
@@ -43,6 +43,13 @@
 
             <div  class=" right" style="margin-left: 40px; margin-top: 8px" v-if="updatemetka">
              <Line :data="dataGraf" :options="options" v-model="dataGraf.datasets" style="width: 700px; max-height: 300px;"/>
+                <div  style="margin-left: 200px; margin-top: 50px; width: 400px ">
+                    <div class="">Установите параметр усреденения</div>
+                    <br/>
+                    <input type="number" class="form-control" id="inputHeight"   v-model="param"> 
+                    <br/>
+                    <button type="button" class="btn btn-outline-secondary" @click="getMarksAverageByDateWithParam()">Обновить </button>
+                </div>
             </div>
     </div>
 
@@ -101,7 +108,7 @@
                  <div class="">
                     <button type="button" class="btn btn-outline-secondary" @click="getMarksAverageByDate()">Обновить данные</button>
                     &nbsp;
-                    <button type="button" class="btn btn-outline-secondary" @click="getAdvice()">Показать совет</button>
+                    <button type="button" class="btn btn-outline-secondary" @click="getAdvice()" data-bs-toggle="modal" data-bs-target="#exampleModal">Показать совет</button>
                  </div>
                  <div class="">
                     <label  class="form-label labelm">Ваши записи:</label>
@@ -131,8 +138,40 @@
 
             <div  class=" right" style="margin-left: 40px; margin-top: 8px">
              <Line :data="dataGraf" :options="options" v-model="dataGraf" style="width: 700px; max-height: 300px;"/>
+             <div  style="margin-left: 200px; margin-top: 50px; width: 400px ">
+                    <div class="">Установите параметр усреденения</div>
+                    <br/>
+                    <input type="number" class="form-control" id="inputHeight"   v-model="param"> 
+                    <br/>
+                    <button type="button" class="btn btn-outline-secondary" @click="getMarksAverageByDateWithParam()">Обновить </button>
+                </div>
             </div>
     </div>
+
+
+
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Рекомендация</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Закрыть"></button>
+      </div>
+      <div class="modal-body">
+        {{advice}}
+        <br/>
+        {{advice2}}
+      </div>
+      <!-- <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Закрыть</button>
+        
+      </div> -->
+    </div>
+  </div>
+</div>
+
+
+    
 </div>
 </template>
 
@@ -164,6 +203,11 @@ import { useStore } from 'vuex';
     // const userId = ref(1)
     const marks = ref([])
     const marks2 = ref([])
+
+    const advice = ref(null)
+    const advice2 = ref(null)
+
+    const param = ref(2)
 
 
     const date1 = ref(null)
@@ -305,7 +349,7 @@ import { useStore } from 'vuex';
 
     const getMarksAverage = async () => {
         try {
-            const response = await http.get('/marksForUserAverage/userId=' + currentUser.value.id + '/kindOfMarkId=' + data.value.id);
+            
             
             const a = {
                 label: data.value.name,
@@ -316,6 +360,7 @@ import { useStore } from 'vuex';
             
 
             if(data.value.enum_kind_of_mark_id == 1){
+                const response = await http.get('/marksForUserAverage/userId=' + currentUser.value.id + '/kindOfMarkId=' + data.value.id);
                 const average = {
                     label: "Среднее",
                     backgroundColor: '#9bf081',
@@ -337,6 +382,7 @@ import { useStore } from 'vuex';
 
             
             if( data.value.enum_kind_of_mark_id == 4){
+                const response = await http.get('/marksForUserAverage/userId=' + currentUser.value.id + '/kindOfMarkId=' + data.value.id);
                 response.data.forEach(value => {
                     marks.value.push(value)         
                     dataGraf.labels.push(moment.utc(value.date).format('YYYY-MM-DD HH:mm'))
@@ -415,14 +461,24 @@ import { useStore } from 'vuex';
         try {
             metka.value = 0
 
+            param.value =2 
+
+            const d1 = ref(null)
+            const d2 = ref(null)
+            
             if(date1.value == null){
-                date1.value = "1900-01-01 00:00"
+                d1.value = "1900-01-01 00:00"
+            }
+            else{
+                d1.value = date1.value
             }
             if(date2.value == null){
-                date2.value = moment.utc().format('YYYY-MM-DD HH:mm')  
+                d2.value = "2030-01-01 00:00"
+            }else{
+                d2.value =date2.value
             }
 
-            const response = await http.get('/marksForUserAverageByDate/userId=' + currentUser.value.id + '/kindOfMarkId=' + data.value.id + '/date1=' + date1.value + '/date2=' + date2.value);
+            
             
             const a = {
                 label: data.value.name,
@@ -431,6 +487,8 @@ import { useStore } from 'vuex';
             }
 
             if(data.value.enum_kind_of_mark_id == 1){
+                const response = await http.get('/marksForUserAverageByDate/userId=' + currentUser.value.id + '/kindOfMarkId=' + data.value.id + '/date1=' + d1.value + '/date2=' + d2.value);
+
                 const average = {
                     label: "Среднее",
                     backgroundColor: '#9bf081',
@@ -457,6 +515,7 @@ import { useStore } from 'vuex';
 
             
             if( data.value.enum_kind_of_mark_id == 4){
+                const response = await http.get('/marksForUserAverageByDate/userId=' + currentUser.value.id + '/kindOfMarkId=' + data.value.id + '/date1=' + d1.value + '/date2=' + d2.value);
                 marks.value=[]
                 dataGraf.labels =[]
                 a.data=[]
@@ -475,8 +534,8 @@ import { useStore } from 'vuex';
             
             if( data.value.enum_kind_of_mark_id == 5){
             
-                const response1 = await http.get('/marksForUserAverageByDate/userId=' + currentUser.value.id + '/kindOfMarkId=' + 1 + '/date1=' + date1.value + '/date2=' + date2.value);
-                const response2 = await http.get('/marksForUserAverageByDate/userId=' + currentUser.value.id + '/kindOfMarkId=' + 2 + '/date1=' + date1.value + '/date2=' + date2.value);
+                const response1 = await http.get('/marksForUserAverageByDate/userId=' + currentUser.value.id + '/kindOfMarkId=' + 1 + '/date1=' + d1.value + '/date2=' + d2.value);
+                const response2 = await http.get('/marksForUserAverageByDate/userId=' + currentUser.value.id + '/kindOfMarkId=' + 2 + '/date1=' + d1.value + '/date2=' + d2.value);
 
                 const a = {
                     label: "Систолоческое давление",
@@ -655,28 +714,166 @@ import { useStore } from 'vuex';
                 d1.value = date1.value
             }
             if(date2.value == null){
-                d2.value = moment.utc().format('YYYY-MM-DD HH:mm')  
+                d2.value = "2030-01-01 00:00"
             }else{
                 d2.value =date2.value
             }
 
-            const response = await http.get('/getAdvice/userId=' + currentUser.value.id + '/kindOfMarkId=' + data.value.id + '/date1=' + d1.value + '/date2=' + d2.value);
 
-            console.log(response.data[0].comment)
+            if(data.value.enum_kind_of_mark_id == 1){  
+                const response = await http.get('/getAdvice/userId=' + currentUser.value.id + '/kindOfMarkId=' + data.value.id + '/date1=' + d1.value + '/date2=' + d2.value);
+                advice.value = response.data.comment
+                console.log(advice.value)
+            }
+
+
+
+            if( data.value.enum_kind_of_mark_id == 5){
+                const response1 = await http.get('/getAdvice/userId=' + currentUser.value.id + '/kindOfMarkId=' + 1 + '/date1=' + d1.value + '/date2=' + d2.value);
+                const response2 = await http.get('/getAdvice/userId=' + currentUser.value.id + '/kindOfMarkId=' + 2 + '/date1=' + d1.value + '/date2=' + d2.value);
+                advice.value = response1.data.comment
+                advice2.value = response2.data.comment
+                
+            }
+
+
             
+        } catch (error) {
+            console.error(error);
+        }
 
-            // if(data.value.enum_kind_of_mark_id == 1){  
-            // }
+    }
 
+
+    const getMarksAverageByDateWithParam = async () => {
+        try {
+            metka.value = 0
+
+            const d1 = ref(null)
+            const d2 = ref(null)
+            
+            if(date1.value == null){
+                d1.value = "1900-01-01 00:00"
+            }
+            else{
+                d1.value = date1.value
+            }
+            if(date2.value == null){
+                d2.value = "2030-01-01 00:00"
+            }else{
+                d2.value =date2.value
+            }
+
+            console.log(param.value)
+            const response = await http.get('/marksForUserAverageByDateWithParam/userId=' + currentUser.value.id + '/kindOfMarkId=' + data.value.id + '/date1=' + d1.value + '/date2=' + d2.value + '/myparam=' + param.value);
+            
+            const a = {
+                label: data.value.name,
+                backgroundColor: '#f87979',
+                data: []
+            }
+
+            if(data.value.enum_kind_of_mark_id == 1){
+                const average = {
+                    label: "Среднее",
+                    backgroundColor: '#9bf081',
+                    data: [],
+                    pointRadius: 5
+                }
+
+                marks.value=[]
+                dataGraf.labels =[]
+                a.data=[]
+                average.data = []
+                dataGraf.datasets=[]
+                response.data.forEach(value => {
+                    marks.value.push(value)         
+                    dataGraf.labels.push(moment.utc(value.date).format('YYYY-MM-DD HH:mm'))
+                    a.data.push(value.value_number)
+                    average.data.push(value.moving_average)
+                })
+                dataGraf.datasets.push(a)
+                dataGraf.datasets.push(average)
+                metka.value = 1
+                marks.value.reverse()
+            }
+
+            
             // if( data.value.enum_kind_of_mark_id == 4){
-                
+            //     marks.value=[]
+            //     dataGraf.labels =[]
+            //     a.data=[]
+            //     dataGraf.datasets=[]
+            //     response.data.forEach(value => {
+            //         marks.value.push(value)         
+            //         dataGraf.labels.push(moment.utc(value.date).format('YYYY-MM-DD HH:mm'))
+            //         a.data.push(value.value_enum)
+            //     })
+            //     dataGraf.datasets.push(a)
+            //     metka.value = 1
+            //     marks.value.reverse()
             // }
 
 
-            // if( data.value.enum_kind_of_mark_id == 5){
-                
+            
+            if( data.value.enum_kind_of_mark_id == 5){
+            
+                const response1 = await http.get('/marksForUserAverageByDateWithParam/userId=' + currentUser.value.id + '/kindOfMarkId=' + 1 + '/date1=' + d1.value + '/date2=' + d2.value + '/myparam=' + param.value);
+                const response2 = await http.get('/marksForUserAverageByDateWithParam/userId=' + currentUser.value.id + '/kindOfMarkId=' + 2 + '/date1=' + d1.value + '/date2=' + d2.value + '/myparam=' + param.value);
 
-            // }
+                const a = {
+                    label: "Систолоческое давление",
+                    backgroundColor: '#f87979',
+                    data: []
+                }
+
+                const b = {
+                    label: "Диастолическое давление",
+                    backgroundColor: '#c260f0',
+                    data: []
+                }
+                const average1 = {
+                    label: "Среднее систолическое",
+                    backgroundColor: '#9bf081',
+                    data: [],
+                    pointRadius: 5
+                }
+
+                const average2 = {
+                    label: "Среднее диастолическое",
+                    backgroundColor: '#1f7d02',
+                    data: [],
+                    pointRadius: 5
+                }
+                marks.value=[]
+                marks2.value=[]
+                dataGraf.labels =[]
+                a.data=[]
+                b.data=[]
+                average1.data=[]
+                average2.data=[]
+                dataGraf.datasets=[]
+
+                response1.data.forEach(value => {
+                    marks.value.push(value)         
+                    dataGraf.labels.push(moment.utc(value.date).format('YYYY-MM-DD HH:mm'))
+                    a.data.push(value.value_number)
+                    average1.data.push(value.moving_average)
+                })
+                response2.data.forEach(value => {
+                    marks2.value.push(value)         
+                    b.data.push(value.value_number)
+                    average2.data.push(value.moving_average)
+                })
+
+                dataGraf.datasets.push(a)
+                dataGraf.datasets.push(b)
+                dataGraf.datasets.push(average1)
+                dataGraf.datasets.push(average2)
+                metka.value = 1
+                marks.value.reverse()
+                marks2.value.reverse()
+            }
 
 
             

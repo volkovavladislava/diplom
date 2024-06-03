@@ -7,6 +7,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -34,6 +35,7 @@ import java.util.Date
 import java.util.Locale
 import java.util.TimeZone
 import androidx.core.util.Pair
+import com.example.mydiplom.data.Advice
 import com.example.mydiplom.data.MarkAverage
 
 
@@ -63,6 +65,9 @@ class FragmentDetailedStatisticNum2 : Fragment() {
     var dates = ArrayList<String>()
     private lateinit var values : ArrayList<ArrayList<Float>>
 
+
+    private var date1 = "1900-01-01"
+    private var date2 = "2030-01-01"
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -130,12 +135,63 @@ class FragmentDetailedStatisticNum2 : Fragment() {
 
             picker.addOnPositiveButtonClickListener {
                 binding!!.labelDatePickedDetailedStatisticNum2.setText(convertTimeToDate(it.first) + " - " + convertTimeToDate(it.second))
+                date1 = convertTimeToDate(it.first)
+                date2 = convertTimeToDate(it.second)
                 updateData(convertTimeToDate(it.first),convertTimeToDateSecond(it.second))
 
             }
             picker.addOnNegativeButtonClickListener{
                 picker.dismiss()
             }
+        }
+
+
+
+        binding!!.bthGetAdviceDetailedStatisticNum2.setOnClickListener {
+
+            val call1: Call<Advice> = service.getAdvice(1, 1, date1, date2)
+
+            call1.enqueue(object : Callback<Advice> {
+                override fun onResponse(call: Call<Advice>, response: Response<Advice>) {
+                    if (response.isSuccessful) {
+                        var adviceData1 = response.body()
+
+                        val call1: Call<Advice> = service.getAdvice(1, 2, date1, date2)
+
+                        call1.enqueue(object : Callback<Advice> {
+                            override fun onResponse(call: Call<Advice>, response: Response<Advice>) {
+                                if (response.isSuccessful) {
+                                    var adviceData2 = response.body()
+
+                                    val builder = AlertDialog.Builder(requireContext())
+                                    builder.setTitle("Рекомендация")
+                                    builder.setMessage(adviceData1!!.comment + " " + adviceData2!!.comment)
+                                    builder.setPositiveButton("OK") { dialog, _ ->
+                                        dialog.dismiss()
+                                    }
+                                    builder.setNegativeButton("Cancel") { dialog, _ ->
+                                        dialog.dismiss()
+                                    }
+
+                                    val dialog: AlertDialog = builder.create()
+                                    dialog.show()
+                                }
+                                else{}
+                            }
+                            override fun onFailure(call: Call<Advice>, t: Throwable) {
+                                Log.d("RetrofitClient","Receive user from server problem " + t)
+                            }
+                        })
+
+                    }
+                    else{}
+                }
+                override fun onFailure(call: Call<Advice>, t: Throwable) {
+                    Log.d("RetrofitClient","Receive user from server problem " + t)
+                }
+            })
+
+
         }
 
 

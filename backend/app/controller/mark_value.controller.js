@@ -345,19 +345,27 @@ exports.MarksWithAverageByDate= (req, res) => {
 
 exports.MarksWithAverageByDateWithParametrs= (req, res) => {
 
-    db.sequelize.query('WITH selected_data AS (SELECT `mark_value`.`id`, `mark_value`.`user_id`, `mark_value`.`kind_of_mark_id`, `mark_value`.`date`, `mark_value`.`situation`, `mark_value`.`value_number`, `mark_value`.`value_string`, `mark_value`.`value_enum`,`enumeration_value`.`value` AS `value` FROM `mark_value` LEFT OUTER JOIN `enumeration_value` AS `enumeration_value` ON `mark_value`.`value_enum` = `enumeration_value`.`id` WHERE `mark_value`.`user_id` = :userId AND `mark_value`.`kind_of_mark_id` = :kindOfMarkId AND `mark_value`.`date` <= :date2 AND `mark_value`.`date` >= :date1 ORDER BY `date`) SELECT *, ROUND(AVG(`value_number`) OVER (PARTITION BY `user_id` ORDER BY `date` ROWS BETWEEN :param PRECEDING AND :param following), 0) AS moving_average FROM selected_data;', 
-        { replacements: { userId: req.params.userId,  kindOfMarkId: req.params.kindOfMarkId, date1: req.params.date1, date2: req.params.date2, param: req.params.param }
+    const p = parseInt(req.params.myparam, 10); 
+
+    db.sequelize.query('WITH selected_data AS (SELECT `mark_value`.`id`, `mark_value`.`user_id`, `mark_value`.`kind_of_mark_id`, `mark_value`.`date`, `mark_value`.`situation`, `mark_value`.`value_number`, `mark_value`.`value_string`, `mark_value`.`value_enum`,`enumeration_value`.`value` AS `value` FROM `mark_value` LEFT OUTER JOIN `enumeration_value` AS `enumeration_value` ON `mark_value`.`value_enum` = `enumeration_value`.`id` WHERE `mark_value`.`user_id` = :userId AND `mark_value`.`kind_of_mark_id` = :kindOfMarkId AND `mark_value`.`date` <= :date2 AND `mark_value`.`date` >= :date1 ORDER BY `date`) SELECT *, ROUND(AVG(`value_number`) OVER (PARTITION BY `user_id` ORDER BY `date` ROWS BETWEEN :myparam PRECEDING AND :myparam following), 0) AS moving_average FROM selected_data;', 
+        { replacements: { userId: req.params.userId,  kindOfMarkId: req.params.kindOfMarkId, date1: req.params.date1, date2: req.params.date2, myparam: p }
         , type: db.sequelize.QueryTypes.SELECT })
         .then(objects => {
+            
             globalFunctions.sendResult(res, objects);
         })
         .catch(err => {
+            console.log(err)
             globalFunctions.sendError(res, err);
         })
 };
 
 
 exports.getAdvice= (req, res) => {
+
+    var itog = {
+        comment : ""
+    }
     db.sequelize.query('SELECT * FROM `mark_value` AS `mark_value`  WHERE `mark_value`.`user_id` = :userId AND `mark_value`.`kind_of_mark_id` = :kindOfMarkId AND `mark_value`.`date` <= :date2 AND `mark_value`.`date` >= :date1;', 
         { replacements: { userId: req.params.userId,  kindOfMarkId: req.params.kindOfMarkId, date1: req.params.date1, date2: req.params.date2 }
         , type: db.sequelize.QueryTypes.SELECT })
@@ -387,30 +395,34 @@ exports.getAdvice= (req, res) => {
                 .then(objectsOperating => {
                     
                     if(objectsOperating.length != 0){
-                        console.log("length " + 0)
+
                         db.sequelize.query('SELECT * FROM `base_operating_value_of_mark` WHERE  `kind_of_mark_id` = :kindOfMarkId AND `gender` = :gender AND  :age >= `min_age` AND :age <= `max_age` ;',
                         { replacements: { gender: user[0].gender,  kindOfMarkId: req.params.kindOfMarkId, age: age}, type: db.sequelize.QueryTypes.SELECT })
                         .then(objectsNorma => {
                             norma = objectsNorma
-
+                            
+                            
                             let razbeg = norma[1].max_value - norma[1].min_value
+                            
                             let niz = objectsOperating[0].value - razbeg/2
                             let verh = objectsOperating[0].value + razbeg/2
                             
-
+                            
                             if(valAverage >= niz && valAverage <=verh){
-                                console.log("good ")
+                                // console.log("good ")
+                                itog.comment = norma[1].comment
+                                // console.log("itogcomment " + itog.comment)
                             }
                             if(valAverage < niz){
-                                console.log("too small ")
+                                // console.log("too small ")
+                                itog.comment = norma[0].comment
                             }
                             if(valAverage > verh){
-                                console.log("too big ")
+                                // console.log("too big ")
+                                itog.comment = norma[2].comment
                             }
-                            // console.log("objectsOperating[0].value "+objectsOperating[0].value)
-                            // console.log("niz "+niz)
-                            // console.log("verh "+verh)
                             
+                            globalFunctions.sendResult(res, itog);
                         })
                         .catch(err => {
                             globalFunctions.sendError(res, err);
@@ -422,8 +434,10 @@ exports.getAdvice= (req, res) => {
                         db.sequelize.query('SELECT * FROM `base_operating_value_of_mark` WHERE  `kind_of_mark_id` = :kindOfMarkId AND `gender` = :gender AND  :age >= `min_age` AND :age <= `max_age` AND :value >= `min_value` AND :value <= `max_value` ;',
                         { replacements: { gender: user[0].gender,  kindOfMarkId: req.params.kindOfMarkId, age: age, value: valAverage}, type: db.sequelize.QueryTypes.SELECT })
                         .then(objectsAdvice => {
-                            console.log(objectsAdvice)
-                            globalFunctions.sendResult(res, objectsAdvice);
+                            // console.log(objectsAdvice)
+                            itog.comment = objectsAdvice[0].comment
+                            // console.log(itog)
+                            globalFunctions.sendResult(res, itog);
                         })
                         .catch(err => {
                             globalFunctions.sendError(res, err);

@@ -11,12 +11,15 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AlertDialog
 import androidx.core.util.Pair
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.mydiplom.adapters.RecycleAdapterStatisticNum1
+import com.example.mydiplom.data.Advice
+import com.example.mydiplom.data.File
 import com.example.mydiplom.data.Mark
 import com.example.mydiplom.data.MarkAverage
 import com.example.mydiplom.databinding.FragmentDetailedStatisticNum1Binding
@@ -27,6 +30,7 @@ import com.github.mikephil.charting.data.LineData
 import com.github.mikephil.charting.data.LineDataSet
 import com.github.mikephil.charting.formatter.ValueFormatter
 import com.google.android.material.datepicker.MaterialDatePicker
+import com.squareup.picasso.Picasso
 import im.dacer.androidcharts.LineView
 import retrofit2.Call
 import retrofit2.Callback
@@ -55,6 +59,9 @@ class FragmentDetailedStatisticNum1 : Fragment() {
     var dates = ArrayList<String>()
 //    val values = ArrayList<ArrayList<Float>>()
     private lateinit var values : ArrayList<ArrayList<Float>>
+
+    private var date1 = "1900-01-01"
+    private var date2 = "2030-01-01"
 
 
 
@@ -163,6 +170,8 @@ class FragmentDetailedStatisticNum1 : Fragment() {
 
             picker.addOnPositiveButtonClickListener {
                 binding!!.labelDatePicked.setText(convertTimeToDate(it.first) + " - " + convertTimeToDate(it.second))
+                date1 = convertTimeToDate(it.first)
+                date2 = convertTimeToDate(it.second)
                 updateData(convertTimeToDate(it.first),convertTimeToDateSecond(it.second))
 
             }
@@ -171,7 +180,37 @@ class FragmentDetailedStatisticNum1 : Fragment() {
             }
         }
 
+        binding!!.bthGetAdviceDetailedStatisticNum1.setOnClickListener {
 
+            val call1: Call<Advice> = service.getAdvice(1, kindOfMarkId, date1, date2)
+
+            call1.enqueue(object : Callback<Advice> {
+                override fun onResponse(call: Call<Advice>, response: Response<Advice>) {
+                    if (response.isSuccessful) {
+                        var adviceData = response.body()
+
+                        val builder = AlertDialog.Builder(requireContext())
+                        builder.setTitle("Рекомендация")
+                        builder.setMessage(adviceData!!.comment)
+                        builder.setPositiveButton("OK") { dialog, _ ->
+                            dialog.dismiss()
+                        }
+                        builder.setNegativeButton("Cancel") { dialog, _ ->
+                            dialog.dismiss()
+                        }
+
+                        val dialog: AlertDialog = builder.create()
+                        dialog.show()
+                    }
+                    else{}
+                }
+                override fun onFailure(call: Call<Advice>, t: Throwable) {
+                    Log.d("RetrofitClient","Receive user from server problem " + t)
+                }
+            })
+
+
+        }
 
 
 

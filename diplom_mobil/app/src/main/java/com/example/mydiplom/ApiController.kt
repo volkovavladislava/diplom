@@ -6,6 +6,7 @@ import com.example.mydiplom.data.AddHandMadeKindOfMark
 import com.example.mydiplom.data.AddMark
 import com.example.mydiplom.data.AddMarkDavlenie
 import com.example.mydiplom.data.AddPrompt
+import com.example.mydiplom.data.Advice
 import com.example.mydiplom.data.Blog
 import com.example.mydiplom.data.File
 import com.example.mydiplom.data.KindOfMark
@@ -208,6 +209,10 @@ interface ApiController {
 
     @GET("/api/marksForUserAverageByDate/userId={userId}/kindOfMarkId={kindOfMarkId}/date1={date1}/date2={date2}")
     fun marksForUserAverageByDate(@Path("userId") userId: Int, @Path("kindOfMarkId") kindOfMarkId: Int, @Path("date1") date1: String, @Path("date2") date2: String): Call<List<MarkAverage>>
+
+
+    @GET("/api/getAdvice/userId={userId}/kindOfMarkId={kindOfMarkId}/date1={date1}/date2={date2}")
+    fun getAdvice(@Path("userId") userId: Int, @Path("kindOfMarkId") kindOfMarkId: Int, @Path("date1") date1: String, @Path("date2") date2: String): Call<Advice>
 
 
 

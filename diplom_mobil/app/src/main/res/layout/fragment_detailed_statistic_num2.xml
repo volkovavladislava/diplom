@@ -68,6 +68,17 @@ xmlns:tools="http://schemas.android.com/tools">
         app:layout_constraintTop_toBottomOf="@+id/labelDatePickedDetailedStatisticNum2"
         />
 
+    <Button
+        android:id="@+id/bthGetAdviceDetailedStatisticNum2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:text="Показать совет"
+        app:layout_constraintEnd_toStartOf="@+id/guideline16"
+        app:layout_constraintStart_toStartOf="@+id/guideline15"
+        app:layout_constraintTop_toBottomOf="@+id/bthDatePickedDetailedStatisticNum2"
+        />
+
     <TextView
         android:id="@+id/labelDetailedStatisticNum2"
         android:layout_width="wrap_content"
@@ -77,7 +88,7 @@ xmlns:tools="http://schemas.android.com/tools">
         android:text="Список внесенных значений"
         app:layout_constraintEnd_toStartOf="@+id/guideline16"
         app:layout_constraintStart_toStartOf="@+id/guideline15"
-        app:layout_constraintTop_toBottomOf="@+id/bthDatePickedDetailedStatisticNum2" />
+        app:layout_constraintTop_toBottomOf="@+id/bthGetAdviceDetailedStatisticNum2" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycleListMarksDetailedStatisticNum2"
