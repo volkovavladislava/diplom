@@ -104,11 +104,11 @@ class FragmentProfile : Fragment() {
 
         binding!!.bthUpdateUserMarks.setOnClickListener {
 
-            val pressureSystolic = binding!!.profilePressureSystolic.text.toString().toDouble()
-            val pressureDiastolic = binding!!.profilePressureDiastolic.text.toString().toDouble()
-            val pulse = binding!!.profilePulse.text.toString().toDouble()
-            val sugar = binding!!.profileSugar.text.toString().toDouble()
-            val cholesterol = binding!!.profileCholesterol.text.toString().toDouble()
+            val pressureSystolic = binding!!.profilePressureSystolic.text.toString().toDoubleOrNull()
+            val pressureDiastolic = binding!!.profilePressureDiastolic.text.toString().toDoubleOrNull()
+            val pulse = binding!!.profilePulse.text.toString().toDoubleOrNull()
+            val sugar = binding!!.profileSugar.text.toString().toDoubleOrNull()
+            val cholesterol = binding!!.profileCholesterol.text.toString().toDoubleOrNull()
 
             val valueUpdate = UpdateOperatingValue(viewModel.userLoginId.value!!, pressureSystolic, pressureDiastolic, pulse, sugar, cholesterol, SimpleDateFormat("yyyy-MM-dd HH:mm").format(Date()))
             val call2: Call<Void> = service.updateUserOperatingValue(valueUpdate.user_id, valueUpdate)

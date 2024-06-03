@@ -341,6 +341,137 @@ exports.MarksWithAverageByDate= (req, res) => {
 };
 
 
-exports.getAdvice= (req, res) => {
-    
+
+
+exports.MarksWithAverageByDateWithParametrs= (req, res) => {
+
+    db.sequelize.query('WITH selected_data AS (SELECT `mark_value`.`id`, `mark_value`.`user_id`, `mark_value`.`kind_of_mark_id`, `mark_value`.`date`, `mark_value`.`situation`, `mark_value`.`value_number`, `mark_value`.`value_string`, `mark_value`.`value_enum`,`enumeration_value`.`value` AS `value` FROM `mark_value` LEFT OUTER JOIN `enumeration_value` AS `enumeration_value` ON `mark_value`.`value_enum` = `enumeration_value`.`id` WHERE `mark_value`.`user_id` = :userId AND `mark_value`.`kind_of_mark_id` = :kindOfMarkId AND `mark_value`.`date` <= :date2 AND `mark_value`.`date` >= :date1 ORDER BY `date`) SELECT *, ROUND(AVG(`value_number`) OVER (PARTITION BY `user_id` ORDER BY `date` ROWS BETWEEN :param PRECEDING AND :param following), 0) AS moving_average FROM selected_data;', 
+        { replacements: { userId: req.params.userId,  kindOfMarkId: req.params.kindOfMarkId, date1: req.params.date1, date2: req.params.date2, param: req.params.param }
+        , type: db.sequelize.QueryTypes.SELECT })
+        .then(objects => {
+            globalFunctions.sendResult(res, objects);
+        })
+        .catch(err => {
+            globalFunctions.sendError(res, err);
+        })
 };
+
+
+exports.getAdvice= (req, res) => {
+    db.sequelize.query('SELECT * FROM `mark_value` AS `mark_value`  WHERE `mark_value`.`user_id` = :userId AND `mark_value`.`kind_of_mark_id` = :kindOfMarkId AND `mark_value`.`date` <= :date2 AND `mark_value`.`date` >= :date1;', 
+        { replacements: { userId: req.params.userId,  kindOfMarkId: req.params.kindOfMarkId, date1: req.params.date1, date2: req.params.date2 }
+        , type: db.sequelize.QueryTypes.SELECT })
+        .then(objects => {
+            // globalFunctions.sendResult(res, objects);
+
+            
+            
+            db.sequelize.query('SELECT * FROM `user` WHERE `id` = :userId;',
+            { replacements: { userId: req.params.userId}, type: db.sequelize.QueryTypes.SELECT })
+            .then(user => {
+
+
+                let  valAverage = 0;
+                for(let  i = 0; i < objects.length; i++){
+                    valAverage += objects[i].value_number;
+                }
+                valAverage = Math.round(valAverage/objects.length);
+
+               
+                let age = calculateAge(user[0].date_birth)
+
+                let norma = null
+
+                db.sequelize.query('SELECT * FROM `user_operating_value_of_mark` WHERE `user_operating_value_of_mark`.`user_id` = :userId AND `user_operating_value_of_mark`.`kind_of_mark_id` = :kindOfMarkId AND`user_operating_value_of_mark`.`date` = (SELECT MAX(`user_operating_value_of_mark`.`date`) FROM `user_operating_value_of_mark` WHERE `user_operating_value_of_mark`.`user_id` = :userId) ORDER BY `id` DESC LIMIT 1;',
+                { replacements: { userId: req.params.userId,  kindOfMarkId: req.params.kindOfMarkId}, type: db.sequelize.QueryTypes.SELECT })
+                .then(objectsOperating => {
+                    
+                    if(objectsOperating.length != 0){
+                        console.log("length " + 0)
+                        db.sequelize.query('SELECT * FROM `base_operating_value_of_mark` WHERE  `kind_of_mark_id` = :kindOfMarkId AND `gender` = :gender AND  :age >= `min_age` AND :age <= `max_age` ;',
+                        { replacements: { gender: user[0].gender,  kindOfMarkId: req.params.kindOfMarkId, age: age}, type: db.sequelize.QueryTypes.SELECT })
+                        .then(objectsNorma => {
+                            norma = objectsNorma
+
+                            let razbeg = norma[1].max_value - norma[1].min_value
+                            let niz = objectsOperating[0].value - razbeg/2
+                            let verh = objectsOperating[0].value + razbeg/2
+                            
+
+                            if(valAverage >= niz && valAverage <=verh){
+                                console.log("good ")
+                            }
+                            if(valAverage < niz){
+                                console.log("too small ")
+                            }
+                            if(valAverage > verh){
+                                console.log("too big ")
+                            }
+                            // console.log("objectsOperating[0].value "+objectsOperating[0].value)
+                            // console.log("niz "+niz)
+                            // console.log("verh "+verh)
+                            
+                        })
+                        .catch(err => {
+                            globalFunctions.sendError(res, err);
+                        })
+
+                        
+                    }
+                    else{
+                        db.sequelize.query('SELECT * FROM `base_operating_value_of_mark` WHERE  `kind_of_mark_id` = :kindOfMarkId AND `gender` = :gender AND  :age >= `min_age` AND :age <= `max_age` AND :value >= `min_value` AND :value <= `max_value` ;',
+                        { replacements: { gender: user[0].gender,  kindOfMarkId: req.params.kindOfMarkId, age: age, value: valAverage}, type: db.sequelize.QueryTypes.SELECT })
+                        .then(objectsAdvice => {
+                            console.log(objectsAdvice)
+                            globalFunctions.sendResult(res, objectsAdvice);
+                        })
+                        .catch(err => {
+                            globalFunctions.sendError(res, err);
+                        })
+                        
+                    }
+
+
+
+
+                })
+                .catch(err => {
+                    globalFunctions.sendError(res, err);
+                })
+
+
+
+
+
+
+            })
+            .catch(err => {
+                globalFunctions.sendError(res, err);
+            });
+
+            
+
+        })
+        .catch(err => {
+            globalFunctions.sendError(res, err);
+        })
+};
+
+
+
+
+function calculateAge(birthDateString) {
+
+    const birthDate = new Date(birthDateString);
+
+    const today = new Date();
+
+    let age = today.getFullYear() - birthDate.getFullYear();
+    const monthDiff = today.getMonth() - birthDate.getMonth();
+
+    if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate())) {
+        age--;
+    }
+
+    return age;
+}

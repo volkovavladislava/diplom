@@ -20,10 +20,6 @@ module.exports = (sequelize, Sequelize) => {
                 type: Sequelize.DOUBLE,
                 allowNull: false
             },
-            date: {
-                type: Sequelize.DATEONLY,
-                allowNull: false
-            },
             gender: {
                 type: Sequelize.INTEGER(10),
                 allowNull: false
@@ -34,6 +30,10 @@ module.exports = (sequelize, Sequelize) => {
             },
             max_value: {
                 type: Sequelize.INTEGER(10),
+                allowNull: false
+            },
+            comment: {
+                type: Sequelize.STRING(255),
                 allowNull: false
             }
         });

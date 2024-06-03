@@ -16,7 +16,7 @@
                  <div class="">
                     <button type="button" class="btn btn-outline-secondary" @click="getMarksAverageByDate()">Обновить данные</button>
                     &nbsp;
-                    <button type="button" class="btn btn-outline-secondary" >Показать совет</button>
+                    <button type="button" class="btn btn-outline-secondary" @click="getAdvice()">Показать совет</button>
                  </div>
                  <div class="">
                     <label  class="form-label labelm">Ваши записи:</label>
@@ -57,8 +57,8 @@
                  </div>
                  <div class="">
                     <button type="button" class="btn btn-outline-secondary" @click="getMarksAverageByDate()">Обновить данные</button>
-                    &nbsp;
-                    <button type="button" class="btn btn-outline-secondary" >Показать совет</button>
+                    <!-- &nbsp;
+                    <button type="button" class="btn btn-outline-secondary" >Показать совет</button> -->
                  </div>
                  <div class="">
                     <label  class="form-label labelm">Ваши записи:</label>
@@ -101,7 +101,7 @@
                  <div class="">
                     <button type="button" class="btn btn-outline-secondary" @click="getMarksAverageByDate()">Обновить данные</button>
                     &nbsp;
-                    <button type="button" class="btn btn-outline-secondary" >Показать совет</button>
+                    <button type="button" class="btn btn-outline-secondary" @click="getAdvice()">Показать совет</button>
                  </div>
                  <div class="">
                     <label  class="form-label labelm">Ваши записи:</label>
@@ -642,6 +642,49 @@ import { useStore } from 'vuex';
 
     // }
     
+
+    const getAdvice = async () => {
+        try {
+            const d1 = ref(null)
+            const d2 = ref(null)
+            
+            if(date1.value == null){
+                d1.value = "1900-01-01 00:00"
+            }
+            else{
+                d1.value = date1.value
+            }
+            if(date2.value == null){
+                d2.value = moment.utc().format('YYYY-MM-DD HH:mm')  
+            }else{
+                d2.value =date2.value
+            }
+
+            const response = await http.get('/getAdvice/userId=' + currentUser.value.id + '/kindOfMarkId=' + data.value.id + '/date1=' + d1.value + '/date2=' + d2.value);
+
+            console.log(response.data[0].comment)
+            
+
+            // if(data.value.enum_kind_of_mark_id == 1){  
+            // }
+
+            // if( data.value.enum_kind_of_mark_id == 4){
+                
+            // }
+
+
+            // if( data.value.enum_kind_of_mark_id == 5){
+                
+
+            // }
+
+
+            
+        } catch (error) {
+            console.error(error);
+        }
+
+    }
 
     const redirectToUpdaterecordMarkPage = (id, data) => {
         const encodedData = encodeURIComponent(JSON.stringify(data));
