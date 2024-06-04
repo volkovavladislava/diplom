@@ -165,7 +165,7 @@ class FragmentDetailedStatisticNum2 : Fragment() {
 
                                     val builder = AlertDialog.Builder(requireContext())
                                     builder.setTitle("Рекомендация")
-                                    builder.setMessage(adviceData1!!.comment + " " + adviceData2!!.comment)
+                                    builder.setMessage(adviceData1!!.comment + adviceData2!!.comment)
                                     builder.setPositiveButton("OK") { dialog, _ ->
                                         dialog.dismiss()
                                     }

@@ -384,7 +384,7 @@ exports.getAdvice= (req, res) => {
                     valAverage += objects[i].value_number;
                 }
                 valAverage = Math.round(valAverage/objects.length);
-
+                console.error(valAverage);
                
                 let age = calculateAge(user[0].date_birth)
 
@@ -400,7 +400,8 @@ exports.getAdvice= (req, res) => {
                         { replacements: { gender: user[0].gender,  kindOfMarkId: req.params.kindOfMarkId, age: age}, type: db.sequelize.QueryTypes.SELECT })
                         .then(objectsNorma => {
                             norma = objectsNorma
-                            
+                            // console.error(norma.length);
+                            // console.error(norma[0]);
                             
                             let razbeg = norma[1].max_value - norma[1].min_value
                             
@@ -425,6 +426,7 @@ exports.getAdvice= (req, res) => {
                             globalFunctions.sendResult(res, itog);
                         })
                         .catch(err => {
+                            console.error(err);
                             globalFunctions.sendError(res, err);
                         })
 
@@ -440,6 +442,7 @@ exports.getAdvice= (req, res) => {
                             globalFunctions.sendResult(res, itog);
                         })
                         .catch(err => {
+                            console.error(err);
                             globalFunctions.sendError(res, err);
                         })
                         
@@ -450,6 +453,7 @@ exports.getAdvice= (req, res) => {
 
                 })
                 .catch(err => {
+                    console.error(err);
                     globalFunctions.sendError(res, err);
                 })
 
@@ -460,6 +464,7 @@ exports.getAdvice= (req, res) => {
 
             })
             .catch(err => {
+                console.error(err);
                 globalFunctions.sendError(res, err);
             });
 
@@ -467,6 +472,7 @@ exports.getAdvice= (req, res) => {
 
         })
         .catch(err => {
+            console.error(err);
             globalFunctions.sendError(res, err);
         })
 };

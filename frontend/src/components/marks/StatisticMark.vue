@@ -41,9 +41,12 @@
                  </div>
             </div>
 
-            <div  class=" right" style="margin-left: 40px; margin-top: 8px" v-if="updatemetka">
-             <Line :data="dataGraf" :options="options" v-model="dataGraf.datasets" style="width: 700px; max-height: 300px;"/>
-                <div  style="margin-left: 200px; margin-top: 50px; width: 400px ">
+            <div  class=" right" style="margin-left: 0px; margin-top: 8px" v-if="updatemetka">
+                <div class="line-chart-container">
+                    <!-- style="width: 850px; max-height: 300px;" -->
+                    <Line :data="dataGraf" :options="options" v-model="dataGraf.datasets" style=" height: 300px;"/>
+                </div>
+                <div  style="margin-left: 250px; margin-top: 50px; width: 400px ">
                     <div class="">Установите параметр усреденения</div>
                     <br/>
                     <input type="number" class="form-control" id="inputHeight"   v-model="param"> 
@@ -136,9 +139,12 @@
                  </div>
             </div>
 
-            <div  class=" right" style="margin-left: 40px; margin-top: 8px">
-             <Line :data="dataGraf" :options="options" v-model="dataGraf" style="width: 700px; max-height: 300px;"/>
-             <div  style="margin-left: 200px; margin-top: 50px; width: 400px ">
+            <div  class=" right" style="margin-left: 0px; margin-top: 8px">
+                 <div class="line-chart-container">
+                     <!-- style="width: 800px; max-height: 300px;" -->
+                    <Line :data="dataGraf" :options="options" v-model="dataGraf" style=" height: 300px;"/>
+                </div>
+             <div  style="margin-left: 250px; margin-top: 50px; width: 400px ">
                     <div class="">Установите параметр усреденения</div>
                     <br/>
                     <input type="number" class="form-control" id="inputHeight"   v-model="param"> 
@@ -192,6 +198,7 @@ import {
 } from 'chart.js'
 import { Line } from 'vue-chartjs'
 import { useStore } from 'vuex';
+// import zoomPlugin from 'chartjs-plugin-zoom';
 
 	const store = useStore();
 	const currentUser = computed(() => store.state.auth.user);
@@ -255,6 +262,23 @@ import { useStore } from 'vuex';
             }
             }
         },
+        // plugins: {
+        //   zoom: {
+        //     pan: {
+        //       enabled: true,
+        //       mode: 'x'
+        //     },
+        //     zoom: {
+        //       wheel: {
+        //         enabled: true,
+        //       },
+        //       pinch: {
+        //         enabled: true
+        //       },
+        //       mode: 'x',
+        //     }
+        //   }
+        // }
     }
 
 
@@ -265,7 +289,8 @@ import { useStore } from 'vuex';
         LineElement,
         Title,
         Tooltip,
-        Legend
+        Legend, 
+        // zoomPlugin
     )
 
     // const getMarks = async () => {
@@ -906,12 +931,17 @@ onMounted(async () => {
   
 }
 
+.line-chart-container {
+  width: 800px;
+  max-height: 300px;
+}
+
 .left {
  flex-grow: 1; 
   /* overflow-y: auto; */
   /*  grid-column: 1; */
   max-width: 400px;
-  margin-left: 150px;
+  margin-left: 70px;
   margin-right: 160px;
 }
 
