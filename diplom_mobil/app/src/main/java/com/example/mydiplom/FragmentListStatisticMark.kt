@@ -55,15 +55,25 @@ class FragmentListStatisticMark : Fragment() {
                     for(i in kindOfMarks.indices){
                         if(kindOfMarks[i].id == 1){
                             dataArrayList.add(KindOfMark(1, "Давление",kindOfMarks[i].user_id, kindOfMarks[i].enum_kind_of_mark_id, kindOfMarks[i].has_reference))
-                            continue
-                        }
-                        if(kindOfMarks[i].id == 2){
-                            continue
-                        }
-                        listData = KindOfMark(kindOfMarks[i].id, kindOfMarks[i].name,kindOfMarks[i].user_id, kindOfMarks[i].enum_kind_of_mark_id, kindOfMarks[i].has_reference)
-                        dataArrayList.add(listData)
-                    }
 
+                        }else{
+                            if(kindOfMarks[i].id == 2){
+
+                            }
+                            else {
+                                listData = KindOfMark(
+                                    kindOfMarks[i].id,
+                                    kindOfMarks[i].name,
+                                    kindOfMarks[i].user_id,
+                                    kindOfMarks[i].enum_kind_of_mark_id,
+                                    kindOfMarks[i].has_reference
+                                )
+                                dataArrayList.add(listData)
+                            }
+                        }
+
+                    }
+//                    Log.d("RetrofitClient","dataArrayList " + dataArrayList)
                     val a = binding!!.listviewMarksStatistic
                     a.apply {
                         adapter =  ListAdapterStatistic(this.context, dataArrayList,viewModel)

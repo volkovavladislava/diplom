@@ -49,7 +49,7 @@ class FragmentListFiles : Fragment() {
         val service: ApiController = retrofit.create(ApiController::class.java)
 
 
-        val call: Call<List<File>> = service.getFiles(1)
+        val call: Call<List<File>> = service.getFiles(viewModel.userLoginId.value!!)
         call.enqueue(object : Callback<List<File>> {
             override fun onResponse(call: Call<List<File>>, response: Response<List<File>>) {
                 if (response.isSuccessful) {

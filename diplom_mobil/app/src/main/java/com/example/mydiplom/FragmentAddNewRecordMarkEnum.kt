@@ -135,7 +135,7 @@ class FragmentAddNewRecordMarkEnum : Fragment(), DatePickerDialog.OnDateSetListe
 
 
                 val mark = AddMark(
-                    userId = 1,
+                    userId = viewModel.userLoginId.value!!,
                     kind_of_mark_id = kindOfMarkId,
                     date = date,
                     situation = listOfSituations[situation],

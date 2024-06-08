@@ -50,7 +50,7 @@ class FragmentDetailedHandMadeMark : Fragment() {
         var handMadeMarkId = viewModel.handMadeMarkId.value ?: 1
 
         Log.d("RetrofitClient","handMadeMarkId  " + handMadeMarkId)
-        val call: Call<List<Mark>> = service.marksForUser(1, handMadeMarkId)
+        val call: Call<List<Mark>> = service.marksForUser(viewModel.userLoginId.value!!, handMadeMarkId)
 
 
 

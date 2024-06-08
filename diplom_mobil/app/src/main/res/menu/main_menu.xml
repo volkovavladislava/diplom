@@ -42,10 +42,10 @@
     </group>
 
     <group android:id="@+id/group4" android:checkableBehavior="single">
-        <item
-            android:id="@+id/fragmentCamera"
-            android:title="Открыть камеру">
-        </item>
+<!--        <item-->
+<!--            android:id="@+id/fragmentCamera"-->
+<!--            android:title="Открыть камеру">-->
+<!--        </item>-->
         <item
             android:id="@+id/fragmentGuestMode"
             android:title="Гостевой доступ">

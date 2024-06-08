@@ -22,8 +22,10 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
 import androidx.core.database.getStringOrNull
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import com.example.mydiplom.data.AddPrompt
 import com.example.mydiplom.databinding.FragmentAddPromptBinding
+import com.example.mydiplom.viewmodel.SharedViewModel
 import kotlinx.coroutines.CancellableContinuation
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -76,6 +78,7 @@ class FragmentAddPrompt : Fragment(), DatePickerDialog.OnDateSetListener, TimePi
     private var continuation: CancellableContinuation<Long>? = null
 
     private var binding: FragmentAddPromptBinding? = null
+    private val viewModel: SharedViewModel by activityViewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -164,7 +167,7 @@ class FragmentAddPrompt : Fragment(), DatePickerDialog.OnDateSetListener, TimePi
                     if (check) {
                         val calendarId = requestPermissionsIfNeeded()
                         Log.d("RetrofitClient","calendarId " + calendarId)
-                        val addPrompt = AddPrompt(userId = 1, name = name, description = description, date = date, calendar_id = calendarId)
+                        val addPrompt = AddPrompt(userId = viewModel.userLoginId.value!!, name = name, description = description, date = date, calendar_id = calendarId)
                         val call: Call<Void> = service.addPrompt(addPrompt.userId, addPrompt)
 
                         call.enqueue(object : Callback<Void> {
@@ -185,7 +188,7 @@ class FragmentAddPrompt : Fragment(), DatePickerDialog.OnDateSetListener, TimePi
                         })
 
                     }else{
-                        val addPrompt = AddPrompt(userId = 1, name = name, description = description, date = date, calendar_id = null)
+                        val addPrompt = AddPrompt(userId = viewModel.userLoginId.value!!, name = name, description = description, date = date, calendar_id = null)
                         val call: Call<Void> = service.addPrompt(addPrompt.userId, addPrompt)
 
                         call.enqueue(object : Callback<Void> {

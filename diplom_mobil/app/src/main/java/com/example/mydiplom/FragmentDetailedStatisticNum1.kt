@@ -85,7 +85,7 @@ class FragmentDetailedStatisticNum1 : Fragment() {
 
         var kindOfMarkId = viewModel.kindOfMarkIdStatistic.value ?: 1
 
-        val call: Call<List<MarkAverage>> = service.marksForUserAverage(1, kindOfMarkId)
+        val call: Call<List<MarkAverage>> = service.marksForUserAverage(viewModel.userLoginId.value!!, kindOfMarkId)
         call.enqueue(object : Callback<List<MarkAverage>> {
             override fun onResponse(call: Call<List<MarkAverage>>, response: Response<List<MarkAverage>>) {
                 if (response.isSuccessful) {
@@ -182,7 +182,7 @@ class FragmentDetailedStatisticNum1 : Fragment() {
 
         binding!!.bthGetAdviceDetailedStatisticNum1.setOnClickListener {
 
-            val call1: Call<Advice> = service.getAdvice(1, kindOfMarkId, date1, date2)
+            val call1: Call<Advice> = service.getAdvice(viewModel.userLoginId.value!!, kindOfMarkId, date1, date2)
 
             call1.enqueue(object : Callback<Advice> {
                 override fun onResponse(call: Call<Advice>, response: Response<Advice>) {
@@ -268,7 +268,7 @@ class FragmentDetailedStatisticNum1 : Fragment() {
 //        Log.d("RetrofitClient","marksDataupdateeeee  date1 " + date1)
 //        Log.d("RetrofitClient","marksDataupdateeeee  date2 " + date2)
 
-        val call: Call<List<MarkAverage>> = service.marksForUserAverageByDate(1, kindOfMarkId,date1, date2)
+        val call: Call<List<MarkAverage>> = service.marksForUserAverageByDate(viewModel.userLoginId.value!!, kindOfMarkId,date1, date2)
         call.enqueue(object : Callback<List<MarkAverage>> {
             override fun onResponse(call: Call<List<MarkAverage>>, response: Response<List<MarkAverage>>) {
                 if (response.isSuccessful) {

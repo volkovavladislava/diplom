@@ -106,7 +106,7 @@ class FragmentAddRecordHandMadeMark : Fragment(), DatePickerDialog.OnDateSetList
                 val situation = binding!!.textField5.text.toString()
 
                 val mark = AddMark(
-                    userId = 1,
+                    userId = viewModel.userLoginId.value!!,
                     kind_of_mark_id = handMadeMarkId,
                     date = date,
                     situation = listOfSituations[situation],

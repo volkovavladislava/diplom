@@ -7,8 +7,10 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import com.example.mydiplom.data.AddHandMadeKindOfMark
 import com.example.mydiplom.databinding.FragmentAddNewHandMadeMarkBinding
+import com.example.mydiplom.viewmodel.SharedViewModel
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -19,6 +21,7 @@ class FragmentAddNewHandMadeMark : Fragment() {
 
 
     private var binding: FragmentAddNewHandMadeMarkBinding? = null
+    private val viewModel: SharedViewModel by activityViewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -44,7 +47,7 @@ class FragmentAddNewHandMadeMark : Fragment() {
             if( !binding!!.addNewHandMadeMarkName.text.isNullOrEmpty() ){
                 val name = binding!!.addNewHandMadeMarkName.text.toString()
 
-                val kindOfMark = AddHandMadeKindOfMark(name = name, user_id=1, enum_kind_of_mark_id=2 )
+                val kindOfMark = AddHandMadeKindOfMark(name = name, user_id=viewModel.userLoginId.value!!, enum_kind_of_mark_id=2 )
 
 
                 val call: Call<Void> = service.addHandMadeKindOfMark(kindOfMark.user_id, kindOfMark)

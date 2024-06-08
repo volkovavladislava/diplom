@@ -42,7 +42,7 @@ class FragmentListHandMadeMarks : Fragment() {
         val service: ApiController = retrofit.create(ApiController::class.java)
 
 
-        val call: Call<List<KindOfMark>> = service.getListKindOfMarkOfHandMade(1)
+        val call: Call<List<KindOfMark>> = service.getListKindOfMarkOfHandMade(viewModel.userLoginId.value!!)
         val context = activity ?: return binding!!.root
         call.enqueue(object : Callback<List<KindOfMark>> {
             override fun onResponse(call: Call<List<KindOfMark>>, response: Response<List<KindOfMark>>) {

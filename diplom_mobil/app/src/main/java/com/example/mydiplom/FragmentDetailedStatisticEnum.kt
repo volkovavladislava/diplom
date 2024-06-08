@@ -65,7 +65,7 @@ class FragmentDetailedStatisticEnum : Fragment() {
         var kindOfMarkId = viewModel.kindOfMarkIdStatistic.value ?: 1
 
 
-        val call: Call<List<Mark>> = service.marksForUser(1, kindOfMarkId)
+        val call: Call<List<Mark>> = service.marksForUser(viewModel.userLoginId.value!!, kindOfMarkId)
         call.enqueue(object : Callback<List<Mark>> {
             override fun onResponse(call: Call<List<Mark>>, response: Response<List<Mark>>) {
                 if (response.isSuccessful) {
@@ -167,7 +167,7 @@ class FragmentDetailedStatisticEnum : Fragment() {
 
         var kindOfMarkId = viewModel.kindOfMarkIdStatistic.value ?: 1
 
-        val call: Call<List<Mark>> = service.marksForUserByDate(1, kindOfMarkId, date1, date2)
+        val call: Call<List<Mark>> = service.marksForUserByDate(viewModel.userLoginId.value!!, kindOfMarkId, date1, date2)
         call.enqueue(object : Callback<List<Mark>> {
             override fun onResponse(call: Call<List<Mark>>, response: Response<List<Mark>>) {
                 if (response.isSuccessful) {

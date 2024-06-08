@@ -107,7 +107,7 @@ class FragmentAddNewRecordMark1number : Fragment(), DatePickerDialog.OnDateSetLi
                 val situation = binding!!.textField2.text.toString()
 
                 val mark = AddMark(
-                    userId = 1,
+                    userId = viewModel.userLoginId.value!!,
                     kind_of_mark_id = kindOfMarkId,
                     date = date,
                     situation = listOfSituations[situation],

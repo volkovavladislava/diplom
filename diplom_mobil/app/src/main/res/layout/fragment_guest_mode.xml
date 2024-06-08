@@ -51,13 +51,13 @@ tools:context=".FragmentGuestMode">
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    app:layout_constraintGuide_begin="35dp" />
+    app:layout_constraintGuide_begin="40dp" />
 
 <androidx.constraintlayout.widget.Guideline
     android:id="@+id/guideline26"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    app:layout_constraintGuide_begin="367dp" />
+    app:layout_constraintGuide_end="40dp" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

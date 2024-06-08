@@ -51,7 +51,7 @@ class FragmentListReminders : Fragment(),  RecycleAdapterPrompt.Listener{
 
 
 
-        val call: Call<List<Prompt>> = service.getPrompts(1)
+        val call: Call<List<Prompt>> = service.getPrompts(viewModel.userLoginId.value!!)
         call.enqueue(object : Callback<List<Prompt>> {
             override fun onResponse(call: Call<List<Prompt>>, response: Response<List<Prompt>>) {
                 if (response.isSuccessful) {

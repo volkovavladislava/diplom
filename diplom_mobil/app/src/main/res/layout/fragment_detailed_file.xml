@@ -154,7 +154,7 @@ xmlns:tools="http://schemas.android.com/tools">
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        app:layout_constraintGuide_begin="381dp" />
+        app:layout_constraintGuide_end="32dp" />
 
     <Button
         android:id="@+id/button"

@@ -15,7 +15,9 @@ import android.widget.ImageView
 import android.widget.TimePicker
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import com.example.mydiplom.databinding.FragmentAddFileBinding
+import com.example.mydiplom.viewmodel.SharedViewModel
 import okhttp3.MediaType
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
@@ -47,6 +49,7 @@ class FragmentAddFile : Fragment(), DatePickerDialog.OnDateSetListener, TimePick
     var savedMinute = 0
 
     private var binding: FragmentAddFileBinding? = null
+    private val viewModel: SharedViewModel by activityViewModels()
 
     private lateinit var imageView: ImageView
     private val FILE_PICK_CODE = 1000
@@ -104,7 +107,7 @@ class FragmentAddFile : Fragment(), DatePickerDialog.OnDateSetListener, TimePick
                 val commentRequestBody = RequestBody.create(MediaType.parse("text/plain"), comment)
 
                 val call: Call<Void> = service.addFile(
-                    1,
+                    viewModel.userLoginId.value!!,
                     filePart,
                     fileTypeRequestBody,
                     dateRequestBody,
