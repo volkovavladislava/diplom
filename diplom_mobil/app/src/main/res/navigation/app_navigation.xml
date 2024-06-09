@@ -162,6 +162,11 @@
         android:name="com.example.mydiplom.FragmentGuestMode"
         android:label="Генерация пароля"
         tools:layout="@layout/fragment_guest_mode" />
+    <fragment
+        android:id="@+id/fragmentEmpty"
+        android:name="com.example.mydiplom.FragmentEmpty"
+        android:label="Данные отсутствуют"
+        tools:layout="@layout/fragment_empty" />
     <!--    <fragment-->
 <!--        android:id="@+id/fragmentLogin"-->
 <!--        android:name="com.example.mydiplom.FragmentLogin"-->

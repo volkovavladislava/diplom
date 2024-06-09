@@ -21,6 +21,42 @@
         app:layout_constraintStart_toStartOf="@+id/guideline22"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <Button
+        android:id="@+id/bthDeletePersonalMark"
+        android:layout_width="260dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:text="Удалить показатель"
+        android:backgroundTint="#E16D6D"
+        app:layout_constraintEnd_toStartOf="@+id/guideline21"
+        app:layout_constraintStart_toStartOf="@+id/guideline22"
+        app:layout_constraintTop_toBottomOf="@+id/bthAddValueDetailedHandMadeMark" />
+
+
+
+    <TextView
+        android:id="@+id/labelDatePickedPersonalMark"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="40dp"
+        android:text="Выберите период для сортировки"
+        app:layout_constraintEnd_toStartOf="@+id/guideline21"
+        app:layout_constraintStart_toStartOf="@+id/guideline22"
+        app:layout_constraintTop_toBottomOf="@+id/bthDeletePersonalMark" />
+
+
+    <Button
+        android:id="@+id/bthDatePickedPersonalMark"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:text="Выбрать период  и обновить данные "
+        app:layout_constraintEnd_toStartOf="@+id/guideline21"
+        app:layout_constraintStart_toStartOf="@+id/guideline22"
+        app:layout_constraintTop_toBottomOf="@+id/labelDatePickedPersonalMark"
+        />
+
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycleListDetailedHandMadeMark"
         android:layout_width="wrap_content"
@@ -28,7 +64,7 @@
         android:layout_marginTop="20dp"
         app:layout_constraintEnd_toStartOf="@+id/guideline21"
         app:layout_constraintStart_toStartOf="@+id/guideline22"
-        app:layout_constraintTop_toBottomOf="@+id/bthAddValueDetailedHandMadeMark" />
+        app:layout_constraintTop_toBottomOf="@+id/bthDatePickedPersonalMark" />
 
 
 

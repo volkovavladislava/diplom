@@ -70,7 +70,29 @@
 <!--    </RelativeLayout>-->
 
 
+    <TextView
+        android:id="@+id/rectangle3"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
 
+        android:layout_marginTop="10dp"
+        android:background="#5FC97B"
+        android:gravity="center"
+        app:layout_constraintEnd_toStartOf="@+id/guideline16"
+        app:layout_constraintHorizontal_bias="0.309"
+        app:layout_constraintStart_toStartOf="@+id/guideline15"
+        app:layout_constraintTop_toBottomOf="@+id/line_viewContainer" />
+
+    <TextView
+        android:id="@+id/labelForGraph"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:text=" - Скользящее среднее"
+        app:layout_constraintEnd_toStartOf="@+id/guideline16"
+        app:layout_constraintHorizontal_bias="0.61"
+        app:layout_constraintStart_toStartOf="@+id/guideline15"
+        app:layout_constraintTop_toBottomOf="@+id/line_viewContainer" />
 
     <TextView
         android:id="@+id/labelDatePicked"
@@ -80,7 +102,7 @@
         android:text="Выберите период для сортировки"
         app:layout_constraintEnd_toStartOf="@+id/guideline16"
         app:layout_constraintStart_toStartOf="@+id/guideline15"
-        app:layout_constraintTop_toBottomOf="@+id/line_viewContainer" />
+        app:layout_constraintTop_toBottomOf="@+id/labelForGraph" />
 
 
     <Button
@@ -146,7 +168,6 @@
         android:layout_height="wrap_content"
         android:orientation="vertical"
         app:layout_constraintGuide_end="20dp" />
-
 
 
 

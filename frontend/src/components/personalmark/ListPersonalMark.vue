@@ -38,6 +38,7 @@
                   <div class="">
                     <button type="button" class="btn  btn-outline-secondary bthM" @click="redirectToAddRecordPersonalMarkPage(kindOfMark.id, kindOfMark)">Добавить данные</button>
                     <button type="button" class="btn btn-outline-secondary bthM"  @click="redirectToDetailedPersonalMarkPage(kindOfMark.id, kindOfMark)" >Просмотр статистики</button>
+                    <button type="button" class="btn  btn-outline-danger " @click="deletePersonalMark(kindOfMark.id)">Удалить показатель</button>
                   </div>
 
                   
@@ -120,6 +121,21 @@
             console.error(error);
         }
   }
+
+  async function deletePersonalMark(id){
+     try {
+        var data = {
+            user_id: currentUser.value.id,
+            kind_of_mark_id: id
+        };
+        
+        await http.post('/deletePersonalMark', data);
+         getListKindOfMark();
+        } catch (error) {
+            console.error(error);
+        }
+  }
+
 
 
   onMounted(async () => {

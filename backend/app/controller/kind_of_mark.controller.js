@@ -1,5 +1,7 @@
 var db = require('../config/db.config.js');
 var KindOfMark = db.kind_of_mark;
+var MarkValue = db.mark_value;
+var FavoriteMark = db.favorite_mark;
 var globalFunctions = require('../config/global.functions.js');
 const Sequelize = require('sequelize');
 
@@ -85,4 +87,46 @@ exports.create = (req, res) => {
     }).catch(err => {
         globalFunctions.sendError(res, err);
     })
+};
+
+
+
+exports.deletePersonalMark = (req, res) => { 
+    MarkValue.destroy({
+        where: {
+            user_id: req.body.user_id,
+            kind_of_mark_id: req.body.kind_of_mark_id
+        }
+    }).then(() => {
+
+
+        FavoriteMark.destroy({
+            where: {
+                user_id:req.body.user_id,
+                kind_of_mark_id:req.body.kind_of_mark_id
+            }
+        }).then(() => {
+            
+
+            KindOfMark.destroy({
+                where: {
+                    user_id: req.body.user_id,
+                    id: req.body.kind_of_mark_id
+                }
+            }).then(() => {
+                globalFunctions.sendResult(res, 'Запись удалена');
+            }).catch(err => {
+                globalFunctions.sendError(res, err);
+            });
+
+
+        }).catch(err => {
+            globalFunctions.sendError(res, err);
+        });
+
+    
+
+    }).catch(err => {
+        globalFunctions.sendError(res, err);
+    });
 };

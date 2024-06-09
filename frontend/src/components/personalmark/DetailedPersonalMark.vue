@@ -4,7 +4,23 @@
 
             <div class="row justify-content-md-center labelm">
                 <h5 class="text-center fs-4 col-md-5"> Статистика по показателю {{data.name }}</h5>
+                
             </div>
+
+            <div  class="row justify-content-md-center labelm" >
+              <div  class="col-md-3" >
+                <label  class="form-label">Выберите период,за который вывести статистику</label>
+                <input type="datetime-local" class="form-control" id="inputDate1"  v-model="date1"> 
+                <br/>
+                <input type="datetime-local" class="form-control" id="inputDate2"  v-model="date2"> 
+                <br/>
+                <button type="button" class="btn btn-outline-secondary" @click="getListRecordsMarkByDate()">Обновить данные</button>
+                <br/>
+              </div>
+            </div>
+
+          
+
             <div  class="col-md-7" v-if="marks.length">
                 <div class="card"    v-for="i  in marks" :key="i.id" @click="redirectToUpdatePersonalMarkPage(i.id, i)">
                         <div class="card-content">
@@ -47,6 +63,9 @@
 
   const marks = ref([])
 
+    const date1 = ref(null)
+    const date2 = ref(null)
+
 
   // const listOfSituations = ref([
   //       { key: "спокойное", value: 1 },
@@ -87,6 +106,41 @@
           console.error(error);
       }
   }
+
+
+  const getListRecordsMarkByDate = async () => {
+      try {
+          const d1 = ref(null)
+          const d2 = ref(null)
+          
+          if(date1.value == null || date1.value == ""){
+              d1.value = "1900-01-01 00:00"
+          }
+          else{
+              d1.value = date1.value
+          }
+          if(date2.value == null || date2.value == ""){
+              d2.value = "2030-01-01 00:00"
+          }else{
+              d2.value =date2.value
+          }
+          
+
+          const response = await http.get('/marksForUserByDate/userId=' + currentUser.value.id + '/kindOfMarkId=' + id.value + '/date1=' + d1.value + '/date2=' + d2.value );
+          marks.value = []
+          response.data.forEach(value => {
+                console.log(value)
+                marks.value.push(value)         
+              
+          });
+          marks.value.reverse()
+
+      } catch (error) {
+          console.error(error);
+      }
+  }
+
+
 
   onMounted(async () => {
     await getListRecordsMark();

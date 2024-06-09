@@ -35,6 +35,7 @@ import java.util.Date
 import java.util.Locale
 import java.util.TimeZone
 import androidx.core.util.Pair
+import androidx.navigation.fragment.findNavController
 import com.example.mydiplom.data.Advice
 import com.example.mydiplom.data.MarkAverage
 
@@ -141,6 +142,10 @@ class FragmentDetailedStatisticNum2 : Fragment() {
 
             }
             picker.addOnNegativeButtonClickListener{
+                binding!!.labelDatePickedDetailedStatisticNum2.setText("Выберите период сортировки")
+                date1 = "1900-01-01"
+                date2 = "2030-01-01"
+                updateData(date1,date2)
                 picker.dismiss()
             }
         }
@@ -206,67 +211,82 @@ class FragmentDetailedStatisticNum2 : Fragment() {
                 return
             }
 
-            recyclerView = binding!!.recycleListMarksDetailedStatisticNum2
-            recyclerView.layoutManager = LinearLayoutManager(context)
-            recyclerView.setHasFixedSize(true)
+            if(list1.size == 0){
+                findNavController().popBackStack()
+                findNavController().navigate(R.id.fragmentEmpty)
+            }else {
 
-            datalist = arrayListOf<MarkDavlenie>()
+                recyclerView = binding!!.recycleListMarksDetailedStatisticNum2
+                recyclerView.layoutManager = LinearLayoutManager(context)
+                recyclerView.setHasFixedSize(true)
 
-            valuelist1 = arrayListOf<Float>()
-            valuelist2 = arrayListOf<Float>()
+                datalist = arrayListOf<MarkDavlenie>()
 
-            valuelistAverage1 =  arrayListOf<Float>()
-            valuelistAverage2 =  arrayListOf<Float>()
+                valuelist1 = arrayListOf<Float>()
+                valuelist2 = arrayListOf<Float>()
 
-            values = arrayListOf()
-            dates = arrayListOf<String>()
+                valuelistAverage1 = arrayListOf<Float>()
+                valuelistAverage2 = arrayListOf<Float>()
 
-            val dInput  = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.getDefault())
-            val dOutput = SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.getDefault())
+                values = arrayListOf()
+                dates = arrayListOf<String>()
 
-            for(i in list1.indices){
-                val dataClass = MarkDavlenie(
-                    list1[i].id,
-                    list2[i].id,
-                    list1[i].user_id,
-                    list1[i].kind_of_mark_id,
-                    list1[i].date,
-                    list1[i].situation,
-                    list1[i].value_number,
-                    list2[i].value_number,
-                    list1[i].value_string,
-                    list1[i].value_enum,
-                    list1[i].value)
-                datalist.add(dataClass)
+                val dInput = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.getDefault())
+                val dOutput = SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.getDefault())
 
-                dates.add(dOutput.format(dInput.parse(list1[i].date)))
-                valuelist1.add(list1[i].value_number!!.toFloat())
-                valuelist2.add(list2[i].value_number!!.toFloat())
+                for (i in list1.indices) {
+                    val dataClass = MarkDavlenie(
+                        list1[i].id,
+                        list2[i].id,
+                        list1[i].user_id,
+                        list1[i].kind_of_mark_id,
+                        list1[i].date,
+                        list1[i].situation,
+                        list1[i].value_number,
+                        list2[i].value_number,
+                        list1[i].value_string,
+                        list1[i].value_enum,
+                        list1[i].value
+                    )
+                    datalist.add(dataClass)
 
-                valuelistAverage1.add(list1[i].moving_average!!.toFloat())
-                valuelistAverage2.add(list2[i].moving_average!!.toFloat())
+                    dates.add(dOutput.format(dInput.parse(list1[i].date)))
+                    valuelist1.add(list1[i].value_number!!.toFloat())
+                    valuelist2.add(list2[i].value_number!!.toFloat())
 
+                    valuelistAverage1.add(list1[i].moving_average!!.toFloat())
+                    valuelistAverage2.add(list2[i].moving_average!!.toFloat())
+
+                }
+
+                values.add(valuelist1)
+                values.add(valuelist2)
+                values.add(valuelistAverage1)
+                values.add(valuelistAverage2)
+
+                val lineView: LineView =
+                    requireActivity().findViewById(com.example.mydiplom.R.id.line_viewNum2)
+
+
+                lineView.setBottomTextList(dates);
+                lineView.setDrawDotLine(true);
+                lineView.setShowPopup(LineView.SHOW_POPUPS_All);
+                lineView.setBottomTextList(dates);
+                lineView.setColorArray(
+                    intArrayOf(
+                        Color.parseColor("#f0b54f"),
+                        Color.parseColor("#c260f0"),
+                        Color.parseColor("#5fc97b"),
+                        Color.parseColor("#189438")
+                    )
+                )
+                lineView.setFloatDataList(values);
+
+
+
+                datalist.reverse()
+                recyclerView.adapter = RecycleAdapterStatisticNum2(datalist, viewModel)
             }
-
-            values.add(valuelist1)
-            values.add(valuelist2)
-            values.add(valuelistAverage1)
-            values.add(valuelistAverage2)
-
-            val lineView: LineView = requireActivity().findViewById(com.example.mydiplom.R.id.line_viewNum2)
-
-
-            lineView.setBottomTextList(dates);
-            lineView.setDrawDotLine(true);
-            lineView.setShowPopup(LineView.SHOW_POPUPS_All);
-            lineView.setBottomTextList(dates);
-            lineView.setColorArray(intArrayOf(Color.parseColor("#f0b54f"), Color.parseColor("#c260f0"), Color.parseColor("#5fc97b"), Color.RED))
-            lineView.setFloatDataList(values);
-
-
-
-            datalist.reverse()
-            recyclerView.adapter = RecycleAdapterStatisticNum2(datalist,  viewModel)
         }
     }
 

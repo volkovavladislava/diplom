@@ -10,4 +10,6 @@ module.exports = (app) => {
 
     app.put('/api/addHandMadeKindOfMark/:userId', kind_of_mark.create);
 
+    app.post('/api/deletePersonalMark', kind_of_mark.deletePersonalMark);
+
 };

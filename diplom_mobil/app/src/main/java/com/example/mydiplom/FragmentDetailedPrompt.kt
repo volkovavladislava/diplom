@@ -131,6 +131,7 @@ class FragmentDetailedPrompt : Fragment(), DatePickerDialog.OnDateSetListener, T
                 override fun onResponse(call: Call<Void>, response: Response<Void>) {
                     if (response.isSuccessful) {
                         Toast.makeText(context, "Удалено", Toast.LENGTH_SHORT).show()
+                        findNavController().popBackStack()
                     } else {
                         Toast.makeText(context, "Что-то пошло не так", Toast.LENGTH_SHORT).show()
                     }
@@ -142,7 +143,7 @@ class FragmentDetailedPrompt : Fragment(), DatePickerDialog.OnDateSetListener, T
                 }
             })
 //            findNavController().navigate(R.id.fragmentListReminders)
-            findNavController().popBackStack()
+//            findNavController().popBackStack()
         }
 
 

@@ -47,6 +47,43 @@ xmlns:tools="http://schemas.android.com/tools">
 
 
     <TextView
+        android:id="@+id/rectangle4"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+
+        android:layout_marginTop="10dp"
+        android:background="#5FC97B"
+        android:gravity="center"
+        app:layout_constraintEnd_toStartOf="@+id/guideline16"
+        app:layout_constraintHorizontal_bias="0.252"
+        app:layout_constraintStart_toStartOf="@+id/guideline15"
+        app:layout_constraintTop_toBottomOf="@+id/line_viewContainerNum2" />
+
+    <TextView
+        android:id="@+id/rectangle5"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+
+        android:layout_marginTop="10dp"
+        android:background="#189438"
+        android:gravity="center"
+        app:layout_constraintEnd_toStartOf="@+id/guideline16"
+        app:layout_constraintHorizontal_bias="0.335"
+        app:layout_constraintStart_toStartOf="@+id/guideline15"
+        app:layout_constraintTop_toBottomOf="@+id/line_viewContainerNum2" />
+
+    <TextView
+        android:id="@+id/labelForGraphNum2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:text=" - Скользящее среднее"
+        app:layout_constraintEnd_toStartOf="@+id/guideline16"
+        app:layout_constraintHorizontal_bias="0.665"
+        app:layout_constraintStart_toStartOf="@+id/guideline15"
+        app:layout_constraintTop_toBottomOf="@+id/line_viewContainerNum2" />
+
+    <TextView
         android:id="@+id/labelDatePickedDetailedStatisticNum2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -54,7 +91,7 @@ xmlns:tools="http://schemas.android.com/tools">
         android:text="Выберите период для сортировки"
         app:layout_constraintEnd_toStartOf="@+id/guideline16"
         app:layout_constraintStart_toStartOf="@+id/guideline15"
-        app:layout_constraintTop_toBottomOf="@+id/line_viewContainerNum2" />
+        app:layout_constraintTop_toBottomOf="@+id/labelForGraphNum2" />
 
 
     <Button

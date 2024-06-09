@@ -186,6 +186,7 @@ class FragmentDetailedFile : Fragment(), DatePickerDialog.OnDateSetListener, Tim
                 override fun onResponse(call: Call<Void>, response: Response<Void>) {
                     if (response.isSuccessful) {
                         Toast.makeText(context, "Удалено", Toast.LENGTH_SHORT).show()
+                        findNavController().popBackStack()
                     } else {
                         Toast.makeText(context, "Что-то пошло не так", Toast.LENGTH_SHORT).show()
                     }
@@ -197,7 +198,7 @@ class FragmentDetailedFile : Fragment(), DatePickerDialog.OnDateSetListener, Tim
                 }
             })
 //            findNavController().navigate(R.id.fragmentListFiles)
-            findNavController().popBackStack()
+//            findNavController().popBackStack()
         }
 
 

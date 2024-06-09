@@ -8,6 +8,7 @@ import com.example.mydiplom.data.AddMarkDavlenie
 import com.example.mydiplom.data.AddPrompt
 import com.example.mydiplom.data.Advice
 import com.example.mydiplom.data.Blog
+import com.example.mydiplom.data.DeleteHandMadeMark
 import com.example.mydiplom.data.File
 import com.example.mydiplom.data.KindOfMark
 import com.example.mydiplom.data.KindOfMarkValues
@@ -199,6 +200,8 @@ interface ApiController {
     fun deleteMarkDavlenie(@Body markUpdate: MarkDeleteDavlenie): Call<Void>
 
 
+    @POST("/api/deletePersonalMark")
+    fun deletePersonalMark( @Body deleteHandMadeMark: DeleteHandMadeMark): Call<Void>
 
 
 

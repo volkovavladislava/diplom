@@ -53,6 +53,20 @@
             app:navGraph="@navigation/login_navigation"
             />
 
+
+
+
+        <com.google.android.material.navigation.NavigationView
+            android:id="@+id/navViewLog"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="start"
+            app:dividerInsetStart="0dp"
+            app:dividerInsetEnd="0dp"
+            app:menu="@menu/log_menu">
+
+        </com.google.android.material.navigation.NavigationView>
+
     </androidx.drawerlayout.widget.DrawerLayout>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

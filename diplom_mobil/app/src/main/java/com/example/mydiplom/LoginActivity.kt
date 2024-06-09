@@ -11,10 +11,13 @@ import androidx.navigation.findNavController
 import androidx.navigation.ui.NavigationUI
 import androidx.navigation.ui.setupActionBarWithNavController
 import com.example.mydiplom.databinding.MainActivityBinding
+import com.google.android.material.navigation.NavigationView
 
 class LoginActivity : AppCompatActivity() {
 
     private lateinit var drawerLayout: DrawerLayout
+
+    private lateinit var navigationView: NavigationView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -24,9 +27,12 @@ class LoginActivity : AppCompatActivity() {
         setSupportActionBar(findViewById(R.id.toolbarLogin))
         drawerLayout = findViewById(R.id.drawerLayoutLogin)
 
+        navigationView = findViewById(R.id.navViewLog)
+
         val navController = findNavController(R.id.appNavHostFragmentLogin)
         NavigationUI.setupActionBarWithNavController(this, navController, drawerLayout)
-
+        NavigationUI.setupWithNavController(navigationView, navController)
+//        val navigationView = R.id.navViewLog
 
 //        if (savedInstanceState == null) {
 //            supportFragmentManager.beginTransaction()

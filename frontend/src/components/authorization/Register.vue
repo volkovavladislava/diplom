@@ -1,38 +1,47 @@
 <template>
-    <div class="col-md-5">
-        <h4 class="mx-auto mt-4">Регистрация пользователя</h4>
-        <form name="form" @submit="handleRegister">
-            <div v-if="!successful">
-                <div class="form-group">
-                    <input type="text" class="form-control" name="name" placeholder="ФИО" v-model="user.name" required/>
-                </div>
-                <div class="form-group">
-                    <input type="text" class="form-control" name="login" placeholder="Логин" v-model="user.login" required/>
-                </div>
-                <div class="form-group">
-                    <input type="password" class="form-control" name="password" placeholder="Пароль" v-model="user.password" required/>
-                </div>
-                <div class="form-group">
-                    <input type="number" class="form-control" name="height" placeholder="Рост" v-model="user.height" required/>
-                </div>
-                <div class="form-group">
-                    <input type="number" class="form-control" name="weight" placeholder="Вес" v-model="user.weight" required/>
-                </div>
-                <div class="form-group">
-                    <input type="text" class="form-control" name="date_birth" placeholder="Дата рождения" v-model="user.date_birth" required/>
-                </div>
-                <div class="form-group">
-                    <input type="text" class="form-control" name="gender" placeholder="Пол" v-model="user.gender" required/>
-                </div>
-                <div class="form-group">
-                    <button class="btn btn-primary">Зарегистрировать</button>
-                </div>
+<div class="container" >
+
+     <div  class="labelm" >
+        <div class="row justify-content-md-center">
+            <h4 class="text-center fs-4 col-md-5 labelm">Регистрация пользователя</h4>
+        </div>
+        <div class="row justify-content-md-center ">
+            <div  class="col-md-7 ">
+                <form name="form" @submit="handleRegister">
+                    <div v-if="!successful" >
+                        <div class="mb-3">
+                            <input type="text" class="form-control" name="name" placeholder="ФИО" v-model="user.name" required/>
+                        </div>
+                        <div class="mb-3">
+                            <input type="text" class="form-control" name="login" placeholder="Логин" v-model="user.login" required/>
+                        </div>
+                        <div class="mb-3">
+                            <input type="password" class="form-control" name="password" placeholder="Пароль" v-model="user.password" required/>
+                        </div>
+                        <div class="mb-3">
+                            <input type="number" class="form-control" name="height" placeholder="Рост" v-model="user.height" required/>
+                        </div>
+                        <div class="mb-3">
+                            <input type="number" class="form-control" name="weight" placeholder="Вес" v-model="user.weight" required/>
+                        </div>
+                        <div class="mb-3">
+                            <input type="text" class="form-control" name="date_birth" placeholder="Дата рождения" v-model="user.date_birth" required/>
+                        </div>
+                        <div class="mb-3">
+                            <input type="text" class="form-control" name="gender" placeholder="Пол" v-model="user.gender" required/>
+                        </div>
+                        <div class="mb-3">
+                            <button class="btn btn-outline-success">Зарегистрировать</button>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div v-if="message" class="alert alert-danger" role="alert">{{message}}</div>
+                    </div>
+                </form>
             </div>
-            <div class="form-group">
-                <div v-if="message" class="alert alert-danger" role="alert">{{message}}</div>
-            </div>
-        </form>
+        </div>
     </div>
+</div>
 </template>
 <script>
     export default {

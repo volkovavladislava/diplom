@@ -69,33 +69,40 @@ class FragmentDetailedStatisticEnum : Fragment() {
         call.enqueue(object : Callback<List<Mark>> {
             override fun onResponse(call: Call<List<Mark>>, response: Response<List<Mark>>) {
                 if (response.isSuccessful) {
-                    var marksData = response.body()?: emptyList()
-                    Log.d("RetrofitClient","marksData " + marksData)
-                    recyclerView = binding!!.recycleListMarksEnum
-                    recyclerView.layoutManager = LinearLayoutManager(context)
-                    recyclerView.setHasFixedSize(true)
+                    var marksData = response.body() ?: emptyList()
+//                    Log.d("RetrofitClient","marksData " + marksData)
 
-                    datalist = arrayListOf<Mark>()
+//                    if (marksData.size == 0) {
+//                        findNavController().popBackStack()
+//                        findNavController().navigate(R.id.fragmentEmpty)
+//                    } else {
+                        recyclerView = binding!!.recycleListMarksEnum
+                        recyclerView.layoutManager = LinearLayoutManager(context)
+                        recyclerView.setHasFixedSize(true)
+
+                        datalist = arrayListOf<Mark>()
 
 
-                    for(i in marksData.indices){
-                        val dataClass = Mark(
-                            marksData[i].id,
-                            marksData[i].user_id,
-                            marksData[i].kind_of_mark_id,
-                            marksData[i].date,
-                            marksData[i].situation,
-                            marksData[i].value_number,
-                            marksData[i].value_string,
-                            marksData[i].value_enum,
-                            marksData[i].value)
-                        datalist.add(dataClass)
+                        for (i in marksData.indices) {
+                            val dataClass = Mark(
+                                marksData[i].id,
+                                marksData[i].user_id,
+                                marksData[i].kind_of_mark_id,
+                                marksData[i].date,
+                                marksData[i].situation,
+                                marksData[i].value_number,
+                                marksData[i].value_string,
+                                marksData[i].value_enum,
+                                marksData[i].value
+                            )
+                            datalist.add(dataClass)
 
-                    }
+                        }
 
-                    datalist.reverse()
-                    recyclerView.adapter = RecycleAdapterStatisticEnum(datalist,  viewModel)
+                        datalist.reverse()
+                        recyclerView.adapter = RecycleAdapterStatisticEnum(datalist, viewModel)
 
+//                    }
                 }
                 else{}
             }
@@ -120,6 +127,9 @@ class FragmentDetailedStatisticEnum : Fragment() {
 
             }
             picker.addOnNegativeButtonClickListener{
+                binding!!.labelDatePickedEnum.setText("Выберите период сортировки")
+
+                updateData("1900-01-01","2030-01-01")
                 picker.dismiss()
             }
         }

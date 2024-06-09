@@ -455,13 +455,13 @@ const getMarksAverageByDate = async () => {
             const d1 = ref(null)
             const d2 = ref(null)
             
-            if(date1.value == null){
+            if(date1.value == null || date1.value == ""){
                 d1.value = "1900-01-01 00:00"
             }
             else{
                 d1.value = date1.value
             }
-            if(date2.value == null){
+            if(date2.value == null || date2.value == ""){
                 d2.value = "2030-01-01 00:00"
             }else{
                 d2.value =date2.value
@@ -691,13 +691,13 @@ const getMarksAverageByDate = async () => {
             const d1 = ref(null)
             const d2 = ref(null)
             
-            if(date1.value == null){
+            if(date1.value == null || date1.value == ""){
                 d1.value = "1900-01-01 00:00"
             }
             else{
                 d1.value = date1.value
             }
-            if(date2.value == null){
+            if(date2.value == null || date2.value == ""){
                 d2.value = "2030-01-01 00:00"
             }else{
                 d2.value =date2.value
@@ -736,13 +736,13 @@ const getMarksAverageByDateWithParam = async () => {
             const d1 = ref(null)
             const d2 = ref(null)
             
-            if(date1.value == null){
+            if(date1.value == null || date1.value == ""){
                 d1.value = "1900-01-01 00:00"
             }
             else{
                 d1.value = date1.value
             }
-            if(date2.value == null){
+            if(date2.value == null || date2.value == ""){
                 d2.value = "2030-01-01 00:00"
             }else{
                 d2.value =date2.value

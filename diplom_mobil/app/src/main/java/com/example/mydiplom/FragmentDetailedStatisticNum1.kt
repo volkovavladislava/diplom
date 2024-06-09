@@ -15,6 +15,7 @@ import androidx.appcompat.app.AlertDialog
 import androidx.core.util.Pair
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.mydiplom.adapters.RecycleAdapterStatisticNum1
@@ -91,65 +92,76 @@ class FragmentDetailedStatisticNum1 : Fragment() {
                 if (response.isSuccessful) {
                     var marksData = response.body()?: emptyList()
 //                    Log.d("RetrofitClient","userData  " + marksData)
+                    if(marksData.size == 0){
+                        findNavController().popBackStack()
+                        findNavController().navigate(R.id.fragmentEmpty)
+                    }else {
+
+                        recyclerView = binding!!.recycleListMarks
+                        recyclerView.layoutManager = LinearLayoutManager(context)
+                        recyclerView.setHasFixedSize(true)
+
+                        datalist = arrayListOf<MarkAverage>()
+                        valuelist = arrayListOf<Float>()
+                        values = arrayListOf()
+                        dates = arrayListOf<String>()
+                        valuelistAverage = arrayListOf<Float>()
+
+                        val dInput =
+                            SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.getDefault())
+                        val dOutput = SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.getDefault())
+
+                        for (i in marksData.indices) {
+                            val dataClass = MarkAverage(
+                                marksData[i].id,
+                                marksData[i].user_id,
+                                marksData[i].kind_of_mark_id,
+                                marksData[i].date,
+                                marksData[i].situation,
+                                marksData[i].value_number,
+                                marksData[i].value_string,
+                                marksData[i].value_enum,
+                                marksData[i].value,
+                                marksData[i].moving_average
+                            )
+                            datalist.add(dataClass)
+
+                            dates.add(dOutput.format(dInput.parse(marksData[i].date)))
+                            valuelist.add(marksData[i].value_number!!.toFloat())
+                            valuelistAverage.add(marksData[i].moving_average!!.toFloat())
+
+                        }
 
 
-                    recyclerView = binding!!.recycleListMarks
-                    recyclerView.layoutManager = LinearLayoutManager(context)
-                    recyclerView.setHasFixedSize(true)
+                        values.add(valuelist)
+                        values.add(valuelistAverage)
 
-                    datalist = arrayListOf<MarkAverage>()
-                    valuelist = arrayListOf<Float>()
-                    values = arrayListOf()
-                    dates = arrayListOf<String>()
-                    valuelistAverage =  arrayListOf<Float>()
-
-                    val dInput  = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.getDefault())
-                    val dOutput = SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.getDefault())
-
-                    for(i in marksData.indices){
-                        val dataClass = MarkAverage(
-                            marksData[i].id,
-                            marksData[i].user_id,
-                            marksData[i].kind_of_mark_id,
-                            marksData[i].date,
-                            marksData[i].situation,
-                            marksData[i].value_number,
-                            marksData[i].value_string,
-                            marksData[i].value_enum,
-                            marksData[i].value,
-                            marksData[i].moving_average)
-                        datalist.add(dataClass)
-
-                        dates.add(dOutput.format(dInput.parse(marksData[i].date)))
-                        valuelist.add(marksData[i].value_number!!.toFloat())
-                        valuelistAverage.add(marksData[i].moving_average!!.toFloat())
-
-                    }
-
-
-                    values.add(valuelist)
-                    values.add(valuelistAverage)
-
-                    val lineView: LineView  = activity!!.findViewById(com.example.mydiplom.R.id.line_view)
+                        val lineView: LineView =
+                            activity!!.findViewById(com.example.mydiplom.R.id.line_view)
 
 //                    if(valuelist.size < 4){
 //                        lineView.layout_gravity = "center_horizontal "
 //                    }
-                    lineView.setBottomTextList(dates);
-                    lineView.setDrawDotLine(true);
-                    lineView.setShowPopup(LineView.SHOW_POPUPS_All);
-                    lineView.setBottomTextList(dates);
-                    lineView.setColorArray(intArrayOf(Color.parseColor("#f0b54f"),Color.parseColor("#5fc97b")))
-                    lineView.setFloatDataList(values);
+                        lineView.setBottomTextList(dates);
+                        lineView.setDrawDotLine(true);
+                        lineView.setShowPopup(LineView.SHOW_POPUPS_All);
+                        lineView.setBottomTextList(dates);
+                        lineView.setColorArray(
+                            intArrayOf(
+                                Color.parseColor("#f0b54f"),
+                                Color.parseColor("#5fc97b")
+                            )
+                        )
+                        lineView.setFloatDataList(values);
 
 
 
-                    datalist.reverse()
-                    recyclerView.adapter = RecycleAdapterStatisticNum1(datalist,  viewModel)
+                        datalist.reverse()
+                        recyclerView.adapter = RecycleAdapterStatisticNum1(datalist, viewModel)
 
-
+                    }
                 }
-                else{}
+                else{ }
             }
             override fun onFailure(call: Call<List<MarkAverage>>, t: Throwable) {
                 Log.d("RetrofitClient","Receive user from server problem " + t)
@@ -176,6 +188,11 @@ class FragmentDetailedStatisticNum1 : Fragment() {
 
             }
             picker.addOnNegativeButtonClickListener{
+
+                binding!!.labelDatePicked.setText("Выберите период сортировки")
+                date1 = "1900-01-01"
+                date2 = "2030-01-01"
+                updateData(date1,date2)
                 picker.dismiss()
             }
         }
@@ -272,62 +289,74 @@ class FragmentDetailedStatisticNum1 : Fragment() {
         call.enqueue(object : Callback<List<MarkAverage>> {
             override fun onResponse(call: Call<List<MarkAverage>>, response: Response<List<MarkAverage>>) {
                 if (response.isSuccessful) {
-                    var marksData = response.body()?: emptyList()
-                    Log.d("RetrofitClient","marksDataupdateeeee  " + marksData.size)
+                    var marksData = response.body() ?: emptyList()
+//                    Log.d("RetrofitClient", "marksDataupdateeeee  " + marksData.size)
+
+                    if (marksData.size == 0) {
+                        findNavController().popBackStack()
+                        findNavController().navigate(R.id.fragmentEmpty)
+                    } else {
+                        recyclerView = binding!!.recycleListMarks
+                        recyclerView.layoutManager = LinearLayoutManager(context)
+                        recyclerView.setHasFixedSize(true)
+
+                        datalist = arrayListOf<MarkAverage>()
+                        valuelist = arrayListOf<Float>()
+                        values = arrayListOf()
+                        dates = arrayListOf<String>()
+                        valuelistAverage = arrayListOf<Float>()
+
+                        val dInput =
+                            SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.getDefault())
+                        val dOutput = SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.getDefault())
 
 
-                    recyclerView = binding!!.recycleListMarks
-                    recyclerView.layoutManager = LinearLayoutManager(context)
-                    recyclerView.setHasFixedSize(true)
+                        for (i in marksData.indices) {
+                            val dataClass = MarkAverage(
+                                marksData[i].id,
+                                marksData[i].user_id,
+                                marksData[i].kind_of_mark_id,
+                                marksData[i].date,
+                                marksData[i].situation,
+                                marksData[i].value_number,
+                                marksData[i].value_string,
+                                marksData[i].value_enum,
+                                marksData[i].value,
+                                marksData[i].moving_average
+                            )
+                            datalist.add(dataClass)
 
-                    datalist = arrayListOf<MarkAverage>()
-                    valuelist = arrayListOf<Float>()
-                    values = arrayListOf()
-                    dates = arrayListOf<String>()
-                    valuelistAverage =  arrayListOf<Float>()
+                            dates.add(dOutput.format(dInput.parse(marksData[i].date)))
+                            valuelist.add(marksData[i].value_number!!.toFloat())
+                            valuelistAverage.add(marksData[i].moving_average!!.toFloat())
 
-                    val dInput  = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.getDefault())
-                    val dOutput = SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.getDefault())
+                        }
 
 
-                    for(i in marksData.indices){
-                        val dataClass = MarkAverage(
-                            marksData[i].id,
-                            marksData[i].user_id,
-                            marksData[i].kind_of_mark_id,
-                            marksData[i].date,
-                            marksData[i].situation,
-                            marksData[i].value_number,
-                            marksData[i].value_string,
-                            marksData[i].value_enum,
-                            marksData[i].value,
-                            marksData[i].moving_average)
-                        datalist.add(dataClass)
+                        values.add(valuelist)
+                        values.add(valuelistAverage)
 
-                        dates.add(dOutput.format(dInput.parse(marksData[i].date)))
-                        valuelist.add(marksData[i].value_number!!.toFloat())
-                        valuelistAverage.add(marksData[i].moving_average!!.toFloat())
+                        val lineView: LineView =
+                            activity!!.findViewById(com.example.mydiplom.R.id.line_view)
+
+
+                        lineView.setBottomTextList(dates);
+                        lineView.setDrawDotLine(true);
+                        lineView.setShowPopup(LineView.SHOW_POPUPS_All);
+                        lineView.setBottomTextList(dates);
+                        lineView.setColorArray(
+                            intArrayOf(
+                                Color.parseColor("#f0b54f"),
+                                Color.parseColor("#5fc97b")
+                            )
+                        )
+                        lineView.setFloatDataList(values);
+
+
+                        datalist.reverse()
+                        recyclerView.adapter = RecycleAdapterStatisticNum1(datalist, viewModel)
 
                     }
-
-
-                    values.add(valuelist)
-                    values.add(valuelistAverage)
-
-                    val lineView: LineView  = activity!!.findViewById(com.example.mydiplom.R.id.line_view)
-
-
-                    lineView.setBottomTextList(dates);
-                    lineView.setDrawDotLine(true);
-                    lineView.setShowPopup(LineView.SHOW_POPUPS_All);
-                    lineView.setBottomTextList(dates);
-                    lineView.setColorArray(intArrayOf(Color.parseColor("#f0b54f"),Color.parseColor("#5fc97b")))
-                    lineView.setFloatDataList(values);
-
-
-                    datalist.reverse()
-                    recyclerView.adapter = RecycleAdapterStatisticNum1(datalist,  viewModel)
-
                 }
                 else{}
             }
