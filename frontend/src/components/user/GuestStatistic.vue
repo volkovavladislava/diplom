@@ -10,7 +10,7 @@
             <div class=" left">
                 
                  <div class="mb-3 ">
-                    <label  class="form-label">Выберите период, по которому вывести статистику</label>
+                    <label  class="form-label">Выберите период, по которому вывести статистику или совет</label>
                     <input type="datetime-local" class="form-control" id="inputDate1"  v-model="date1"> 
                     <br/>
                     <input type="datetime-local" class="form-control" id="inputDate2"  v-model="date2"> 
@@ -101,7 +101,7 @@
             <div class=" left">
                 
                  <div class="mb-3 ">
-                    <label  class="form-label">Выберите период, по которому вывести статистику</label>
+                    <label  class="form-label">Выберите период, по которому вывести статистику  или совет</label>
                     <input type="datetime-local" class="form-control" id="inputDate1"  v-model="date1"> 
                     <br/>
                     <input type="datetime-local" class="form-control" id="inputDate2"  v-model="date2"> 
@@ -188,7 +188,7 @@ import {
   Legend
 } from 'chart.js'
 import { Line } from 'vue-chartjs'
-
+import zoomPlugin from 'chartjs-plugin-zoom';
 
     const moment = require('moment');
     const router = useRouter();
@@ -232,6 +232,23 @@ import { Line } from 'vue-chartjs'
             }
             }
         },
+        plugins: {
+          zoom: {
+            pan: {
+              enabled: true,
+              mode: 'x'
+            },
+            zoom: {
+              wheel: {
+                enabled: true,
+              },
+              pinch: {
+                enabled: true
+              },
+              mode: 'x',
+            }
+          }
+        }
     }
 
 
@@ -242,7 +259,8 @@ import { Line } from 'vue-chartjs'
         LineElement,
         Title,
         Tooltip,
-        Legend
+        Legend,
+        zoomPlugin
     )
 
 
@@ -702,6 +720,8 @@ const getMarksAverageByDate = async () => {
             }else{
                 d2.value =date2.value
             }
+
+            advice.value = null
 
 
             if(data.value.enum_kind_of_mark_id == 1){  

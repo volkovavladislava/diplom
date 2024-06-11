@@ -21,6 +21,7 @@ import com.example.mydiplom.data.MarkUpdateDavlenie
 import com.example.mydiplom.data.Prompt
 import com.example.mydiplom.data.PromptUpdate
 import com.example.mydiplom.data.RegistrationRequest
+import com.example.mydiplom.data.UpdateFileWithoutFile
 import com.example.mydiplom.data.UpdateOperatingValue
 import com.example.mydiplom.data.User
 import com.example.mydiplom.data.UserAuth
@@ -157,6 +158,9 @@ interface ApiController {
 
     @POST("/api/deleteFile/{fileId}")
     fun deleteFile(@Path("fileId") fileId: Int): Call<Void> //Call<Void>
+
+    @POST("/api/updateWithoutFileC/{fileId}")
+    fun updateFileWithoutFile(@Path("fileId") fileId: Int, @Body updateFileWithoutFile: UpdateFileWithoutFile): Call<Void> //Call<Void>
 
 
 

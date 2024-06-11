@@ -8,7 +8,7 @@
             <div class=" left">
                 
                  <div class="mb-3 ">
-                    <label  class="form-label">Выберите период, по которому вывести статистику</label>
+                    <label  class="form-label">Выберите период, по которому вывести статистику  или совет</label>
                     <input type="datetime-local" class="form-control" id="inputDate1"  v-model="date1"> 
                     <br/>
                     <input type="datetime-local" class="form-control" id="inputDate2"  v-model="date2"> 
@@ -103,7 +103,7 @@
             <div class=" left">
                 
                  <div class="mb-3 ">
-                    <label  class="form-label">Выберите период, по которому вывести статистику</label>
+                    <label  class="form-label">Выберите период, по которому вывести статистику  или совет</label>
                     <input type="datetime-local" class="form-control" id="inputDate1"  v-model="date1"> 
                     <br/>
                     <input type="datetime-local" class="form-control" id="inputDate2"  v-model="date2"> 
@@ -198,7 +198,7 @@ import {
 } from 'chart.js'
 import { Line } from 'vue-chartjs'
 import { useStore } from 'vuex';
-// import zoomPlugin from 'chartjs-plugin-zoom';
+import zoomPlugin from 'chartjs-plugin-zoom';
 
 	const store = useStore();
 	const currentUser = computed(() => store.state.auth.user);
@@ -262,23 +262,23 @@ import { useStore } from 'vuex';
             }
             }
         },
-        // plugins: {
-        //   zoom: {
-        //     pan: {
-        //       enabled: true,
-        //       mode: 'x'
-        //     },
-        //     zoom: {
-        //       wheel: {
-        //         enabled: true,
-        //       },
-        //       pinch: {
-        //         enabled: true
-        //       },
-        //       mode: 'x',
-        //     }
-        //   }
-        // }
+        plugins: {
+          zoom: {
+            pan: {
+              enabled: true,
+              mode: 'x'
+            },
+            zoom: {
+              wheel: {
+                enabled: true,
+              },
+              pinch: {
+                enabled: true
+              },
+              mode: 'x',
+            }
+          }
+        }
     }
 
 
@@ -290,7 +290,7 @@ import { useStore } from 'vuex';
         Title,
         Tooltip,
         Legend, 
-        // zoomPlugin
+        zoomPlugin
     )
 
     // const getMarks = async () => {
@@ -743,6 +743,8 @@ import { useStore } from 'vuex';
             }else{
                 d2.value =date2.value
             }
+
+            advice.value = null
 
 
             if(data.value.enum_kind_of_mark_id == 1){  

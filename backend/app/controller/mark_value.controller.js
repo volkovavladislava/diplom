@@ -394,7 +394,7 @@ exports.getAdvice= (req, res) => {
                 { replacements: { userId: req.params.userId,  kindOfMarkId: req.params.kindOfMarkId}, type: db.sequelize.QueryTypes.SELECT })
                 .then(objectsOperating => {
                     
-                    if(objectsOperating.length != 0){
+                    
 
                         db.sequelize.query('SELECT * FROM `base_operating_value_of_mark` WHERE  `kind_of_mark_id` = :kindOfMarkId AND `gender` = :gender AND  :age >= `min_age` AND :age <= `max_age` ;',
                         { replacements: { gender: user[0].gender,  kindOfMarkId: req.params.kindOfMarkId, age: age}, type: db.sequelize.QueryTypes.SELECT })
@@ -403,27 +403,61 @@ exports.getAdvice= (req, res) => {
                             // console.error(norma.length);
                             // console.error(norma[0]);
                             
-                            let razbeg = norma[1].max_value - norma[1].min_value
-                            
-                            let niz = objectsOperating[0].value - razbeg/2
-                            let verh = objectsOperating[0].value + razbeg/2
-                            
-                            
-                            if(valAverage >= niz && valAverage <=verh){
-                                // console.log("good ")
-                                itog.comment = norma[1].comment
-                                // console.log("itogcomment " + itog.comment)
+                            let kritichniz = Math.round(norma[0].max_value/2)
+                            let kritichverh = Math.round(norma[2].max_value/2)
+
+                            let countkritich = 0
+                            for(let  i = 0; i < objects.length; i++){
+                                if(objects[i].value_number <= kritichniz || objects[i].value_number >= kritichverh){
+                                    countkritich +=1
+                                }
                             }
-                            if(valAverage < niz){
-                                // console.log("too small ")
-                                itog.comment = norma[0].comment
+
+                            if(countkritich >5){
+                                itog.comment = "Есть несколько критически низких или высоких значений. Советуем обратиться к врачу."
+                                globalFunctions.sendResult(res, itog);
+                                return;
                             }
-                            if(valAverage > verh){
-                                // console.log("too big ")
-                                itog.comment = norma[2].comment
+
+                            if(objectsOperating.length != 0){
+
+                                let razbeg = norma[1].max_value - norma[1].min_value
+                                let niz = objectsOperating[0].value - razbeg/2
+                                let verh = objectsOperating[0].value + razbeg/2
+                                
+                                
+                                if(valAverage >= niz && valAverage <=verh){
+                                    // console.log("good ")
+                                    itog.comment = norma[1].comment
+                                    // console.log("itogcomment " + itog.comment)
+                                }
+                                if(valAverage < niz){
+                                    // console.log("too small ")
+                                    itog.comment = norma[0].comment
+                                }
+                                if(valAverage > verh){
+                                    // console.log("too big ")
+                                    itog.comment = norma[2].comment
+                                }
+                                
+                                globalFunctions.sendResult(res, itog);
+
                             }
-                            
-                            globalFunctions.sendResult(res, itog);
+                            else{
+                                db.sequelize.query('SELECT * FROM `base_operating_value_of_mark` WHERE  `kind_of_mark_id` = :kindOfMarkId AND `gender` = :gender AND  :age >= `min_age` AND :age <= `max_age` AND :value >= `min_value` AND :value <= `max_value` ;',
+                                { replacements: { gender: user[0].gender,  kindOfMarkId: req.params.kindOfMarkId, age: age, value: valAverage}, type: db.sequelize.QueryTypes.SELECT })
+                                .then(objectsAdvice => {
+                                    
+                                    itog.comment = objectsAdvice[0].comment
+                                
+                                    globalFunctions.sendResult(res, itog);
+                                })
+                                .catch(err => {
+                                    console.error(err);
+                                    globalFunctions.sendError(res, err);
+                                })
+                                
+                            }
                         })
                         .catch(err => {
                             console.error(err);
@@ -431,22 +465,7 @@ exports.getAdvice= (req, res) => {
                         })
 
                         
-                    }
-                    else{
-                        db.sequelize.query('SELECT * FROM `base_operating_value_of_mark` WHERE  `kind_of_mark_id` = :kindOfMarkId AND `gender` = :gender AND  :age >= `min_age` AND :age <= `max_age` AND :value >= `min_value` AND :value <= `max_value` ;',
-                        { replacements: { gender: user[0].gender,  kindOfMarkId: req.params.kindOfMarkId, age: age, value: valAverage}, type: db.sequelize.QueryTypes.SELECT })
-                        .then(objectsAdvice => {
-                            // console.log(objectsAdvice)
-                            itog.comment = objectsAdvice[0].comment
-                            // console.log(itog)
-                            globalFunctions.sendResult(res, itog);
-                        })
-                        .catch(err => {
-                            console.error(err);
-                            globalFunctions.sendError(res, err);
-                        })
-                        
-                    }
+                    
 
 
 

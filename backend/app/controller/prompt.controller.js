@@ -18,6 +18,7 @@ exports.findAll = (req, res) => {
 // Добавление пользователя
 exports.create = (req, res) => {
     console.log( req.body.date) 
+    console.log(req.body.calendar_id)
     Prompt.create({
         user_id:req.body.userId,
         name: req.body.name,
@@ -60,11 +61,14 @@ exports.findById = (req, res) => {
 };
 
 exports.update = (req, res) => {
+    console.log(req.body.calendar_id)
+    const calId = req.body.calendar_id === undefined ? null : req.body.calendar_id;
+    console.log(calId)
     Prompt.update({
             name: req.body.name,
             description: req.body.description,
             date: req.body.date,
-            calendar_id:    req.body.calendar_id,
+            calendar_id: calId,
         },
         {
             where: {

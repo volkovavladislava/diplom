@@ -191,7 +191,7 @@ class FragmentAddFile : Fragment(), DatePickerDialog.OnDateSetListener, TimePick
             }
 
             if (papka != "image") {
-                imageView.setImageResource(R.drawable.icondocument)
+                imageView.setImageResource(R.drawable.document)
             } else {
                 imageView.setImageURI(fileUri)
             }

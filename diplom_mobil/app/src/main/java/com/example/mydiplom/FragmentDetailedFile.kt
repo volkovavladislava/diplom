@@ -24,6 +24,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import com.example.mydiplom.data.File
+import com.example.mydiplom.data.UpdateFileWithoutFile
 import com.example.mydiplom.databinding.FragmentDetailedFileBinding
 import com.example.mydiplom.viewmodel.SharedViewModel
 import com.squareup.picasso.Picasso
@@ -62,6 +63,8 @@ class FragmentDetailedFile : Fragment(), DatePickerDialog.OnDateSetListener, Tim
     private  var imageUrl:String? = null
     private  var imageName:String? = null
 
+    private  var hasFile:Int = 0
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
     }
@@ -95,12 +98,13 @@ class FragmentDetailedFile : Fragment(), DatePickerDialog.OnDateSetListener, Tim
 //                            Picasso.get()
 //                                .load(imageUrl)
 //                                .into(binding!!.detailedImageFileFile)
-                            binding!!.detailedImageFileFile.setImageResource(R.drawable.icondocument)
+                            binding!!.detailedImageFileFile.setImageResource(R.drawable.document)
                         } else {
                             Picasso.get()
                                 .load(imageUrl)
                                 .into(binding!!.detailedImageFileFile)
                         }
+                        hasFile = 1
 
 //                        file = java.io.File(imageUrl)
 //                        Log.d("RetrofitClient","file " + file)
@@ -118,8 +122,10 @@ class FragmentDetailedFile : Fragment(), DatePickerDialog.OnDateSetListener, Tim
             binding!!.detailedImageFileFile.setImageResource(0)
             file = null
             fileType = null
+            hasFile = 0
             binding!!.detailedFileImageFileLabel.setText("Выберите файл:")
             binding!!.button.visibility = View.INVISIBLE
+            binding!!.loadFile.visibility = View.INVISIBLE
         }
 
 //        imageView = binding!!.detailedImageFileFile
@@ -130,35 +136,27 @@ class FragmentDetailedFile : Fragment(), DatePickerDialog.OnDateSetListener, Tim
 
 
         binding!!.bthAddDetailedFileToBD.setOnClickListener {
+            //проверка на hasFile
+            if(hasFile == 1 && file == null){
 
-            if( file != null && !binding!!.detailedFileName.text.isNullOrEmpty() && !binding!!.detailedFileDate.text.isNullOrEmpty()) {
+                Log.d("RetrofitClient", "hasFile == 1 && file == null ")
 
                 val name = binding!!.detailedFileName.text.toString()
                 val comment = binding!!.detailedFileComment.text.toString()
                 val date = binding!!.detailedFileDate.text.toString()
 
+                val updateFileWithoutFile = UpdateFileWithoutFile(userId = viewModel.userLoginId.value!!, date = date, name  = name, comment = comment)
+                Log.d("RetrofitClient", "updateFileWithoutFile " + updateFileWithoutFile)
 
-                val requestFile = RequestBody.create(MediaType.parse("multipart/form-data"), file)
-                val filePart = MultipartBody.Part.createFormData("file", file?.name, requestFile)
+                val call: Call<Void> = service.updateFileWithoutFile(fileId, updateFileWithoutFile)
 
-                val fileTypeRequestBody = RequestBody.create(MediaType.parse("text/plain"), fileType)
-                val dateRequestBody = RequestBody.create(MediaType.parse("text/plain"), date)
-                val nameRequestBody = RequestBody.create(MediaType.parse("text/plain"), name)
-                val commentRequestBody = RequestBody.create(MediaType.parse("text/plain"), comment)
-
-                val call: Call<Void> = service.updateFile(
-                    fileId,
-                    filePart,
-                    fileTypeRequestBody,
-                    dateRequestBody,
-                    nameRequestBody,
-                    commentRequestBody
-                )
                 call.enqueue(object : Callback<Void> {
                     override fun onResponse(call: Call<Void>, response: Response<Void>) {
                         if (response.isSuccessful) {
+                            Log.d("RetrofitClient", "response.isSuccessful ")
                             Toast.makeText(context, "Данные успешно добавлены", Toast.LENGTH_SHORT).show()
                         } else {
+                            Log.d("RetrofitClient", "response Что-то пошло не так ")
                             Toast.makeText(context, "Что-то пошло не так", Toast.LENGTH_SHORT).show()
                         }
                     }
@@ -169,8 +167,61 @@ class FragmentDetailedFile : Fragment(), DatePickerDialog.OnDateSetListener, Tim
                     }
                 })
             }
-            else{
-                Toast.makeText(context, "Сначала добавьте название, дату и файл", Toast.LENGTH_SHORT).show()
+            else {
+                if (file != null && hasFile == 1 && !binding!!.detailedFileName.text.isNullOrEmpty() && !binding!!.detailedFileDate.text.isNullOrEmpty()) {
+                    Log.d("RetrofitClient", "file != null && hasFile == 1")
+
+                    val name = binding!!.detailedFileName.text.toString()
+                    val comment = binding!!.detailedFileComment.text.toString()
+                    val date = binding!!.detailedFileDate.text.toString()
+
+
+                    val requestFile =
+                        RequestBody.create(MediaType.parse("multipart/form-data"), file)
+                    val filePart =
+                        MultipartBody.Part.createFormData("file", file?.name, requestFile)
+
+                    val fileTypeRequestBody =
+                        RequestBody.create(MediaType.parse("text/plain"), fileType)
+                    val dateRequestBody = RequestBody.create(MediaType.parse("text/plain"), date)
+                    val nameRequestBody = RequestBody.create(MediaType.parse("text/plain"), name)
+                    val commentRequestBody =
+                        RequestBody.create(MediaType.parse("text/plain"), comment)
+
+                    val call: Call<Void> = service.updateFile(
+                        fileId,
+                        filePart,
+                        fileTypeRequestBody,
+                        dateRequestBody,
+                        nameRequestBody,
+                        commentRequestBody
+                    )
+                    call.enqueue(object : Callback<Void> {
+                        override fun onResponse(call: Call<Void>, response: Response<Void>) {
+                            if (response.isSuccessful) {
+                                Toast.makeText(
+                                    context,
+                                    "Данные успешно добавлены",
+                                    Toast.LENGTH_SHORT
+                                ).show()
+                            } else {
+                                Toast.makeText(context, "Что-то пошло не так", Toast.LENGTH_SHORT)
+                                    .show()
+                            }
+                        }
+
+                        override fun onFailure(call: Call<Void>, t: Throwable) {
+                            Log.d("RetrofitClient", "Receive user from server problem " + t)
+                            Toast.makeText(context, "Ошибка", Toast.LENGTH_SHORT).show()
+                        }
+                    })
+                } else {
+                    Toast.makeText(
+                        context,
+                        "Сначала добавьте название, дату и файл",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
             }
         }
 
@@ -244,13 +295,15 @@ class FragmentDetailedFile : Fragment(), DatePickerDialog.OnDateSetListener, Tim
             }
 
             if (papka != "image") {
-                binding!!.detailedImageFileFile.setImageResource(R.drawable.icondocument)
+                binding!!.detailedImageFileFile.setImageResource(R.drawable.document)
             } else {
                 binding!!.detailedImageFileFile.setImageURI(fileUri)
             }
 
             binding!!.detailedFileImageFileLabel.setText("Выбран файл")
             binding!!.button.visibility = View.VISIBLE
+
+            hasFile = 1
 
         }
     }

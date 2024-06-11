@@ -9,6 +9,8 @@ import android.content.ContentValues
 import android.content.pm.PackageManager
 import android.database.Cursor
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.provider.CalendarContract
 import android.util.Log
 import android.view.LayoutInflater
@@ -94,7 +96,10 @@ class FragmentAddPrompt : Fragment(), DatePickerDialog.OnDateSetListener, TimePi
                 continuation?.resume(id)
                 Log.d("RetrofitClient","id " + id)
             } else {
+                Toast.makeText(context, "Проблемы с доступом к календарю. Проверьте вход в аккаунт", Toast.LENGTH_SHORT)
+                    .show()
                 continuation?.resumeWithException(Exception("Permissions denied"))
+
             }
         }
     }
@@ -210,6 +215,9 @@ class FragmentAddPrompt : Fragment(), DatePickerDialog.OnDateSetListener, TimePi
                     }
                 } catch (e: Exception) {
                     // Обработка отказа в разрешениях
+                    Handler(Looper.getMainLooper()).post {
+                        Toast.makeText(context, " Проверьте аккаунт в календаре или разрешения в настройках", Toast.LENGTH_LONG).show()
+                    }
                     Log.d("RetrofitClient", "Permissions denied")
                 }
             }
@@ -292,15 +300,17 @@ class FragmentAddPrompt : Fragment(), DatePickerDialog.OnDateSetListener, TimePi
         val date = convertDateTimeToMilliseconds(binding!!.addpromptDate.text.toString())
 
 
-        Log.d("RetrofitClient","date " + date)
+
         val calendars = getCalendars()
+
+        Log.d("RetrofitClient","calendars " + calendars)
 
         val cr = requireContext().contentResolver
         val values = ContentValues().apply {
             put(CalendarContract.Events.TITLE, name)
             put(CalendarContract.Events.DESCRIPTION, description)
-            put(CalendarContract.Events.DTSTART, date)
-            put(CalendarContract.Events.DTEND, date + 60 * 60 * 1000)
+            put(CalendarContract.Events.DTSTART, date - 60 * 60 * 1000*24)
+            put(CalendarContract.Events.DTEND, date )
             put(CalendarContract.Events.CALENDAR_ID, calendars.first().id)
             put(CalendarContract.Events.EVENT_LOCATION, "")
             put(CalendarContract.Events.EVENT_TIMEZONE, TimeZone.getDefault().id)
