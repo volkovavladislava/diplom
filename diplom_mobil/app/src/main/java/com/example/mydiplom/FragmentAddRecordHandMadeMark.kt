@@ -2,6 +2,7 @@ package com.example.mydiplom
 
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -16,6 +17,8 @@ import com.example.mydiplom.data.AddMark
 import com.example.mydiplom.databinding.FragmentAddRecordHandMadeMarkBinding
 import com.example.mydiplom.viewmodel.SharedViewModel
 import com.google.android.material.textfield.MaterialAutoCompleteTextView
+import okhttp3.Interceptor
+import okhttp3.OkHttpClient
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -95,8 +98,23 @@ class FragmentAddRecordHandMadeMark : Fragment(), DatePickerDialog.OnDateSetList
         binding!!.bthaddNewRecordHandMadeMarkValue.setOnClickListener{
 
             if( !binding!!.addNewRecordHandMadeMarkValue.text.isNullOrEmpty()  && !binding!!.addNewRecordHandMadeMarkDate.text.isNullOrEmpty()) {
+                val client = OkHttpClient.Builder()
+                    .addInterceptor(Interceptor { chain ->
+                        val request = chain.request().newBuilder()
+                            .addHeader("x-access-token", viewModel.token.value)
+                            .build()
+                        val result = chain.proceed(request)
+                        if (result.code() == 403 || result.code() == 401) {
+                            viewModel.notifyTokenExpired()
+                            startActivity(Intent(requireContext(), LoginActivity::class.java))
+                            requireActivity().finish()
+                        }
+                        result
+                    })
+                    .build()
                 val retrofit = Retrofit.Builder()
-                    .baseUrl("http://10.0.2.2:3000")
+                    .baseUrl("http://192.168.0.32:3000")
+                    .client(client)
                     .addConverterFactory(GsonConverterFactory.create())
                     .build()
                 val service: ApiController = retrofit.create(ApiController::class.java)

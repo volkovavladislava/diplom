@@ -28,8 +28,10 @@ import com.example.mydiplom.data.UpdateFileWithoutFile
 import com.example.mydiplom.databinding.FragmentDetailedFileBinding
 import com.example.mydiplom.viewmodel.SharedViewModel
 import com.squareup.picasso.Picasso
+import okhttp3.Interceptor
 import okhttp3.MediaType
 import okhttp3.MultipartBody
+import okhttp3.OkHttpClient
 import okhttp3.RequestBody
 import retrofit2.Call
 import retrofit2.Callback
@@ -74,8 +76,24 @@ class FragmentDetailedFile : Fragment(), DatePickerDialog.OnDateSetListener, Tim
         savedInstanceState: Bundle?
     ): View? {
         binding = FragmentDetailedFileBinding.inflate(inflater, container, false)
+
+        val client = OkHttpClient.Builder()
+            .addInterceptor(Interceptor { chain ->
+                val request = chain.request().newBuilder()
+                    .addHeader("x-access-token", viewModel.token.value)
+                    .build()
+                val result = chain.proceed(request)
+                if (result.code() == 403 || result.code() == 401) {
+                    viewModel.notifyTokenExpired()
+                    startActivity(Intent(requireContext(), LoginActivity::class.java))
+                    requireActivity().finish()
+                }
+                result
+            })
+            .build()
         val retrofit = Retrofit.Builder()
-            .baseUrl("http://10.0.2.2:3000")
+            .baseUrl("http://192.168.0.32:3000")
+            .client(client)
             .addConverterFactory(GsonConverterFactory.create())
             .build()
         val service: ApiController = retrofit.create(ApiController::class.java)
@@ -92,7 +110,7 @@ class FragmentDetailedFile : Fragment(), DatePickerDialog.OnDateSetListener, Tim
                         binding!!.detailedFileName.setText(it.name.toString())
                         binding!!.detailedFileComment.setText(it.comment.toString())
                         binding!!.detailedFileDate.setText(formatDate(it.date.toString()))
-                        imageUrl = "http://10.0.2.2:3000/files/" + it.link
+                        imageUrl = "http://192.168.0.32:3000/files/" + it.link
                         imageName = it.link
                         if (it.mime_type.split("/")[0] != "image") {
 //                            Picasso.get()
@@ -139,24 +157,24 @@ class FragmentDetailedFile : Fragment(), DatePickerDialog.OnDateSetListener, Tim
             //проверка на hasFile
             if(hasFile == 1 && file == null){
 
-                Log.d("RetrofitClient", "hasFile == 1 && file == null ")
+
 
                 val name = binding!!.detailedFileName.text.toString()
                 val comment = binding!!.detailedFileComment.text.toString()
                 val date = binding!!.detailedFileDate.text.toString()
 
                 val updateFileWithoutFile = UpdateFileWithoutFile(userId = viewModel.userLoginId.value!!, date = date, name  = name, comment = comment)
-                Log.d("RetrofitClient", "updateFileWithoutFile " + updateFileWithoutFile)
+
 
                 val call: Call<Void> = service.updateFileWithoutFile(fileId, updateFileWithoutFile)
 
                 call.enqueue(object : Callback<Void> {
                     override fun onResponse(call: Call<Void>, response: Response<Void>) {
                         if (response.isSuccessful) {
-                            Log.d("RetrofitClient", "response.isSuccessful ")
+
                             Toast.makeText(context, "Данные успешно добавлены", Toast.LENGTH_SHORT).show()
                         } else {
-                            Log.d("RetrofitClient", "response Что-то пошло не так ")
+
                             Toast.makeText(context, "Что-то пошло не так", Toast.LENGTH_SHORT).show()
                         }
                     }
@@ -169,7 +187,7 @@ class FragmentDetailedFile : Fragment(), DatePickerDialog.OnDateSetListener, Tim
             }
             else {
                 if (file != null && hasFile == 1 && !binding!!.detailedFileName.text.isNullOrEmpty() && !binding!!.detailedFileDate.text.isNullOrEmpty()) {
-                    Log.d("RetrofitClient", "file != null && hasFile == 1")
+
 
                     val name = binding!!.detailedFileName.text.toString()
                     val comment = binding!!.detailedFileComment.text.toString()
@@ -281,7 +299,7 @@ class FragmentDetailedFile : Fragment(), DatePickerDialog.OnDateSetListener, Tim
         if (fileUri != null) {
             file = java.io.File(fileUri.path)
 
-            Log.d("RetrofitClient","filenew " + file)
+//            Log.d("RetrofitClient","filenew " + file)
 
             val fileName = file!!.name
             fileType = getMimeType(fileUri).toString()

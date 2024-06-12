@@ -49,7 +49,7 @@ class FragmentLogin : Fragment() {
 
         binding!!.loginButton.setOnClickListener {
             val retrofit = Retrofit.Builder()
-                .baseUrl("http://10.0.2.2:3000")
+                .baseUrl("http://192.168.0.32:3000")
                 .addConverterFactory(GsonConverterFactory.create())
                 .build()
             val service: ApiController = retrofit.create(ApiController::class.java)

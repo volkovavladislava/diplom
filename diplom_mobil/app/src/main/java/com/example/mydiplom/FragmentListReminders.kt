@@ -1,5 +1,6 @@
 package com.example.mydiplom
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -14,6 +15,8 @@ import com.example.mydiplom.adapters.RecycleAdapterPrompt
 import com.example.mydiplom.data.Prompt
 import com.example.mydiplom.databinding.FragmentListRemindersBinding
 import com.example.mydiplom.viewmodel.SharedViewModel
+import okhttp3.Interceptor
+import okhttp3.OkHttpClient
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -43,8 +46,23 @@ class FragmentListReminders : Fragment(),  RecycleAdapterPrompt.Listener{
         binding = FragmentListRemindersBinding.inflate(inflater, container, false)
 
 
+        val client = OkHttpClient.Builder()
+            .addInterceptor(Interceptor { chain ->
+                val request = chain.request().newBuilder()
+                    .addHeader("x-access-token", viewModel.token.value)
+                    .build()
+                val result = chain.proceed(request)
+                if (result.code() == 403 || result.code() == 401) {
+                    viewModel.notifyTokenExpired()
+                    startActivity(Intent(requireContext(), LoginActivity::class.java))
+                    requireActivity().finish()
+                }
+                result
+            })
+            .build()
         val retrofit = Retrofit.Builder()
-            .baseUrl("http://10.0.2.2:3000")
+            .baseUrl("http://192.168.0.32:3000")
+            .client(client)
             .addConverterFactory(GsonConverterFactory.create())
             .build()
         val service: ApiController = retrofit.create(ApiController::class.java)

@@ -1,5 +1,6 @@
 package com.example.mydiplom
 
+import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
@@ -38,6 +39,8 @@ import androidx.core.util.Pair
 import androidx.navigation.fragment.findNavController
 import com.example.mydiplom.data.Advice
 import com.example.mydiplom.data.MarkAverage
+import okhttp3.Interceptor
+import okhttp3.OkHttpClient
 
 
 class FragmentDetailedStatisticNum2 : Fragment() {
@@ -82,8 +85,23 @@ class FragmentDetailedStatisticNum2 : Fragment() {
     ): View? {
         binding = FragmentDetailedStatisticNum2Binding.inflate(inflater, container, false)
 
+        val client = OkHttpClient.Builder()
+            .addInterceptor(Interceptor { chain ->
+                val request = chain.request().newBuilder()
+                    .addHeader("x-access-token", viewModel.token.value)
+                    .build()
+                val result = chain.proceed(request)
+                if (result.code() == 403 || result.code() == 401) {
+                    viewModel.notifyTokenExpired()
+                    startActivity(Intent(requireContext(), LoginActivity::class.java))
+                    requireActivity().finish()
+                }
+                result
+            })
+            .build()
         val retrofit = Retrofit.Builder()
-            .baseUrl("http://10.0.2.2:3000")
+            .baseUrl("http://192.168.0.32:3000")
+            .client(client)
             .addConverterFactory(GsonConverterFactory.create())
             .build()
         val service: ApiController = retrofit.create(ApiController::class.java)
@@ -291,16 +309,31 @@ class FragmentDetailedStatisticNum2 : Fragment() {
     }
 
     private fun updateData(date1: String, date2:String){
+        val client = OkHttpClient.Builder()
+            .addInterceptor(Interceptor { chain ->
+                val request = chain.request().newBuilder()
+                    .addHeader("x-access-token", viewModel.token.value)
+                    .build()
+                val result = chain.proceed(request)
+                if (result.code() == 403 || result.code() == 401) {
+                    viewModel.notifyTokenExpired()
+                    startActivity(Intent(requireContext(), LoginActivity::class.java))
+                    requireActivity().finish()
+                }
+                result
+            })
+            .build()
         val retrofit = Retrofit.Builder()
-            .baseUrl("http://10.0.2.2:3000")
+            .baseUrl("http://192.168.0.32:3000")
+            .client(client)
             .addConverterFactory(GsonConverterFactory.create())
             .build()
         val service: ApiController = retrofit.create(ApiController::class.java)
 
         var kindOfMarkId = viewModel.kindOfMarkIdStatistic.value ?: 1
 
-        Log.d("RetrofitClient","marksDataupdateeeee  date1 " + date1)
-        Log.d("RetrofitClient","marksDataupdateeeee  date2 " + date2)
+//        Log.d("RetrofitClient","marksDataupdateeeee  date1 " + date1)
+//        Log.d("RetrofitClient","marksDataupdateeeee  date2 " + date2)
 
         callCounter = 2
 

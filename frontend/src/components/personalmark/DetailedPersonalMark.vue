@@ -1,6 +1,6 @@
 <template>
     <div class="container labelm">
-        <div class="row justify-content-md-center labelm">
+        <div class="row justify-content-md-center labelm" v-if="displayContent">
 
             <div class="row justify-content-md-center labelm">
                 <h5 class="text-center fs-4 col-md-5"> Статистика по показателю {{data.name }}</h5>
@@ -39,6 +39,9 @@
                     </div>
             </div>
         </div>
+        <div v-else>
+            {{ content.message }}
+        </div>
     </div>
 </template>
 
@@ -49,6 +52,7 @@
   import http from "../../http-common";
   import { useRouter,useRoute } from 'vue-router';
   import { useStore } from 'vuex';
+    import UserService from '../../services/user.service';
 
 	const store = useStore();
 	const currentUser = computed(() => store.state.auth.user);
@@ -65,6 +69,9 @@
 
     const date1 = ref(null)
     const date2 = ref(null)
+
+    const displayContent= ref(false)
+    const content = ref('')
 
 
   // const listOfSituations = ref([
@@ -103,7 +110,11 @@
           marks.value.reverse()
 
       } catch (error) {
-          console.error(error);
+          // console.error(error);
+          if(error.response.status == 401 || error.response.status == 403){
+          await store.dispatch('auth/logout')
+          router.push('/login')
+          }
       }
   }
 
@@ -136,13 +147,28 @@
           marks.value.reverse()
 
       } catch (error) {
-          console.error(error);
+          // console.error(error);
+          if(error.response.status == 401 || error.response.status == 403){
+          await store.dispatch('auth/logout')
+          router.push('/login')
+          }
       }
+  }
+
+    const fetchUserBoard = async () => {
+    try {
+      await UserService.getUserBoard()
+      displayContent.value = true
+    } catch (e) {
+      // displayContent.value = false
+      content.value = (e.response && e.response.data) || e.message || e.toString()
+    }
   }
 
 
 
   onMounted(async () => {
+    fetchUserBoard()
     await getListRecordsMark();
 });
 

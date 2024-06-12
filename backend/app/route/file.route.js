@@ -1,28 +1,28 @@
 module.exports = (app) => {
-
+    var { authJwt } = require("../middleware");
     const file = require('../controller/file.controller');
     
 
-    app.get('/api/listFile', file.findAll);
+    app.get('/api/listFile', [authJwt.verifyToken], file.findAll);
 
-    app.get('/api/fileByUser/:userId', file.findByUserId);
+    app.get('/api/fileByUser/:userId', [authJwt.verifyToken], file.findByUserId);
 
-    app.post('/api/addFile/:userId',file.upload, file.uploadFile);
+    app.post('/api/addFile/:userId', [authJwt.verifyToken],file.upload, file.uploadFile);
 
-    app.post('/api/updateFile/:fileId',file.upload, file.updateFile);
+    app.post('/api/updateFile/:fileId', [authJwt.verifyToken],file.upload, file.updateFile);
 
-    app.get('/api/fileById/:fileId', file.findById);
+    app.get('/api/fileById/:fileId', [authJwt.verifyToken], file.findById);
 
-    app.post('/api/deleteFile/:fileId', file.delete);
+    app.post('/api/deleteFile/:fileId', [authJwt.verifyToken], file.delete);
 
 
-    app.post('/api/addFileC/:userId', file.createC);
+    app.post('/api/addFileC/:userId', [authJwt.verifyToken], file.createC);
 
-    app.post('/api/updateFileC/:fileId', file.updateFileC);
+    app.post('/api/updateFileC/:fileId', [authJwt.verifyToken], file.updateFileC);
 
-    app.post('/api/deleteFileC/:fileId', file.deleteC);
+    app.post('/api/deleteFileC/:fileId', [authJwt.verifyToken], file.deleteC);
 
-    app.get('/api/fileC/:id', file.findByIdC);
+    app.get('/api/fileC/:id', [authJwt.verifyToken], file.findByIdC);
 
-    app.post('/api/updateWithoutFileC/:fileId', file.updateWithoutFileC);
+    app.post('/api/updateWithoutFileC/:fileId', [authJwt.verifyToken], file.updateWithoutFileC);
 };

@@ -43,23 +43,10 @@ class MainActivity : AppCompatActivity() {
         viewModel.userLoginId.value = id
 
 
-
-        val interceptor = Interceptor { chain ->
-            val request = chain.request().newBuilder()
-                .addHeader("x-access-token", viewModel.token.value)
-                .build()
-            val result = chain.proceed(request)
-//            if (result.code() == 403) {
-//                viewModel.notifyTokenExpired()
-//            }
-            result
-        }
-        val client = OkHttpClient.Builder()
-            .addInterceptor(interceptor)
-            .build()
+//        http://192.168.0.32:3000
+//        http://10.0.2.2:3000
         val retrofit = Retrofit.Builder()
-            .baseUrl("http://10.0.2.2:3000")
-            .client(client)
+            .baseUrl("http://192.168.0.32:3000")
             .addConverterFactory(GsonConverterFactory.create())
             .build()
         val service: ApiController = retrofit.create(ApiController::class.java)

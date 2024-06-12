@@ -722,6 +722,7 @@ const getMarksAverageByDate = async () => {
             }
 
             advice.value = null
+            advice2.value = null
 
 
             if(data.value.enum_kind_of_mark_id == 1){  
@@ -737,6 +738,8 @@ const getMarksAverageByDate = async () => {
                 const response2 = await http.get('/getAdvice/userId=' + currentUser.value.id + '/kindOfMarkId=' + 2 + '/date1=' + d1.value + '/date2=' + d2.value);
                 advice.value = response1.data.comment
                 advice2.value = response2.data.comment
+                console.log(advice.value)
+                console.log(advice2.value)
                 
             }
 

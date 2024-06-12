@@ -1,7 +1,8 @@
 <template>
     <div class="container" >
 
-    
+        <div v-if="displayContent">
+
             <p v-if="!isFormValid" style="color: #eb4034;" class="labelm">Поля название и дата должны быть обязательно заполнены</p>
 
             <div  class=""  >
@@ -65,6 +66,10 @@
                 
             </div>
 
+        </div>
+        <div v-else>
+            {{ content.message }}
+        </div>
             
     </div>
 
@@ -76,11 +81,13 @@
 import { ref, onMounted  } from 'vue';
 import http from "../../http-common";
 import 'bootstrap/dist/js/bootstrap.bundle.min.js';
-import { useRouter } from 'vue-router'
-
+import { useRouter } from 'vue-router';
+import { useStore } from 'vuex';
+import UserService from '../../services/user.service';
 
     const moment = require('moment');
     const router = useRouter();
+    const store = useStore();
     const data = ref(JSON.parse(decodeURIComponent(router.currentRoute.value.query.data, null, 2)))
 
     const name= ref(data.value.name)
@@ -91,7 +98,8 @@ import { useRouter } from 'vue-router'
     const imgFile = ref(null)
     const mimeType = ref(null)
 
-
+    const displayContent= ref(false)
+    const content = ref('')
     // const userId = ref(1)
 
     const isFormValid = ref(true);
@@ -128,7 +136,11 @@ import { useRouter } from 'vue-router'
                     router.push({ path: '/listFile'});
                 }, 1000);
             } catch (error) {
-                console.error(error);
+                // console.error(error);
+                if(error.response.status == 401 || error.response.status == 403){
+                await store.dispatch('auth/logout')
+                router.push('/login')
+                }
             }
         } else {
             if (name.value && date.value && imgFile.value ) {
@@ -150,7 +162,11 @@ import { useRouter } from 'vue-router'
                         router.push({ path: '/listFile'});
                     }, 1000);
                 } catch (error) {
-                    console.error(error);
+                    // console.error(error);
+                    if(error.response.status == 401 || error.response.status == 403){
+                    await store.dispatch('auth/logout')
+                    router.push('/login')
+                    }
                 }
             }
             else{ isFormValid.value = false;}
@@ -167,7 +183,11 @@ import { useRouter } from 'vue-router'
                     router.push({ path: '/listFile'});
                 }, 1000);
             } catch (error) {
-                console.error(error);
+                // console.error(error);
+                if(error.response.status == 401 || error.response.status == 403){
+                await store.dispatch('auth/logout')
+                router.push('/login')
+                }
             }
     }
     
@@ -178,7 +198,11 @@ import { useRouter } from 'vue-router'
           mimeType.value = response.data.mime_type
 
       } catch (error) {
-          console.error(error);
+          // console.error(error);
+            if(error.response.status == 401 || error.response.status == 403){
+            await store.dispatch('auth/logout')
+            router.push('/login')
+            }
       }
   }
 
@@ -194,7 +218,19 @@ import { useRouter } from 'vue-router'
         return fileURL;
     }
 
+
+    const fetchUserBoard = async () => {
+        try {
+        await UserService.getUserBoard()
+        displayContent.value = true
+        } catch (e) {
+        // displayContent.value = false
+        content.value = (e.response && e.response.data) || e.message || e.toString()
+        }
+    }
+
   onMounted(async () => {
+    fetchUserBoard()
     await getFile(data.value.id);
 });
 

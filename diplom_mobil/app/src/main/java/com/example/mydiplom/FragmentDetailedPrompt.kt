@@ -7,6 +7,7 @@ import android.app.TimePickerDialog
 import android.content.ContentResolver
 import android.content.ContentUris
 import android.content.ContentValues
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.database.Cursor
 import android.os.Bundle
@@ -35,6 +36,8 @@ import kotlinx.coroutines.CancellableContinuation
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.suspendCancellableCoroutine
+import okhttp3.Interceptor
+import okhttp3.OkHttpClient
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -99,7 +102,7 @@ class FragmentDetailedPrompt : Fragment(), DatePickerDialog.OnDateSetListener, T
                     }
                 }
                 continuation?.resume(id)
-                Log.d("RetrofitClient","id " + id)
+//                Log.d("RetrofitClient","id " + id)
             } else {
                 Toast.makeText(context, "Проблемы с доступом к календарю. Проверьте вход в аккаунт", Toast.LENGTH_SHORT).show()
                 continuation?.resumeWithException(Exception("Permissions denied"))
@@ -118,11 +121,27 @@ class FragmentDetailedPrompt : Fragment(), DatePickerDialog.OnDateSetListener, T
 
         var promptId = viewModel.promptId.value ?: 1
 
+        val client = OkHttpClient.Builder()
+            .addInterceptor(Interceptor { chain ->
+                val request = chain.request().newBuilder()
+                    .addHeader("x-access-token", viewModel.token.value)
+                    .build()
+                val result = chain.proceed(request)
+                if (result.code() == 403 || result.code() == 401) {
+                    viewModel.notifyTokenExpired()
+                    startActivity(Intent(requireContext(), LoginActivity::class.java))
+                    requireActivity().finish()
+                }
+                result
+            })
+            .build()
         val retrofit = Retrofit.Builder()
-            .baseUrl("http://10.0.2.2:3000")
+            .baseUrl("http://192.168.0.32:3000")
+            .client(client)
             .addConverterFactory(GsonConverterFactory.create())
             .build()
         val service: ApiController = retrofit.create(ApiController::class.java)
+
         val call: Call<Prompt> = service.getPromptById(promptId)
 
 
@@ -204,7 +223,7 @@ class FragmentDetailedPrompt : Fragment(), DatePickerDialog.OnDateSetListener, T
                                 isUpdate = 1
 
                                 val calendarId = requestPermissionsIfNeeded()
-                                Log.d("RetrofitClient", "calendarId " + calendarId)
+
                                 val promptUpdate = PromptUpdate(name = name, description = description, date = date, calendar_id = calendarId)
                                 val call: Call<Void> = service.updatePrompt(promptId, promptUpdate)
                                 call.enqueue(object : Callback<Void> {
@@ -373,17 +392,17 @@ class FragmentDetailedPrompt : Fragment(), DatePickerDialog.OnDateSetListener, T
             }
         } else {
             if(isAdd !=  null){
-                Log.d("RetrofitClient", "isAdd" )
+//                Log.d("RetrofitClient", "isAdd" )
                 addEventToCalendar()
 
             }
             else{
                 if(isDelete !=  null){
-                    Log.d("RetrofitClient", "isDelete" )
+//                    Log.d("RetrofitClient", "isDelete" )
                     deleteEvent(initialCalendarId!!)
                 }
                 else{
-                    Log.d("RetrofitClient", "isUpdate" )
+//                    Log.d("RetrofitClient", "isUpdate" )
                     updateEvent(initialCalendarId!!)
                 }
             }
@@ -453,7 +472,7 @@ class FragmentDetailedPrompt : Fragment(), DatePickerDialog.OnDateSetListener, T
 
         val calendars = getCalendars()
 
-        Log.d("RetrofitClient","calendars " + calendars)
+//        Log.d("RetrofitClient","calendars " + calendars)
 
         val cr = requireContext().contentResolver
         val values = ContentValues().apply {
@@ -475,17 +494,17 @@ class FragmentDetailedPrompt : Fragment(), DatePickerDialog.OnDateSetListener, T
 
 
     private fun deleteEvent(eventId: Long): Long  {
-        Log.d("RetrofitClient", "deleteEvent " + eventId)
+//        Log.d("RetrofitClient", "deleteEvent " + eventId)
         val calendars = getCalendars()
         val cr = requireContext().contentResolver
         val eventUri = CalendarContract.Events.CONTENT_URI
         val row = cr.delete(eventUri, "${CalendarContract.Events._ID} = $eventId", null)
         syncCalendar(calendars.first())
         if(row >1 ){
-            Log.d("RetrofitClient", "row > 1 " )
+//            Log.d("RetrofitClient", "row > 1 " )
             return 1
         }else{
-            Log.d("RetrofitClient", "row 0 " )
+//            Log.d("RetrofitClient", "row 0 " )
             return 0
         }
 
@@ -493,7 +512,7 @@ class FragmentDetailedPrompt : Fragment(), DatePickerDialog.OnDateSetListener, T
 
 
     private fun updateEvent(eventId: Long): Long  {
-        Log.d("RetrofitClient", "updateeEvent " + eventId)
+//        Log.d("RetrofitClient", "updateeEvent " + eventId)
 
         val name = binding!!.detailedPromptName.text.toString()
         val description = binding!!.detailedPromptDescription.text.toString()

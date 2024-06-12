@@ -1,5 +1,8 @@
 <template>
 <div class="" style="overflow-x: hidden;">
+
+    <div v-if="displayContent">
+
     <div class="row justify-content-md-center " style="margin-top: 20px">
             <h5 class="text-center fs-4 col-md-5 " >Статистика по показателю {{data.name}}</h5>
         </div>
@@ -176,7 +179,10 @@
   </div>
 </div>
 
-
+ </div>
+<div v-else>
+    {{ content.message }}
+</div>
     
 </div>
 </template>
@@ -199,6 +205,7 @@ import {
 import { Line } from 'vue-chartjs'
 import { useStore } from 'vuex';
 import zoomPlugin from 'chartjs-plugin-zoom';
+  import UserService from '../../services/user.service';
 
 	const store = useStore();
 	const currentUser = computed(() => store.state.auth.user);
@@ -216,6 +223,8 @@ import zoomPlugin from 'chartjs-plugin-zoom';
 
     const param = ref(2)
 
+  const displayContent= ref(false)
+  const content = ref('')
 
     const date1 = ref(null)
     const date2 = ref(null)
@@ -477,7 +486,11 @@ import zoomPlugin from 'chartjs-plugin-zoom';
 
             
         } catch (error) {
-            console.error(error);
+             // console.error(error);
+                if(error.response.status == 401 || error.response.status == 403){
+                await store.dispatch('auth/logout')
+                router.push('/login')
+                }
         }
 
     }
@@ -619,7 +632,11 @@ import zoomPlugin from 'chartjs-plugin-zoom';
 
             
         } catch (error) {
-            console.error(error);
+             // console.error(error);
+                if(error.response.status == 401 || error.response.status == 403){
+                await store.dispatch('auth/logout')
+                router.push('/login')
+                }
         }
 
     }
@@ -745,7 +762,7 @@ import zoomPlugin from 'chartjs-plugin-zoom';
             }
 
             advice.value = null
-
+            advice2.value = null
 
             if(data.value.enum_kind_of_mark_id == 1){  
                 const response = await http.get('/getAdvice/userId=' + currentUser.value.id + '/kindOfMarkId=' + data.value.id + '/date1=' + d1.value + '/date2=' + d2.value);
@@ -760,13 +777,18 @@ import zoomPlugin from 'chartjs-plugin-zoom';
                 const response2 = await http.get('/getAdvice/userId=' + currentUser.value.id + '/kindOfMarkId=' + 2 + '/date1=' + d1.value + '/date2=' + d2.value);
                 advice.value = response1.data.comment
                 advice2.value = response2.data.comment
-                
+                console.log(advice.value)
+                console.log(advice2.value)
             }
 
 
             
         } catch (error) {
-            console.error(error);
+             // console.error(error);
+            if(error.response.status == 401 || error.response.status == 403){
+                await store.dispatch('auth/logout')
+                router.push('/login')
+            }
         }
 
     }
@@ -905,7 +927,11 @@ import zoomPlugin from 'chartjs-plugin-zoom';
 
             
         } catch (error) {
-            console.error(error);
+             // console.error(error);
+                if(error.response.status == 401 || error.response.status == 403){
+                await store.dispatch('auth/logout')
+                router.push('/login')
+                }
         }
 
     }
@@ -915,8 +941,18 @@ import zoomPlugin from 'chartjs-plugin-zoom';
         router.push({ path: '/updateRecordMark/' + id, query: { data: encodedData } });
     };
 
+const fetchUserBoard = async () => {
+    try {
+      await UserService.getUserBoard()
+      displayContent.value = true
+    } catch (e) {
+      // displayContent.value = false
+      content.value = (e.response && e.response.data) || e.message || e.toString()
+    }
+  }
 
 onMounted(async () => {
+    fetchUserBoard()
     // await getMarks();
     await getMarksAverage();
 });

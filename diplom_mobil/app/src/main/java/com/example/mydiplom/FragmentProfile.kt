@@ -43,17 +43,23 @@ class FragmentProfile : Fragment() {
         binding = FragmentProfileBinding.inflate(inflater, container, false)
 
 //        baseUrl("http://192.168.0.32:3000")
-        val interceptor = Interceptor { chain ->
-            val request = chain.request().newBuilder()
-                .addHeader("x-access-token", viewModel.token.value)
-                .build()
-            chain.proceed(request)
-        }
+//        baseUrl("http://10.0.2.2:3000")
         val client = OkHttpClient.Builder()
-            .addInterceptor(interceptor)
+            .addInterceptor(Interceptor { chain ->
+                val request = chain.request().newBuilder()
+                    .addHeader("x-access-token", viewModel.token.value)
+                    .build()
+                val result = chain.proceed(request)
+                if (result.code() == 403 || result.code() == 401) {
+                    viewModel.notifyTokenExpired()
+                    startActivity(Intent(requireContext(), LoginActivity::class.java))
+                    requireActivity().finish()
+                }
+                result
+            })
             .build()
         val retrofit = Retrofit.Builder()
-            .baseUrl("http://10.0.2.2:3000")
+            .baseUrl("http://192.168.0.32:3000")
             .client(client)
             .addConverterFactory(GsonConverterFactory.create())
             .build()

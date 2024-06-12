@@ -65,6 +65,11 @@ class SharedViewModel : ViewModel() {
     val updateNum2Value1Double= MutableLiveData<Double>()
     val updateNum2Value2Double= MutableLiveData<Double>()
 
+    fun notifyTokenExpired(){
+        token.postValue(null)
+        userLoginId.postValue(null)
+    }
+
 
     fun addToFavorite(context: Context, userId: Int, kindOfMarkId: Int){
         val retrofit = Retrofit.Builder()

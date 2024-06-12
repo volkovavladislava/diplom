@@ -51,7 +51,7 @@ exports.login = (req, res) => {
             }
 
             var token = jwt.sign({ id: user.id }, config.secret, {
-                expiresIn: 28800 // 8 часов — время действия токена
+                expiresIn: 1000 // 8 часов — время действия токена  28800 
             });
 
             var object = {

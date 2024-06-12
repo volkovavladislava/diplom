@@ -1,5 +1,6 @@
 <template>
     <div class="container" >
+        <div v-if="displayContent">
             <p v-if="!isFormValid" style="color: #eb4034;" class="labelm">Поля должны быть обязательно заполнены</p>
 
             <div v-if="data.enum_kind_of_mark_id == 1" class="labelm" >
@@ -98,6 +99,10 @@
                 </div>
             </div>
 
+        </div>
+        <div v-else>
+            {{ content.message }}
+        </div>
     </div>
 
 
@@ -110,6 +115,7 @@ import { useRouter, useRoute } from 'vue-router'
 import http from "../../http-common";
 import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 import { useStore } from 'vuex';
+  import UserService from '../../services/user.service';
 
 	const store = useStore();
 	const currentUser = computed(() => store.state.auth.user);
@@ -124,6 +130,8 @@ import { useStore } from 'vuex';
     const date= ref(null)
     const situation= ref(null)
 
+  const displayContent= ref(false)
+  const content = ref('')
 
     // const userId = ref(1)
 
@@ -151,7 +159,11 @@ import { useStore } from 'vuex';
 
             console.log(enumValues.value)
         } catch (error) {
-            console.error(error);
+            // console.error(error);
+                if(error.response.status == 401 || error.response.status == 403){
+                await store.dispatch('auth/logout')
+                router.push('/login')
+                }
         }
 
     }
@@ -178,7 +190,11 @@ import { useStore } from 'vuex';
                     showAlert.value = false;
                 }, 1000);
             } catch (error) {
-                console.error(error);
+                // console.error(error);
+                if(error.response.status == 401 || error.response.status == 403){
+                await store.dispatch('auth/logout')
+                router.push('/login')
+                }
             }
         } else {isFormValid.value = false;}
     }
@@ -201,7 +217,11 @@ import { useStore } from 'vuex';
                     showAlert.value = false;
                 }, 1000);
             } catch (error) {
-                console.error(error);
+                // console.error(error);
+                if(error.response.status == 401 || error.response.status == 403){
+                await store.dispatch('auth/logout')
+                router.push('/login')
+                }
             }
         } else {isFormValid.value = false;}
     }
@@ -228,12 +248,27 @@ import { useStore } from 'vuex';
                     showAlert.value = false;
                 }, 1000);
             } catch (error) {
-                console.error(error);
+                // console.error(error);
+                if(error.response.status == 401 || error.response.status == 403){
+                await store.dispatch('auth/logout')
+                router.push('/login')
+                }
             }
         } else {isFormValid.value = false;}
     }
   
+  const fetchUserBoard = async () => {
+    try {
+      await UserService.getUserBoard()
+      displayContent.value = true
+    } catch (e) {
+      // displayContent.value = false
+      content.value = (e.response && e.response.data) || e.message || e.toString()
+    }
+  }
+
 onMounted(async () => {
+    fetchUserBoard()
     await getEnumvalues();
 });
 

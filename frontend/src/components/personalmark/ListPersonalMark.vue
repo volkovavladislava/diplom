@@ -1,7 +1,7 @@
 <template>
-    <div class="container labelm">
+    <div class="container labelm" >
 
-      <div class="row justify-content-md-center labelm">
+      <div class="row justify-content-md-center labelm" v-if="displayContent">
 
         <div  class="col-md-7">
             <button type="button" class="btn btn-outline-secondary bthM"  @click="redirectToAddPersonalMarkPage()">Добавить собственный показатель</button>
@@ -51,6 +51,9 @@
         </div>
         
       </div>
+      <div v-else>
+            {{ content.message }}
+        </div>
     </div>
 </template>
   
@@ -59,6 +62,7 @@
   import http from "../../http-common";
   import { useRouter } from 'vue-router';
   import { useStore } from 'vuex';
+    import UserService from '../../services/user.service';
 
 	const store = useStore();
 	const currentUser = computed(() => store.state.auth.user);
@@ -66,6 +70,9 @@
   const kindOfMarks = ref([])
   const router = useRouter();
   // const userId = ref(1)
+
+  const displayContent= ref(false)
+  const content = ref('')
 
   const redirectToAddPersonalMarkPage = () => {
       router.push({ path: '/addPersonalMark'});
@@ -92,7 +99,11 @@
               
           });
       } catch (error) {
-          console.error(error);
+          // console.error(error);
+          if(error.response.status == 401 || error.response.status == 403){
+          await store.dispatch('auth/logout')
+          router.push('/login')
+          }
       }
   }
 
@@ -105,7 +116,11 @@
         await http.put('/addFavoriteKindOfMark', data);
          getListKindOfMark();
         } catch (error) {
-            console.error(error);
+            // console.error(error);
+            if(error.response.status == 401 || error.response.status == 403){
+            await store.dispatch('auth/logout')
+            router.push('/login')
+            }
         }
   }
 
@@ -118,7 +133,11 @@
         await http.post('/deleteFavoriteKindOfMark', data);
          getListKindOfMark();
         } catch (error) {
-            console.error(error);
+            // console.error(error);
+            if(error.response.status == 401 || error.response.status == 403){
+            await store.dispatch('auth/logout')
+            router.push('/login')
+            }
         }
   }
 
@@ -132,13 +151,28 @@
         await http.post('/deletePersonalMark', data);
          getListKindOfMark();
         } catch (error) {
-            console.error(error);
+            // console.error(error);
+            if(error.response.status == 401 || error.response.status == 403){
+            await store.dispatch('auth/logout')
+            router.push('/login')
+            }
         }
   }
 
 
+const fetchUserBoard = async () => {
+    try {
+      await UserService.getUserBoard()
+      displayContent.value = true
+    } catch (e) {
+      // displayContent.value = false
+      content.value = (e.response && e.response.data) || e.message || e.toString()
+    }
+  }
+
 
   onMounted(async () => {
+    fetchUserBoard()
     await getListKindOfMark();
 });
   

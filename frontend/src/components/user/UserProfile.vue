@@ -2,6 +2,8 @@
 
     <div  class="container labelm">
 
+        <div v-if="displayContent">
+
         <div class="row justify-content-md-center labelm">
             <h4 class="text-center fs-3 col-md-5">Данные профиля</h4>
         </div>
@@ -66,7 +68,11 @@
             </div>
         </div>
 
-        
+        </div>
+        <div v-else>
+            {{ content.message }}
+        </div>
+            
 
     </div>
     
@@ -77,6 +83,7 @@ import { ref, onMounted, computed } from 'vue';
 import http from "../../http-common";
 import { useStore } from 'vuex';
 import { useRouter } from 'vue-router';
+  import UserService from '../../services/user.service';
 
 
 const store = useStore();
@@ -84,6 +91,9 @@ const router = useRouter();
 
 const showAlert1 = ref(false);
 const showAlert2 = ref(false);
+
+  const displayContent= ref(false)
+  const content = ref('')
 
 const currentUser = computed(() => store.state.auth.user);
 
@@ -121,7 +131,11 @@ const getUser = async () => {
         user.value.password = response.data.password;
         user.value.login = response.data.login;
     } catch (error) {
-        console.error(error);
+        // console.error(error);
+        if(error.response.status == 401 || error.response.status == 403){
+        await store.dispatch('auth/logout')
+        router.push('/login')
+        }
     }
 }
 
@@ -150,7 +164,11 @@ const getUserOperatingValue = async () => {
             
         });
     } catch (error) {
-        console.error(error);
+        // console.error(error);
+        if(error.response.status == 401 || error.response.status == 403){
+        await store.dispatch('auth/logout')
+        router.push('/login')
+        }
     }
 }
 
@@ -174,7 +192,11 @@ async function updateUser() {
                 showAlert1.value = false;
             }, 1000);
         } catch (error) {
-            console.error(error);
+            // console.error(error);
+            if(error.response.status == 401 || error.response.status == 403){
+            await store.dispatch('auth/logout')
+            router.push('/login')
+            }
         }
     } else {isFormValid.value = false;}
     
@@ -205,16 +227,30 @@ async function updateUserOperatingValue() {
             }, 1000);
            
         } catch (error) {
-            console.error(error);
+            // console.error(error);
+            if(error.response.status == 401 || error.response.status == 403){
+            await store.dispatch('auth/logout')
+            router.push('/login')
+            }
         } 
     
 }
+const fetchUserBoard = async () => {
+    try {
+      await UserService.getUserBoard()
+      displayContent.value = true
+    } catch (e) {
+      // displayContent.value = false
+      content.value = (e.response && e.response.data) || e.message || e.toString()
+    }
+  }
 
 
 onMounted(async () => {
     if (!currentUser.value) {
         router.push('/login');
     }
+    fetchUserBoard()
 
     await getUser();
     await getUserOperatingValue();

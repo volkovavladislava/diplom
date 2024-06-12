@@ -1,34 +1,42 @@
 <template>
     <div class="container">
-        <p v-if="!isFormValid" style="color: #eb4034;" class="labelm">Поля должны быть обязательно заполнены</p>
+        <div v-if="displayContent">
+            <p v-if="!isFormValid" style="color: #eb4034;" class="labelm">Поля должны быть обязательно заполнены</p>
 
-        <div class="labelm">
-            <div class="row justify-content-md-center labelm">
-                <div  class="col-md-5 labelm">
-                    <div class="mb-3 labelm">
-                        <label for="inputName" class="form-label">Введите название собственного показателя</label>
-                        <input type="text" class="form-control" id="inputName"  v-model="name">
-                    </div>
-                    
-                    <button type="button" class="btn btn-outline-success " @click="addPersonalMark()">Добавить данные</button>
-                    <div class="alert alert-success" role="alert" v-if="showAlert">
-                        Успешно!
+            <div class="labelm">
+                <div class="row justify-content-md-center labelm">
+                    <div  class="col-md-5 labelm">
+                        <div class="mb-3 labelm">
+                            <label for="inputName" class="form-label">Введите название собственного показателя</label>
+                            <input type="text" class="form-control" id="inputName"  v-model="name">
+                        </div>
+                        
+                        <button type="button" class="btn btn-outline-success " @click="addPersonalMark()">Добавить данные</button>
+                        <div class="alert alert-success" role="alert" v-if="showAlert">
+                            Успешно!
+                        </div>
                     </div>
                 </div>
+                
             </div>
-            
-        </div>
 
+        </div>
+        <div v-else>
+            {{ content.message }}
+        </div>
 
     </div>
 </template>
 
 <script setup>
-import { ref, computed  } from 'vue';
+import { ref, computed, onMounted  } from 'vue';
 import http from "../../http-common";
 import { useStore } from 'vuex';
-    
+import { useRouter } from 'vue-router';
+import UserService from '../../services/user.service';
+
     const store = useStore();
+    const router = useRouter();
     const currentUser = computed(() => store.state.auth.user);
 
     const isFormValid = ref(true);
@@ -36,6 +44,9 @@ import { useStore } from 'vuex';
 
     const name= ref(null)
     // const userId = ref(1)
+
+    const displayContent= ref(false)
+    const content = ref('')
 
     async function addPersonalMark() {
         if (name.value) {
@@ -53,9 +64,28 @@ import { useStore } from 'vuex';
                     showAlert.value = false;
                 }, 1000);
             } catch (error) {
-                console.error(error);
+                // console.error(error);
+                if(error.response.status == 401 || error.response.status == 403){
+                await store.dispatch('auth/logout')
+                router.push('/login')
+                }
             }
         } else {isFormValid.value = false;}
     }
+
+
+    const fetchUserBoard = async () => {
+        try {
+        await UserService.getUserBoard()
+        displayContent.value = true
+        } catch (e) {
+        // displayContent.value = false
+        content.value = (e.response && e.response.data) || e.message || e.toString()
+        }
+    }
+
+    onMounted(async () => {
+        fetchUserBoard()
+    });
 
 </script>

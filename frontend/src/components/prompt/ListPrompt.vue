@@ -1,6 +1,6 @@
 <template>
-    <div class="container labelm">
-        <div class="row justify-content-md-center labelm">
+    <div class="container labelm" >
+        <div class="row justify-content-md-center labelm" v-if="displayContent">
 
     
             <div class="row justify-content-md-center ">
@@ -26,6 +26,9 @@
                     </div>
             </div>
         </div>
+        <div v-else>
+            {{ content.message }}
+        </div>
     </div>
 </template>
 
@@ -34,12 +37,16 @@
   import http from "../../http-common";
   import { useRouter } from 'vue-router';
   import { useStore } from 'vuex';
+    import UserService from '../../services/user.service';
   
   const store = useStore();
   const currentUser = computed(() => store.state.auth.user);
   
   const moment = require('moment');
   const router = useRouter();
+
+   const displayContent= ref(false)
+  const content = ref('')
 
 //   const userId = ref(1)
   const prompts = ref([])
@@ -65,11 +72,26 @@
 
           console.log(prompts.value)
       } catch (error) {
-          console.error(error);
+          // console.error(error);
+            if(error.response.status == 401 || error.response.status == 403){
+            await store.dispatch('auth/logout')
+            router.push('/login')
+            }
       }
   }
 
+  const fetchUserBoard = async () => {
+    try {
+      await UserService.getUserBoard()
+      displayContent.value = true
+    } catch (e) {
+      // displayContent.value = false
+      content.value = (e.response && e.response.data) || e.message || e.toString()
+    }
+  }
+
   onMounted(async () => {
+    fetchUserBoard()
     await getListPrompt();
 });
 </script>

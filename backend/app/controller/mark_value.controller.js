@@ -404,12 +404,16 @@ exports.getAdvice= (req, res) => {
                             // console.error(norma[0]);
                             
                             let kritichniz = Math.round(norma[0].max_value/2)
-                            let kritichverh = Math.round(norma[2].max_value/2)
+                            let kritichverh = norma[2].min_value + Math.round((norma[2].max_value - norma[2].min_value)/2)
+
+                            console.error(kritichniz + " " + norma[0].comment);
+                            console.error(kritichverh+ " " + norma[2].comment);
 
                             let countkritich = 0
                             for(let  i = 0; i < objects.length; i++){
                                 if(objects[i].value_number <= kritichniz || objects[i].value_number >= kritichverh){
                                     countkritich +=1
+                                    console.error(objects[i].value_number);
                                 }
                             }
 

@@ -1,5 +1,6 @@
 package com.example.mydiplom
 
+import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
@@ -20,6 +21,8 @@ import com.example.mydiplom.data.Mark
 import com.example.mydiplom.databinding.FragmentDetailedHandMadeMarkBinding
 import com.example.mydiplom.viewmodel.SharedViewModel
 import com.google.android.material.datepicker.MaterialDatePicker
+import okhttp3.Interceptor
+import okhttp3.OkHttpClient
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -53,15 +56,30 @@ class FragmentDetailedHandMadeMark : Fragment() {
         binding = FragmentDetailedHandMadeMarkBinding.inflate(inflater, container, false)
 
 
+        val client = OkHttpClient.Builder()
+            .addInterceptor(Interceptor { chain ->
+                val request = chain.request().newBuilder()
+                    .addHeader("x-access-token", viewModel.token.value)
+                    .build()
+                val result = chain.proceed(request)
+                if (result.code() == 403 || result.code() == 401) {
+                    viewModel.notifyTokenExpired()
+                    startActivity(Intent(requireContext(), LoginActivity::class.java))
+                    requireActivity().finish()
+                }
+                result
+            })
+            .build()
         val retrofit = Retrofit.Builder()
-            .baseUrl("http://10.0.2.2:3000")
+            .baseUrl("http://192.168.0.32:3000")
+            .client(client)
             .addConverterFactory(GsonConverterFactory.create())
             .build()
         val service: ApiController = retrofit.create(ApiController::class.java)
 
         var handMadeMarkId = viewModel.handMadeMarkId.value ?: 1
 
-        Log.d("RetrofitClient","handMadeMarkId  " + handMadeMarkId)
+
         val call: Call<List<Mark>> = service.marksForUser(viewModel.userLoginId.value!!, handMadeMarkId)
 
 
@@ -191,8 +209,23 @@ class FragmentDetailedHandMadeMark : Fragment() {
 
 
     private fun updateData(date1: String, date2:String){
+        val client = OkHttpClient.Builder()
+            .addInterceptor(Interceptor { chain ->
+                val request = chain.request().newBuilder()
+                    .addHeader("x-access-token", viewModel.token.value)
+                    .build()
+                val result = chain.proceed(request)
+                if (result.code() == 403 || result.code() == 401) {
+                    viewModel.notifyTokenExpired()
+                    startActivity(Intent(requireContext(), LoginActivity::class.java))
+                    requireActivity().finish()
+                }
+                result
+            })
+            .build()
         val retrofit = Retrofit.Builder()
-            .baseUrl("http://10.0.2.2:3000")
+            .baseUrl("http://192.168.0.32:3000")
+            .client(client)
             .addConverterFactory(GsonConverterFactory.create())
             .build()
         val service: ApiController = retrofit.create(ApiController::class.java)

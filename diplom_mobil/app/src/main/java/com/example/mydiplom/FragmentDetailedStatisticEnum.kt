@@ -1,5 +1,6 @@
 package com.example.mydiplom
 
+import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
@@ -23,6 +24,8 @@ import com.github.mikephil.charting.data.LineData
 import com.github.mikephil.charting.data.LineDataSet
 import com.github.mikephil.charting.formatter.ValueFormatter
 import com.google.android.material.datepicker.MaterialDatePicker
+import okhttp3.Interceptor
+import okhttp3.OkHttpClient
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -56,8 +59,23 @@ class FragmentDetailedStatisticEnum : Fragment() {
 
 //        findNavController().popBackStack(R.id.fragmentUpdateRecordMarkEnum, false)
 
+        val client = OkHttpClient.Builder()
+            .addInterceptor(Interceptor { chain ->
+                val request = chain.request().newBuilder()
+                    .addHeader("x-access-token", viewModel.token.value)
+                    .build()
+                val result = chain.proceed(request)
+                if (result.code() == 403 || result.code() == 401) {
+                    viewModel.notifyTokenExpired()
+                    startActivity(Intent(requireContext(), LoginActivity::class.java))
+                    requireActivity().finish()
+                }
+                result
+            })
+            .build()
         val retrofit = Retrofit.Builder()
-            .baseUrl("http://10.0.2.2:3000")
+            .baseUrl("http://192.168.0.32:3000")
+            .client(client)
             .addConverterFactory(GsonConverterFactory.create())
             .build()
         val service: ApiController = retrofit.create(ApiController::class.java)
@@ -70,12 +88,7 @@ class FragmentDetailedStatisticEnum : Fragment() {
             override fun onResponse(call: Call<List<Mark>>, response: Response<List<Mark>>) {
                 if (response.isSuccessful) {
                     var marksData = response.body() ?: emptyList()
-//                    Log.d("RetrofitClient","marksData " + marksData)
 
-//                    if (marksData.size == 0) {
-//                        findNavController().popBackStack()
-//                        findNavController().navigate(R.id.fragmentEmpty)
-//                    } else {
                         recyclerView = binding!!.recycleListMarksEnum
                         recyclerView.layoutManager = LinearLayoutManager(context)
                         recyclerView.setHasFixedSize(true)
@@ -102,7 +115,7 @@ class FragmentDetailedStatisticEnum : Fragment() {
                         datalist.reverse()
                         recyclerView.adapter = RecycleAdapterStatisticEnum(datalist, viewModel)
 
-//                    }
+
                 }
                 else{}
             }
@@ -169,8 +182,23 @@ class FragmentDetailedStatisticEnum : Fragment() {
 
 
     private fun updateData(date1: String, date2:String){
+        val client = OkHttpClient.Builder()
+            .addInterceptor(Interceptor { chain ->
+                val request = chain.request().newBuilder()
+                    .addHeader("x-access-token", viewModel.token.value)
+                    .build()
+                val result = chain.proceed(request)
+                if (result.code() == 403 || result.code() == 401) {
+                    viewModel.notifyTokenExpired()
+                    startActivity(Intent(requireContext(), LoginActivity::class.java))
+                    requireActivity().finish()
+                }
+                result
+            })
+            .build()
         val retrofit = Retrofit.Builder()
-            .baseUrl("http://10.0.2.2:3000")
+            .baseUrl("http://192.168.0.32:3000")
+            .client(client)
             .addConverterFactory(GsonConverterFactory.create())
             .build()
         val service: ApiController = retrofit.create(ApiController::class.java)
@@ -189,7 +217,7 @@ class FragmentDetailedStatisticEnum : Fragment() {
 
                     datalist = arrayListOf<Mark>()
 
-                    Log.d("RetrofitClient","marksData  " + marksData)
+//                    Log.d("RetrofitClient","marksData  " + marksData)
                     for(i in marksData.indices){
                         val dataClass = Mark(
                             marksData[i].id,

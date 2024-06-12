@@ -1,8 +1,8 @@
 <template>
     <div class="container" >
 
-    
-            <p v-if="!isFormValid" style="color: #eb4034;" class="labelm">Поля значение и дата должны быть обязательно заполнены</p>
+        <div v-if="displayContent">
+            <p v-if="!isFormValid" style="color: #eb4034;" class="labelm">Поля значение,ситуация и дата должны быть обязательно заполнены</p>
 
             <div  class="labelm" >
                 <div class="row justify-content-md-center ">
@@ -37,6 +37,11 @@
             </div>
 
             
+        </div>
+        <div v-else>
+            {{ content.message }}
+        </div>
+
     </div>
 
 
@@ -44,11 +49,12 @@
 
 <script setup>
 
-import { ref,computed  } from 'vue';
+import { ref,computed, onMounted  } from 'vue';
 import { useRouter } from 'vue-router'
 import http from "../../http-common";
 import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 import { useStore } from 'vuex';
+  import UserService from '../../services/user.service';
 
 	const store = useStore();
 	const currentUser = computed(() => store.state.auth.user);
@@ -79,11 +85,12 @@ import { useStore } from 'vuex';
     const isFormValid = ref(true);
     const showAlert = ref(false);
 
-
+  const displayContent= ref(false)
+  const content = ref('')
     
 
     async function updateMark() {
-        if (value1.value && date.value) {
+        if (value1.value && date.value && situation.value) {
             isFormValid.value = true;
             try {
                 const s = listOfSituations.value.find(item => item.key === situation.value)
@@ -103,7 +110,11 @@ import { useStore } from 'vuex';
                     router.push({ path: '/listPersonalMarks'});
                 }, 1000);
             } catch (error) {
-                console.error(error);
+                // console.error(error);
+                if(error.response.status == 401 || error.response.status == 403){
+                await store.dispatch('auth/logout')
+                router.push('/login')
+                }
             }
         } else {isFormValid.value = false;}
     }
@@ -117,9 +128,26 @@ import { useStore } from 'vuex';
                     router.push({ path: '/listPersonalMarks'});
                 }, 1000);
             } catch (error) {
-                console.error(error);
+                // console.error(error);
+                if(error.response.status == 401 || error.response.status == 403){
+                await store.dispatch('auth/logout')
+                router.push('/login')
+                }
             }
     }
+    const fetchUserBoard = async () => {
+    try {
+      await UserService.getUserBoard()
+      displayContent.value = true
+    } catch (e) {
+      // displayContent.value = false
+      content.value = (e.response && e.response.data) || e.message || e.toString()
+    }
+  }
+
+    onMounted(async () => {
+        fetchUserBoard()
+    });
 
 </script>
 

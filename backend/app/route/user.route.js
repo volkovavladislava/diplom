@@ -1,15 +1,15 @@
 module.exports = (app) => {
-
+    var { authJwt } = require("../middleware");
     const user = require('../controller/user.controller');
     
 
-    app.get('/api/listUser', user.findAll);
+    app.get('/api/listUser', [authJwt.verifyToken], user.findAll);
 
     // Обновление данных пользователя по id
-    app.put('/api/updateUser/:userId', user.update);
+    app.put('/api/updateUser/:userId', [authJwt.verifyToken], user.update);
 
     // Получение пользователя по id
-    app.get('/api/user/:id', user.findById);
+    app.get('/api/user/:id', [authJwt.verifyToken], user.findById);
 
     app.get('/api/userGuest/:id', user.generateGuest);
 
