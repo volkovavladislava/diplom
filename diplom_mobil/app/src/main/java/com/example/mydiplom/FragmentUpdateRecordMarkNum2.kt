@@ -94,7 +94,7 @@ class FragmentUpdateRecordMarkNum2 : Fragment(), DatePickerDialog.OnDateSetListe
             })
             .build()
         val retrofit = Retrofit.Builder()
-            .baseUrl("http://192.168.0.32:3000")
+            .baseUrl("http://37.46.130.221:3000")
             .client(client)
             .addConverterFactory(GsonConverterFactory.create())
             .build()
@@ -151,7 +151,7 @@ class FragmentUpdateRecordMarkNum2 : Fragment(), DatePickerDialog.OnDateSetListe
                     value_number1 = value1 ,
                     value_number2 = value2 )
 
-                Log.d("RetrofitClient","markUpdate " + markUpdate)
+//                Log.d("RetrofitClient","markUpdate " + markUpdate)
 
                 val call: Call<Void> = service.updateMarkDavlenie(markUpdate)
                 call.enqueue(object : Callback<Void> {

@@ -23,8 +23,10 @@ import retrofit2.Callback
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import java.text.ParseException
 import java.text.SimpleDateFormat
 import java.util.Date
+import java.util.Locale
 
 
 class FragmentProfile : Fragment() {
@@ -59,7 +61,7 @@ class FragmentProfile : Fragment() {
             })
             .build()
         val retrofit = Retrofit.Builder()
-            .baseUrl("http://192.168.0.32:3000")
+            .baseUrl("http://37.46.130.221:3000")
             .client(client)
             .addConverterFactory(GsonConverterFactory.create())
             .build()
@@ -139,37 +141,46 @@ class FragmentProfile : Fragment() {
         binding!!.bthUpdateProfile.setOnClickListener {
             if( !binding!!.profileName.text.isNullOrEmpty()  && !binding!!.profileWeight.text.isNullOrEmpty() &&
                 !binding!!.profileHeight.text.isNullOrEmpty()  && !binding!!.profileDate.text.isNullOrEmpty()) {
-                val name = binding!!.profileName.text.toString()
-                val weight = binding!!.profileWeight.text.toString().toInt()
-                val height = binding!!.profileHeight.text.toString().toInt()
-                val date = binding!!.profileDate.text.toString()
 
-                val userUpdate = UserUpdate(
-                    userId = viewModel.userLoginId.value!!,
-                    name = name,
-                    height = height,
-                    weight = weight,
-                    date_birth = date
-                )
 
-                val call: Call<Void> = service.updateUser(userUpdate.userId, userUpdate)
+                if(isValidDateFormat(binding!!.profileDate.text.toString())){
 
-                call.enqueue(object : Callback<Void> {
-                    override fun onResponse(call: Call<Void>, response: Response<Void>) {
-                        if (response.isSuccessful) {
-                            Toast.makeText(context, "Данные успешно обновлены", Toast.LENGTH_SHORT)
-                                .show()
-                        } else {
-                            Toast.makeText(context, "Что-то пошло не так", Toast.LENGTH_SHORT)
-                                .show()
+                    val name = binding!!.profileName.text.toString()
+                    val weight = binding!!.profileWeight.text.toString().toInt()
+                    val height = binding!!.profileHeight.text.toString().toInt()
+                    val date = binding!!.profileDate.text.toString()
+
+                    val userUpdate = UserUpdate(
+                        userId = viewModel.userLoginId.value!!,
+                        name = name,
+                        height = height,
+                        weight = weight,
+                        date_birth = date
+                    )
+
+                    val call: Call<Void> = service.updateUser(userUpdate.userId, userUpdate)
+
+                    call.enqueue(object : Callback<Void> {
+                        override fun onResponse(call: Call<Void>, response: Response<Void>) {
+                            if (response.isSuccessful) {
+                                Toast.makeText(context, "Данные успешно обновлены", Toast.LENGTH_SHORT)
+                                    .show()
+                            } else {
+                                Toast.makeText(context, "Что-то пошло не так", Toast.LENGTH_SHORT)
+                                    .show()
+                            }
                         }
-                    }
 
-                    override fun onFailure(call: Call<Void>, t: Throwable) {
-                        Log.d("RetrofitClient", "Receive user from server problem " + t)
-                        Toast.makeText(context, "Ошибка", Toast.LENGTH_SHORT).show()
-                    }
-                })
+                        override fun onFailure(call: Call<Void>, t: Throwable) {
+                            Log.d("RetrofitClient", "Receive user from server problem " + t)
+                            Toast.makeText(context, "Ошибка", Toast.LENGTH_SHORT).show()
+                        }
+                    })
+                }
+                else{
+                    Toast.makeText(context, "Введите дату в формате гггг-мм-дд", Toast.LENGTH_SHORT).show()
+                }
+
             }
             else{
                 Toast.makeText(context, "Сначала заполните имя, вес, рост и дату рождения", Toast.LENGTH_SHORT).show()
@@ -187,4 +198,20 @@ class FragmentProfile : Fragment() {
     }
 
 
+    fun isValidDateFormat(date: String): Boolean {
+        val dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+        dateFormat.isLenient = false
+        return try {
+            val parsedDate = dateFormat.parse(date)
+
+            val currentDate = Date()
+            !parsedDate.after(currentDate)
+
+        } catch (e: ParseException) {
+            false
+        }
+    }
+
+
 }
+

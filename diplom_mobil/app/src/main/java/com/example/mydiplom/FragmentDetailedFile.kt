@@ -92,7 +92,7 @@ class FragmentDetailedFile : Fragment(), DatePickerDialog.OnDateSetListener, Tim
             })
             .build()
         val retrofit = Retrofit.Builder()
-            .baseUrl("http://192.168.0.32:3000")
+            .baseUrl("http://37.46.130.221:3000")
             .client(client)
             .addConverterFactory(GsonConverterFactory.create())
             .build()
@@ -110,7 +110,7 @@ class FragmentDetailedFile : Fragment(), DatePickerDialog.OnDateSetListener, Tim
                         binding!!.detailedFileName.setText(it.name.toString())
                         binding!!.detailedFileComment.setText(it.comment.toString())
                         binding!!.detailedFileDate.setText(formatDate(it.date.toString()))
-                        imageUrl = "http://192.168.0.32:3000/files/" + it.link
+                        imageUrl = "http://37.46.130.221:3000/files/" + it.link
                         imageName = it.link
                         if (it.mime_type.split("/")[0] != "image") {
 //                            Picasso.get()

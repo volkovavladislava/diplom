@@ -18,6 +18,11 @@ import retrofit2.Callback
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import java.text.ParseException
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
+
 
 class FragmentRegistration : Fragment() {
 
@@ -50,39 +55,55 @@ class FragmentRegistration : Fragment() {
                 //        http://192.168.0.32:3000
                 //        http://10.0.2.2:3000
 
-                val retrofit = Retrofit.Builder()
-                    .baseUrl("http://192.168.0.32:3000")
-                    .addConverterFactory(GsonConverterFactory.create())
-                    .build()
-                val service: ApiController = retrofit.create(ApiController::class.java)
+                if(binding!!.registrationGender.text.toString() == "ж" || binding!!.registrationGender.text.toString() == "Ж" ||
+                    binding!!.registrationGender.text.toString() == "м" || binding!!.registrationGender.text.toString() == "М"){
 
-                val login = binding!!.registrationLogin.text.toString()
-                val pas = binding!!.registrationPassword.text.toString()
-                val name = binding!!.registrationName.text.toString()
-                val height = binding!!.registrationHeight.text.toString().toInt()
-                val weight = binding!!.registrationWeight.text.toString().toInt()
-                val date = binding!!.registrationDate.text.toString()
-                val gender = binding!!.registrationGender.text.toString().toInt()
+                    if(isValidDateFormat(binding!!.registrationDate.text.toString())){
+                        val retrofit = Retrofit.Builder()
+                            .baseUrl("http://37.46.130.221:3000")
+                            .addConverterFactory(GsonConverterFactory.create())
+                            .build()
+                        val service: ApiController = retrofit.create(ApiController::class.java)
 
-                val l = RegistrationRequest(login, pas, name, height, weight, date, gender)
+                        val login = binding!!.registrationLogin.text.toString()
+                        val pas = binding!!.registrationPassword.text.toString()
+                        val name = binding!!.registrationName.text.toString()
+                        val height = binding!!.registrationHeight.text.toString().toInt()
+                        val weight = binding!!.registrationWeight.text.toString().toInt()
+                        val date = binding!!.registrationDate.text.toString()
+                        val gender = binding!!.registrationGender.text.toString()
 
-                val call: Call<Void> = service.register(l)
-                call.enqueue(object : Callback<Void> {
-                    override fun onResponse(call: Call<Void>, response: Response<Void>) {
-                        if (response.isSuccessful) {
+                        val l = RegistrationRequest(login, pas, name, height, weight, date, gender)
 
-                            findNavController().navigate(R.id.action_fragmentRegistration_to_fragmentLogin2)
-                        } else {
-                            Log.d("RetrofitClient", "response " + response)
-                            Toast.makeText(context, "Неправильно заполнено", Toast.LENGTH_SHORT)
-                                .show()
-                        }
+                        val call: Call<Void> = service.register(l)
+                        call.enqueue(object : Callback<Void> {
+                            override fun onResponse(call: Call<Void>, response: Response<Void>) {
+                                if (response.isSuccessful) {
+
+                                    findNavController().navigate(R.id.action_fragmentRegistration_to_fragmentLogin2)
+                                } else {
+                                    Log.d("RetrofitClient", "response " + response)
+                                    Toast.makeText(context, "Неправильно заполнено", Toast.LENGTH_SHORT)
+                                        .show()
+                                }
+                            }
+
+                            override fun onFailure(call: Call<Void>, t: Throwable) {
+                                Log.d("RetrofitClient", "Receive user from server problem " + t)
+                            }
+                        })
+                    }
+                    else{
+                        Toast.makeText(context, "Введите дату в формате гггг-мм-дд", Toast.LENGTH_SHORT).show()
                     }
 
-                    override fun onFailure(call: Call<Void>, t: Throwable) {
-                        Log.d("RetrofitClient", "Receive user from server problem " + t)
-                    }
-                })
+
+                }
+                else{
+                    Toast.makeText(context, "Введите пол в формате \"м\" / \"ж\" ", Toast.LENGTH_SHORT).show()
+                }
+
+
             }
             else{
                 Toast.makeText(context, "Сначала заполните все поля", Toast.LENGTH_SHORT).show()
@@ -93,4 +114,18 @@ class FragmentRegistration : Fragment() {
         return binding!!.root
     }
 
+}
+
+fun isValidDateFormat(date: String): Boolean {
+    val dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+    dateFormat.isLenient = false
+    return try {
+        val parsedDate = dateFormat.parse(date)
+
+        val currentDate = Date()
+        !parsedDate.after(currentDate)
+
+    } catch (e: ParseException) {
+        false
+    }
 }

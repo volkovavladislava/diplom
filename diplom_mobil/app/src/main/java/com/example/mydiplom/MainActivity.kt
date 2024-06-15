@@ -1,5 +1,6 @@
 package com.example.mydiplom
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.View
@@ -45,8 +46,23 @@ class MainActivity : AppCompatActivity() {
 
 //        http://192.168.0.32:3000
 //        http://10.0.2.2:3000
+        val client = OkHttpClient.Builder()
+            .addInterceptor(Interceptor { chain ->
+                val request = chain.request().newBuilder()
+                    .addHeader("x-access-token", viewModel.token.value)
+                    .build()
+                val result = chain.proceed(request)
+                if (result.code() == 403 || result.code() == 401) {
+                    viewModel.notifyTokenExpired()
+                    startActivity(Intent(this, LoginActivity::class.java))
+                    finish()
+                }
+                result
+            })
+            .build()
         val retrofit = Retrofit.Builder()
-            .baseUrl("http://192.168.0.32:3000")
+            .baseUrl("http://37.46.130.221:3000")
+            .client(client)
             .addConverterFactory(GsonConverterFactory.create())
             .build()
         val service: ApiController = retrofit.create(ApiController::class.java)

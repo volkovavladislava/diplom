@@ -40,13 +40,19 @@ class ListAdapterAddMarks(context: Context, dataArrayList: ArrayList<KindOfMark?
             isFavorite = true
             bthFavorite.foreground = ContextCompat.getDrawable(context, R.drawable.baseline_favorite_24_red)
         }
+        else{
+            isFavorite = false
+            bthFavorite.foreground = ContextCompat.getDrawable(context, R.drawable.baseline_favorite_24_grey)
+        }
 
         bthFavorite.setOnClickListener {
             if(isFavorite){
+                Log.d("RetrofitClient","isFavorite ")
                 bthFavorite.foreground = ContextCompat.getDrawable(context, R.drawable.baseline_favorite_24_grey)
                 viewModel.deleteFavorite(context, viewModel.userId, listData!!.id)
             }
             else{
+                Log.d("RetrofitClient","!!!!isFavorite ")
                 bthFavorite.foreground = ContextCompat.getDrawable(context, R.drawable.baseline_favorite_24_red)
                 viewModel.addToFavorite(context, viewModel.userId, listData!!.id)
             }

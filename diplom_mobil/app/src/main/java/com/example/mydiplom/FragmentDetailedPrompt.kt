@@ -136,7 +136,7 @@ class FragmentDetailedPrompt : Fragment(), DatePickerDialog.OnDateSetListener, T
             })
             .build()
         val retrofit = Retrofit.Builder()
-            .baseUrl("http://192.168.0.32:3000")
+            .baseUrl("http://37.46.130.221:3000")
             .client(client)
             .addConverterFactory(GsonConverterFactory.create())
             .build()
@@ -257,6 +257,33 @@ class FragmentDetailedPrompt : Fragment(), DatePickerDialog.OnDateSetListener, T
                                 val promptUpdateDel = PromptUpdate(name = name, description = description, date = date, calendar_id = null)
 
                                 val call: Call<Void> = service.updatePrompt(promptId, promptUpdateDel)
+
+                                call.enqueue(object : Callback<Void> {
+                                    override fun onResponse(call: Call<Void>, response: Response<Void>) {
+                                        if (response.isSuccessful) {
+                                            Toast.makeText(context, "Данные успешно обновлены", Toast.LENGTH_SHORT).show()
+                                            initialCalendarId = null
+                                            isAdd = null
+                                            isDelete = null
+                                            isUpdate = null
+                                        } else {
+                                            Toast.makeText(context, "Что-то пошло не так", Toast.LENGTH_SHORT)
+                                                .show()
+                                        }
+                                    }
+
+                                    override fun onFailure(call: Call<Void>, t: Throwable) {
+                                        Log.d("RetrofitClient", "Receive user from server problem " + t)
+                                        Toast.makeText(context, "Ошибка", Toast.LENGTH_SHORT).show()
+                                    }
+                                })
+                            }
+
+                            if(!check && initialCalendarId == null){
+
+                                val promptUpdate = PromptUpdate(name = name, description = description, date = date, calendar_id = null)
+
+                                val call: Call<Void> = service.updatePrompt(promptId, promptUpdate)
 
                                 call.enqueue(object : Callback<Void> {
                                     override fun onResponse(call: Call<Void>, response: Response<Void>) {

@@ -39,7 +39,7 @@ class FragmentArticleOfBlog : Fragment() {
         var blogId = viewModel.articleId.value ?: 1
 
         val retrofit = Retrofit.Builder()
-            .baseUrl("http://192.168.0.32:3000")
+            .baseUrl("http://37.46.130.221:3000")
             .addConverterFactory(GsonConverterFactory.create())
             .build()
         val service: ApiController = retrofit.create(ApiController::class.java)
@@ -51,7 +51,7 @@ class FragmentArticleOfBlog : Fragment() {
                     var blogData = response.body()
                     Log.d("RetrofitClient"," blogData" + blogData)
                     blogData?.let {
-                        val imageUrl = "http://10.0.2.2:3000/files/" + it.link
+                        val imageUrl = "http://37.46.130.221:3000/files/" + it.link
                         Picasso.get()
                             .load(imageUrl)
                             .into(binding!!.blogImage)

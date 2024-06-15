@@ -35,6 +35,10 @@ class ListAdapterStatistic (context: Context, dataArrayList: ArrayList<KindOfMar
             isFavorite = true
             bthFavorite.foreground = ContextCompat.getDrawable(context, R.drawable.baseline_favorite_24_red)
         }
+        else{
+            isFavorite = false
+            bthFavorite.foreground = ContextCompat.getDrawable(context, R.drawable.baseline_favorite_24_grey)
+        }
 
         bthFavorite.setOnClickListener {
             if(isFavorite){

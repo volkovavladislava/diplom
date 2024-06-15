@@ -6,12 +6,24 @@ var jwt = require("jsonwebtoken");
 var bcrypt = require("bcryptjs");
 
 exports.register = (req, res) => {
+
+    console.log(req.body.date_birth)
+    console.log(req.body.gender)
+
+    let g = 0
+    if(req.body.gender == "m" || req.body.gender == "м" || req.body.gender == "М" || req.body.gender == "M"){
+        g = 1
+    }
+    if( req.body.gender == "ж" || req.body.gender == "Ж" ){
+        g = 0
+    }
+    
     User.create({
         name: req.body.name,
         height: req.body.height,
         weight: req.body.weight,
         date_birth: req.body.date_birth,
-        gender: req.body.gender,
+        gender: g,
         login: req.body.login,
         password: bcrypt.hashSync(req.body.password, 10) // генерация хеша пароля
     })

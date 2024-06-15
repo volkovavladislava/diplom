@@ -56,7 +56,7 @@ class FragmentListStatisticMark : Fragment() {
             })
             .build()
         val retrofit = Retrofit.Builder()
-            .baseUrl("http://192.168.0.32:3000")
+            .baseUrl("http://37.46.130.221:3000")
             .client(client)
             .addConverterFactory(GsonConverterFactory.create())
             .build()

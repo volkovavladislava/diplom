@@ -7,5 +7,5 @@ data class RegistrationRequest(
     val height: Int,
     val weight: Int,
     val date_birth : String,
-    val gender: Int,
+    val gender: String,
 )

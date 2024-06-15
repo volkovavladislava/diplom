@@ -42,7 +42,7 @@ class FragmentBlog : Fragment() {
 
 
         val retrofit = Retrofit.Builder()
-            .baseUrl("http://192.168.0.32:3000")
+            .baseUrl("http://37.46.130.221:3000")
             .addConverterFactory(GsonConverterFactory.create())
             .build()
         val service: ApiController = retrofit.create(ApiController::class.java)

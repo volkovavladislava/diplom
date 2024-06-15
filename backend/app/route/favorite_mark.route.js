@@ -5,8 +5,8 @@ module.exports = (app) => {
 
     app.get('/api/listFavoriteMark', [authJwt.verifyToken], favorite_mark.findAll);
 
-    app.put('/api/addFavoriteKindOfMark', [authJwt.verifyToken], favorite_mark.addFavoriteKindOfMark);
+    app.put('/api/addFavoriteKindOfMark',  favorite_mark.addFavoriteKindOfMark);
 
-    app.post('/api/deleteFavoriteKindOfMark', [authJwt.verifyToken], favorite_mark.delete);
+    app.post('/api/deleteFavoriteKindOfMark',  favorite_mark.delete);
 
 };

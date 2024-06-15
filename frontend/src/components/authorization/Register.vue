@@ -25,10 +25,10 @@
                             <input type="number" class="form-control" name="weight" placeholder="Вес" v-model="user.weight" required/>
                         </div>
                         <div class="mb-3">
-                            <input type="text" class="form-control" name="date_birth" placeholder="Дата рождения" v-model="user.date_birth" required/>
+                            <input type="date" class="form-control" name="date_birth" placeholder="Дата рождения" v-model="user.date_birth" required/>
                         </div>
                         <div class="mb-3">
-                            <input type="text" class="form-control" name="gender" placeholder="Пол" v-model="user.gender" required/>
+                            <input type="text" class="form-control" name="gender" placeholder="Пол: м/ж" v-model="user.gender" required/>
                         </div>
                         <div class="mb-3">
                             <button class="btn btn-outline-success">Зарегистрировать</button>
