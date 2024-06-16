@@ -4,6 +4,8 @@ var EnumerationValue = db.enumeration_value;
 var globalFunctions = require('../config/global.functions.js');
 const { Op } = require('sequelize');
 
+const moment = require('moment-timezone');
+
 exports.findAll = (req, res) => {
     MarkValue.findAll()
         .then(objects => {
@@ -18,10 +20,17 @@ exports.findAll = (req, res) => {
 
 
 exports.create = (req, res) => { 
+
+    const inputTime = req.body.date;
+    const localTimezone = 'Asia/Singapore'; 
+    const localMoment = moment.tz(inputTime, 'YYYY-MM-DD HH:mm', localTimezone);
+    const utcMoment = localMoment.clone().tz('UTC');
+    const utcTime = utcMoment.toISOString();
+
     MarkValue.create({
         user_id:req.body.userId,
         kind_of_mark_id:req.body.kind_of_mark_id,
-        date: req.body.date,
+        date: utcTime,
         situation: req.body.situation,
         value_number: req.body.value_number,
         value_string: req.body.value_string,
@@ -35,10 +44,16 @@ exports.create = (req, res) => {
 
 exports.createD = (req, res) => { 
 
+    const inputTime = req.body.date;
+    const localTimezone = 'Asia/Singapore'; 
+    const localMoment = moment.tz(inputTime, 'YYYY-MM-DD HH:mm', localTimezone);
+    const utcMoment = localMoment.clone().tz('UTC');
+    const utcTime = utcMoment.toISOString();
+
     const dav1 = MarkValue.create({
         user_id:    req.body.userId,
         kind_of_mark_id:    1,
-        date:   req.body.date,
+        date:   utcTime,
         situation: req.body.situation,
         value_number: req.body.value_number1,
         value_string: null,
@@ -48,7 +63,7 @@ exports.createD = (req, res) => {
     const dav2 = MarkValue.create({
         user_id:    req.body.userId,
         kind_of_mark_id:    2,
-        date:   req.body.date,
+        date:   utcTime,
         situation: req.body.situation,
         value_number: req.body.value_number2,
         value_string: null,
@@ -69,10 +84,18 @@ exports.createD = (req, res) => {
 
 
 exports.update = (req, res) => {
+
+    const inputTime = req.body.date;
+    const localTimezone = 'Asia/Singapore'; 
+    const localMoment = moment.tz(inputTime, 'YYYY-MM-DD HH:mm', localTimezone);
+    const utcMoment = localMoment.clone().tz('UTC');
+    const utcTime = utcMoment.toISOString();
+
+
     MarkValue.update({
             user_id:req.body.userId,
             kind_of_mark_id:req.body.kind_of_mark_id,
-            date: req.body.date,
+            date: utcTime,
             situation: req.body.situation,
             value_number: req.body.value_number,
             value_string: req.body.value_string,
@@ -94,11 +117,17 @@ exports.update = (req, res) => {
 
 exports.updateDavlenie = (req, res) => {
 
+    const inputTime = req.body.date;
+    const localTimezone = 'Asia/Singapore'; 
+    const localMoment = moment.tz(inputTime, 'YYYY-MM-DD HH:mm', localTimezone);
+    const utcMoment = localMoment.clone().tz('UTC');
+    const utcTime = utcMoment.toISOString();
+
     console.log(req.body)
     const dav1 = MarkValue.update({
             user_id:    req.body.user_id,
             kind_of_mark_id:    req.body.kind_of_mark_id1,
-            date:   req.body.date,
+            date:   utcTime,
             situation: req.body.situation,
             value_number:   req.body.value_number1,
             value_string: null,
@@ -114,7 +143,7 @@ exports.updateDavlenie = (req, res) => {
     const dav2 = MarkValue.update({
             user_id:req.body.user_id,
             kind_of_mark_id:req.body.kind_of_mark_id2,
-            date: req.body.date,
+            date: utcTime,
             situation: req.body.situation,
             value_number: req.body.value_number2,
             value_string: null,

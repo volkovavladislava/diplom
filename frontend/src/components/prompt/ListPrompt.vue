@@ -16,7 +16,7 @@
                         <div class="card-content">
                         <div class="row align-items-center">
                             <div class="col">
-                           {{ moment.utc(i.date).format('YYYY-MM-DD HH:mm')}}
+                              {{ moment.utc(i.date).tz('Asia/Singapore').format('YYYY-MM-DD HH:mm')}}
                             </div>
                             <div class="col ">
                             {{i.name}}
@@ -38,11 +38,12 @@
   import { useRouter } from 'vue-router';
   import { useStore } from 'vuex';
     import UserService from '../../services/user.service';
+    import moment from 'moment-timezone';
   
   const store = useStore();
   const currentUser = computed(() => store.state.auth.user);
   
-  const moment = require('moment');
+  // const moment = require('moment');
   const router = useRouter();
 
    const displayContent= ref(false)

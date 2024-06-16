@@ -144,7 +144,8 @@ class FragmentDetailedPrompt : Fragment(), DatePickerDialog.OnDateSetListener, T
 
         val call: Call<Prompt> = service.getPromptById(promptId)
 
-
+//        val timeZone: String = TimeZone.getDefault().id
+//        Log.d("RetrofitClient","timeZone " + timeZone)
         call.enqueue(object : Callback<Prompt> {
             override fun onResponse(call: Call<Prompt>, response: Response<Prompt>) {
                 if (response.isSuccessful) {
@@ -153,6 +154,7 @@ class FragmentDetailedPrompt : Fragment(), DatePickerDialog.OnDateSetListener, T
                     promptData?.let {
                         binding!!.detailedPromptName.setText(it.name.toString())
                         binding!!.detailedPromptDescription.setText(it.description.toString())
+                        Log.d("RetrofitClient","date " + it.date.toString())
                         binding!!.detailedPromptDate.setText(formatDate(it.date.toString()))
                         if(it.calendar_id != null){
                             binding!!.checkBoxDetailedPrompt.isChecked = true
@@ -474,6 +476,9 @@ class FragmentDetailedPrompt : Fragment(), DatePickerDialog.OnDateSetListener, T
     fun formatDate(inputDate: String): String {
         val inputFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.getDefault())
         val outputFormat = SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.getDefault())
+
+        inputFormat.timeZone = TimeZone.getTimeZone("UTC")
+        outputFormat.timeZone = TimeZone.getTimeZone("Asia/Singapore")
 
         val date = inputFormat.parse(inputDate)
         return outputFormat.format(date)

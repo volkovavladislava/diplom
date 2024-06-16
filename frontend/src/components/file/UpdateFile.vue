@@ -84,15 +84,16 @@ import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 import { useRouter } from 'vue-router';
 import { useStore } from 'vuex';
 import UserService from '../../services/user.service';
+import moment from 'moment-timezone';
 
-    const moment = require('moment');
+    // const moment = require('moment');
     const router = useRouter();
     const store = useStore();
     const data = ref(JSON.parse(decodeURIComponent(router.currentRoute.value.query.data, null, 2)))
 
     const name= ref(data.value.name)
     const comment= ref(data.value.comment)
-    const date= ref(moment.utc(data.value.date).format('YYYY-MM-DD HH:mm'))
+    const date= ref(moment.utc(data.value.date).tz('Asia/Singapore').format('YYYY-MM-DD HH:mm'))
     const file= ref(null)
 
     const imgFile = ref(null)

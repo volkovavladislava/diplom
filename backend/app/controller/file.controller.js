@@ -9,7 +9,7 @@ var multiparty = require('multiparty');
 var fs = require('fs');
 var uuid = require('uuid');
 
-
+const moment = require('moment-timezone');
 
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
@@ -100,11 +100,18 @@ exports.findByUserId = (req, res) => {
 exports.uploadFile = (req, res) => {
     try {
         const filePath = req.file.filename;
+
+        const inputTime = req.body.date;
+        const localTimezone = 'Asia/Singapore'; 
+        const localMoment = moment.tz(inputTime, 'YYYY-MM-DD HH:mm', localTimezone);
+        const utcMoment = localMoment.clone().tz('UTC');
+        const utcTime = utcMoment.toISOString();
+
         File.create({
             user_id: req.params.userId,
             link: filePath,
             mime_type: req.body.mime_type,
-            date: req.body.date,
+            date: utcTime,
             name: req.body.name,
             comment: req.body.comment
         });
@@ -120,10 +127,17 @@ exports.uploadFile = (req, res) => {
 exports.updateFile = (req, res) => {
     try {
         const filePath = req.file.filename;
+
+        const inputTime = req.body.date;
+        const localTimezone = 'Asia/Singapore'; 
+        const localMoment = moment.tz(inputTime, 'YYYY-MM-DD HH:mm', localTimezone);
+        const utcMoment = localMoment.clone().tz('UTC');
+        const utcTime = utcMoment.toISOString();
+
         File.update({
             link: filePath,
             mime_type: req.body.mime_type,
-            date: req.body.date,
+            date: utcTime,
             name: req.body.name,
             comment: req.body.comment
         },
@@ -188,8 +202,15 @@ exports.createC = async (req, res) => {
                 }
             });
 
+            const inputTime = fields.date[0];
+            const localTimezone = 'Asia/Singapore'; 
+            const localMoment = moment.tz(inputTime, 'YYYY-MM-DD HH:mm', localTimezone);
+            const utcMoment = localMoment.clone().tz('UTC');
+            const utcTime = utcMoment.toISOString();
+
+
             var name = fields.name[0];
-            var date = fields.date[0];
+            var date = utcTime;
             var comment = fields.comment[0];
             
             File.create({
@@ -233,8 +254,15 @@ exports.updateFileC = async (req, res) => {
                 }
             });
 
+            const inputTime = fields.date[0];
+            const localTimezone = 'Asia/Singapore'; 
+            const localMoment = moment.tz(inputTime, 'YYYY-MM-DD HH:mm', localTimezone);
+            const utcMoment = localMoment.clone().tz('UTC');
+            const utcTime = utcMoment.toISOString();
+
+
             var name = fields.name[0];
-            var date = fields.date[0];
+            var date = utcTime;
             var comment = fields.comment[0];
             
             File.update({
@@ -311,9 +339,15 @@ exports.findByIdC = (req, res) => {
 
 exports.updateWithoutFileC = async (req, res) => {
 
+    const inputTime = req.body.date;
+    const localTimezone = 'Asia/Singapore'; 
+    const localMoment = moment.tz(inputTime, 'YYYY-MM-DD HH:mm', localTimezone);
+    const utcMoment = localMoment.clone().tz('UTC');
+    const utcTime = utcMoment.toISOString();
+
     File.update({
         user_id: req.body.userId,
-        date: req.body.date,
+        date: utcTime,
         name: req.body.name,
         comment: req.body.comment
     },

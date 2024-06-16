@@ -56,19 +56,20 @@ import http from "../../http-common";
 import { useRouter } from 'vue-router'
 import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 import { useStore } from 'vuex';
-  import UserService from '../../services/user.service';
+import UserService from '../../services/user.service';
+import moment from 'moment-timezone';
     
     const store = useStore();
     const currentUser = computed(() => store.state.auth.user);
 
-    const moment = require('moment');
+    // const moment = require('moment');
 
     const router = useRouter();
     const data = ref(JSON.parse(decodeURIComponent(router.currentRoute.value.query.data, null, 2)))
     
     const name= ref(data.value.name)
     const description= ref(data.value.description)
-    const date= ref( moment.utc(data.value.date).format('YYYY-MM-DD HH:mm'))
+    const date= ref( moment.utc(data.value.date).tz('Asia/Singapore').format('YYYY-MM-DD HH:mm'))
     const calendarId= ref(data.value.calendar_id)
 
     const displayContent= ref(false)

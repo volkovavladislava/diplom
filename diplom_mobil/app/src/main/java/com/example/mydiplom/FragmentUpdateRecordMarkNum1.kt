@@ -29,6 +29,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Locale
+import java.util.TimeZone
 
 
 class FragmentUpdateRecordMarkNum1 : Fragment(), DatePickerDialog.OnDateSetListener, TimePickerDialog.OnTimeSetListener {
@@ -211,7 +212,8 @@ class FragmentUpdateRecordMarkNum1 : Fragment(), DatePickerDialog.OnDateSetListe
     fun formatDate(inputDate: String): String {
         val inputFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.getDefault())
         val outputFormat = SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.getDefault())
-
+        inputFormat.timeZone = TimeZone.getTimeZone("UTC")
+        outputFormat.timeZone = TimeZone.getTimeZone("Asia/Singapore")
         val date = inputFormat.parse(inputDate)
         return outputFormat.format(date)
     }

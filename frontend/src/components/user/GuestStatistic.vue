@@ -28,7 +28,7 @@
                                 <div class="card-content">
                                 <div class="row align-items-center">
                                     <div class="col">
-                                        {{ moment.utc(i.date).format('YYYY-MM-DD HH:mm')}}
+                                        {{ moment.utc(i.date).tz('Asia/Singapore').format('YYYY-MM-DD HH:mm')}}
                                     </div>
                                     <div class="col ">
                                         {{i.value_number}}
@@ -77,7 +77,7 @@
                                 <div class="card-content">
                                 <div class="row align-items-center">
                                     <div class="col">
-                                        {{ moment.utc(i.date).format('YYYY-MM-DD HH:mm')}}
+                                        {{ moment.utc(i.date).tz('Asia/Singapore').format('YYYY-MM-DD HH:mm')}}
                                     </div>
                                     <div class="col ">
                                         {{i.value}}
@@ -119,7 +119,7 @@
                                 <div class="card-content">
                                 <div class="row align-items-center">
                                     <div class="col" style="min-width: 120px;">
-                                        {{ moment.utc(i.date).format('YYYY-MM-DD HH:mm')}}
+                                        {{ moment.utc(i.date).tz('Asia/Singapore').format('YYYY-MM-DD HH:mm')}}
                                     </div>
                                     <div class="col">
                                         {{i.value_number}}
@@ -189,8 +189,9 @@ import {
 } from 'chart.js'
 import { Line } from 'vue-chartjs'
 import zoomPlugin from 'chartjs-plugin-zoom';
+ import moment from 'moment-timezone';
 
-    const moment = require('moment');
+    // const moment = require('moment');
     const router = useRouter();
     const data = ref(JSON.parse(decodeURIComponent(router.currentRoute.value.query.data1, null, 2)))
     const currentUser = ref(JSON.parse(decodeURIComponent(router.currentRoute.value.query.data2, null, 2)))
@@ -376,7 +377,7 @@ import zoomPlugin from 'chartjs-plugin-zoom';
 
                 response.data.forEach(value => {
                     marks.value.push(value)         
-                    dataGraf.labels.push(moment.utc(value.date).format('YYYY-MM-DD HH:mm'))
+                    dataGraf.labels.push(moment.utc(value.date).tz('Asia/Singapore').format('YYYY-MM-DD HH:mm'))
                     a.data.push(value.value_number)
                     average.data.push(value.moving_average)
                 })
@@ -391,7 +392,7 @@ import zoomPlugin from 'chartjs-plugin-zoom';
                 const response = await http.get('/marksForUserAverage/userId=' + currentUser.value.id + '/kindOfMarkId=' + data.value.id);
                 response.data.forEach(value => {
                     marks.value.push(value)         
-                    dataGraf.labels.push(moment.utc(value.date).format('YYYY-MM-DD HH:mm'))
+                    dataGraf.labels.push(moment.utc(value.date).tz('Asia/Singapore').format('YYYY-MM-DD HH:mm'))
                     a.data.push(value.value_enum)
                 })
                 dataGraf.datasets.push(a)
@@ -434,7 +435,7 @@ import zoomPlugin from 'chartjs-plugin-zoom';
 
                 response1.data.forEach(value => {
                     marks.value.push(value)         
-                    dataGraf.labels.push(moment.utc(value.date).format('YYYY-MM-DD HH:mm'))
+                    dataGraf.labels.push(moment.utc(value.date).tz('Asia/Singapore').format('YYYY-MM-DD HH:mm'))
                     a.data.push(value.value_number)
                     average1.data.push(value.moving_average)
                 })
@@ -508,7 +509,7 @@ const getMarksAverageByDate = async () => {
                 dataGraf.datasets=[]
                 response.data.forEach(value => {
                     marks.value.push(value)         
-                    dataGraf.labels.push(moment.utc(value.date).format('YYYY-MM-DD HH:mm'))
+                    dataGraf.labels.push(moment.utc(value.date).tz('Asia/Singapore').format('YYYY-MM-DD HH:mm'))
                     a.data.push(value.value_number)
                     average.data.push(value.moving_average)
                 })
@@ -527,7 +528,7 @@ const getMarksAverageByDate = async () => {
                 dataGraf.datasets=[]
                 response.data.forEach(value => {
                     marks.value.push(value)         
-                    dataGraf.labels.push(moment.utc(value.date).format('YYYY-MM-DD HH:mm'))
+                    dataGraf.labels.push(moment.utc(value.date).tz('Asia/Singapore').format('YYYY-MM-DD HH:mm'))
                     a.data.push(value.value_enum)
                 })
                 dataGraf.datasets.push(a)
@@ -577,7 +578,7 @@ const getMarksAverageByDate = async () => {
 
                 response1.data.forEach(value => {
                     marks.value.push(value)         
-                    dataGraf.labels.push(moment.utc(value.date).format('YYYY-MM-DD HH:mm'))
+                    dataGraf.labels.push(moment.utc(value.date).tz('Asia/Singapore').format('YYYY-MM-DD HH:mm'))
                     a.data.push(value.value_number)
                     average1.data.push(value.moving_average)
                 })
@@ -795,7 +796,7 @@ const getMarksAverageByDateWithParam = async () => {
                 dataGraf.datasets=[]
                 response.data.forEach(value => {
                     marks.value.push(value)         
-                    dataGraf.labels.push(moment.utc(value.date).format('YYYY-MM-DD HH:mm'))
+                    dataGraf.labels.push(moment.utc(value.date).tz('Asia/Singapore').format('YYYY-MM-DD HH:mm'))
                     a.data.push(value.value_number)
                     average.data.push(value.moving_average)
                 })
@@ -863,7 +864,7 @@ const getMarksAverageByDateWithParam = async () => {
 
                 response1.data.forEach(value => {
                     marks.value.push(value)         
-                    dataGraf.labels.push(moment.utc(value.date).format('YYYY-MM-DD HH:mm'))
+                    dataGraf.labels.push(moment.utc(value.date).tz('Asia/Singapore').format('YYYY-MM-DD HH:mm'))
                     a.data.push(value.value_number)
                     average1.data.push(value.moving_average)
                 })

@@ -54,7 +54,8 @@ import { useRouter } from 'vue-router'
 import http from "../../http-common";
 import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 import { useStore } from 'vuex';
-  import UserService from '../../services/user.service';
+import UserService from '../../services/user.service';
+import moment from 'moment-timezone';
 
 	const store = useStore();
 	const currentUser = computed(() => store.state.auth.user);
@@ -68,14 +69,14 @@ import { useStore } from 'vuex';
         { key: "после приема лекарства", value: 6 }
     ]);
 
-    const moment = require('moment');
+    // const moment = require('moment');
 
     const router = useRouter();
     const data = ref(JSON.parse(decodeURIComponent(router.currentRoute.value.query.data, null, 2)))
 
 
     const value1= ref(data.value.value_string)
-    const date= ref( moment.utc(data.value.date).format('YYYY-MM-DD HH:mm'))
+    const date= ref( moment.utc(data.value.date).tz('Asia/Singapore').format('YYYY-MM-DD HH:mm'))
     const situation= ref((listOfSituations.value.find(item => item.value === data.value.situation)).key)
 
     // console.log(situation.value)

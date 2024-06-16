@@ -12,6 +12,7 @@ import com.example.mydiplom.data.Prompt
 import com.example.mydiplom.viewmodel.SharedViewModel
 import java.text.SimpleDateFormat
 import java.util.Locale
+import java.util.TimeZone
 
 class RecycleAdapterPrompt(private val dataList: ArrayList<Prompt>, val listener: Listener, private val viewModel: SharedViewModel) :
     RecyclerView.Adapter<RecycleAdapterPrompt.ViewHolderClass>() {
@@ -59,6 +60,8 @@ class RecycleAdapterPrompt(private val dataList: ArrayList<Prompt>, val listener
     fun formatDate(inputDate: String): String {
         val inputFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.getDefault())
         val outputFormat = SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.getDefault())
+        inputFormat.timeZone = TimeZone.getTimeZone("UTC")
+        outputFormat.timeZone = TimeZone.getTimeZone("Asia/Singapore")
 
         val date = inputFormat.parse(inputDate)
         return outputFormat.format(date)

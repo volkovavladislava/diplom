@@ -34,7 +34,7 @@ class ListAdapterBlog(context: Context, dataArrayList: ArrayList<Blog?>?, privat
         val listTitle = view!!.findViewById<TextView>(R.id.listItemBlogTitle)
 
 
-        val imageUrl = "http://10.0.2.2:3000/files/" + listData!!.link
+        val imageUrl = "http://37.46.130.221:3000/files/" + listData!!.link
 
         Picasso.get()
             .load(imageUrl)

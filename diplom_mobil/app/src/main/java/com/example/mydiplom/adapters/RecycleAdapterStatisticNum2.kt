@@ -12,6 +12,7 @@ import com.example.mydiplom.data.MarkDavlenie
 import com.example.mydiplom.viewmodel.SharedViewModel
 import java.text.SimpleDateFormat
 import java.util.Locale
+import java.util.TimeZone
 
 class RecycleAdapterStatisticNum2 (private val dataList: ArrayList<MarkDavlenie>, private val viewModel: SharedViewModel) :
     RecyclerView.Adapter<RecycleAdapterStatisticNum2.ViewHolderClass>() {
@@ -61,7 +62,8 @@ class RecycleAdapterStatisticNum2 (private val dataList: ArrayList<MarkDavlenie>
     fun formatDate(inputDate: String): String {
         val inputFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.getDefault())
         val outputFormat = SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.getDefault())
-
+        inputFormat.timeZone = TimeZone.getTimeZone("UTC")
+        outputFormat.timeZone = TimeZone.getTimeZone("Asia/Singapore")
         val date = inputFormat.parse(inputDate)
         return outputFormat.format(date)
     }

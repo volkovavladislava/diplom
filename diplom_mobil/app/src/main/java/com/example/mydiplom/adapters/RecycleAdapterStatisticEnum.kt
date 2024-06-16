@@ -13,6 +13,7 @@ import com.example.mydiplom.data.Mark
 import com.example.mydiplom.viewmodel.SharedViewModel
 import java.text.SimpleDateFormat
 import java.util.Locale
+import java.util.TimeZone
 
 class RecycleAdapterStatisticEnum (private val dataList: ArrayList<Mark>, private val viewModel: SharedViewModel) :
     RecyclerView.Adapter<RecycleAdapterStatisticEnum.ViewHolderClass>() {
@@ -56,6 +57,8 @@ class RecycleAdapterStatisticEnum (private val dataList: ArrayList<Mark>, privat
     fun formatDate(inputDate: String): String {
         val inputFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.getDefault())
         val outputFormat = SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.getDefault())
+        inputFormat.timeZone = TimeZone.getTimeZone("UTC")
+        outputFormat.timeZone = TimeZone.getTimeZone("Asia/Singapore")
 
         val date = inputFormat.parse(inputDate)
         return outputFormat.format(date)
