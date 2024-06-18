@@ -45,27 +45,38 @@
 
 <script setup>
 import { useRouter } from 'vue-router'
-import { ref, onMounted  } from 'vue';
+import { ref, onMounted,computed  } from 'vue';
 import http from "../../http-common";
+import { usePiniastore } from '../../store/piniastore'
+	
+    const piniastore = usePiniastore()
 
     const router = useRouter();
-    const data = ref(JSON.parse(decodeURIComponent(router.currentRoute.value.query.data, null, 2)))
-
+    // const data = ref(JSON.parse(decodeURIComponent(router.currentRoute.value.query.data, null, 2)))
+    const data = computed(() => piniastore.getGuestdata)
 
     const kindOfMarks = ref([])
     const kindOfMarksPersonal = ref([])
 
 
   const redirectToGuestPersonalStatisticPage = (id, data, data2) => {
-    const encodedData = encodeURIComponent(JSON.stringify(data));
-    const encodedData2 = encodeURIComponent(JSON.stringify(data2));
-    router.push({ path: '/guestPersonalStatistic' , query: { data1: encodedData, data2: encodedData2 } });
+    // const encodedData = encodeURIComponent(JSON.stringify(data));
+    // const encodedData2 = encodeURIComponent(JSON.stringify(data2));
+    
+    piniastore.setKindOfMarkPersonalData(data)
+    piniastore.setGuestdata(data2)
+    router.push({ path: '/guestPersonalStatistic' });
+    // router.push({ path: '/guestPersonalStatistic' , query: { data1: encodedData, data2: encodedData2 } });
   };
 
   const redirectToGuestStatisticPage = (id, data, data2) => {
-    const encodedData = encodeURIComponent(JSON.stringify(data));
-    const encodedData2 = encodeURIComponent(JSON.stringify(data2));
-    router.push({ path: '/guestStatistic' , query: { data1: encodedData, data2: encodedData2 } });
+    // const encodedData = encodeURIComponent(JSON.stringify(data));
+    // const encodedData2 = encodeURIComponent(JSON.stringify(data2));
+
+    piniastore.setKindOfMarkData(data)
+    piniastore.setGuestdata(data2)
+    router.push({ path: '/guestStatistic' });
+    // router.push({ path: '/guestStatistic' , query: { data1: encodedData, data2: encodedData2 } });
   };
     
 

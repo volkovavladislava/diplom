@@ -174,7 +174,7 @@
 
 <script setup>
 
-import { ref, onMounted  } from 'vue';
+import { ref, onMounted, computed  } from 'vue';
 import { useRouter } from 'vue-router'
 import http from "../../http-common";
 import {
@@ -191,10 +191,18 @@ import { Line } from 'vue-chartjs'
 import zoomPlugin from 'chartjs-plugin-zoom';
  import moment from 'moment-timezone';
 
+ import { usePiniastore } from '../../store/piniastore'
+	
+    const piniastore = usePiniastore()
+
     // const moment = require('moment');
     const router = useRouter();
-    const data = ref(JSON.parse(decodeURIComponent(router.currentRoute.value.query.data1, null, 2)))
-    const currentUser = ref(JSON.parse(decodeURIComponent(router.currentRoute.value.query.data2, null, 2)))
+    // const data = ref(JSON.parse(decodeURIComponent(router.currentRoute.value.query.data1, null, 2)))
+    // const currentUser = ref(JSON.parse(decodeURIComponent(router.currentRoute.value.query.data2, null, 2)))
+
+
+    const data = computed(() => piniastore.getKindOfMarkData)
+    const currentUser = computed(() => piniastore.getGuestdata)
 
     // const userId = ref(1)
     const marks = ref([])

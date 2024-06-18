@@ -45,18 +45,23 @@
 
 <script setup>
 
-  import { ref, onMounted } from 'vue';
+  import { ref, onMounted, computed } from 'vue';
   import http from "../../http-common";
   import { useRouter } from 'vue-router';
    import moment from 'moment-timezone';
-
+import { usePiniastore } from '../../store/piniastore'
+	
+    const piniastore = usePiniastore()
     
 
 //   const moment = require('moment');
 
   const router = useRouter();
-  const kindOfMarkData = ref(JSON.parse(decodeURIComponent(router.currentRoute.value.query.data1, null, 2)))
-  const currentUser = ref(JSON.parse(decodeURIComponent(router.currentRoute.value.query.data2, null, 2)))
+//   const kindOfMarkData = ref(JSON.parse(decodeURIComponent(router.currentRoute.value.query.data1, null, 2)))
+//   const currentUser = ref(JSON.parse(decodeURIComponent(router.currentRoute.value.query.data2, null, 2)))
+
+  const kindOfMarkData = computed(() => piniastore.getKindOfMarkPersonalData)
+    const currentUser = computed(() => piniastore.getGuestdata)
 
     const listOfSituationsForLabel = ref([
         "спокойное",

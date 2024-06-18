@@ -45,8 +45,9 @@ import http from "../../http-common";
 
   import { useRouter } from 'vue-router';
   import UserService from '../../services/user.service';
-
+import { usePiniastore } from '../../store/piniastore'
 	
+    const piniastore = usePiniastore()
 
     const router = useRouter();
 
@@ -68,15 +69,17 @@ import http from "../../http-common";
                     login: login.value,
                     password: password.value
                 };
-                
                 const response = await http.post('/loginGuest' , data);
 
-                const encodedData = encodeURIComponent(JSON.stringify(response.data));
-                router.push({ path: '/guestListStatistic' , query: { data: encodedData } });
+                piniastore.setGuestdata(response.data)
+
+                // const encodedData = encodeURIComponent(JSON.stringify(response.data));
+                // router.push({ path: '/guestListStatistic' , query: { data: encodedData } });
+                router.push({ path: '/guestListStatistic' });
 
 
             } catch (error) {
-
+                console.log(error)
                 if(error.response.status == 401 || error.response.status == 404){
                     showAlert.value = true
                     setTimeout(() => {
@@ -92,7 +95,7 @@ import http from "../../http-common";
                 }
 
                 
-                // console.log(error)
+                
             }
         } else {isFormValid.value = false;}
     }

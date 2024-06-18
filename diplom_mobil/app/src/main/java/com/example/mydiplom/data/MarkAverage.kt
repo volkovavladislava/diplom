@@ -10,5 +10,5 @@ data class MarkAverage(
     val value_string:String?,
     val value_enum:Int?,
     val value: String?,
-    val moving_average: Int?
+    val moving_average: Double?
 )

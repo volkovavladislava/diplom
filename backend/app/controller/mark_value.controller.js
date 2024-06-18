@@ -344,7 +344,7 @@ exports.deleteDavlenie = (req, res) => {
 
 exports.MarksWithAverage= (req, res) => {
 
-    db.sequelize.query('WITH selected_data AS (SELECT `mark_value`.`id`, `mark_value`.`user_id`, `mark_value`.`kind_of_mark_id`, `mark_value`.`date`, `mark_value`.`situation`, `mark_value`.`value_number`, `mark_value`.`value_string`, `mark_value`.`value_enum`,`enumeration_value`.`value` AS `value` FROM `mark_value` LEFT OUTER JOIN `enumeration_value` AS `enumeration_value` ON `mark_value`.`value_enum` = `enumeration_value`.`id` WHERE `mark_value`.`user_id` = :userId AND `mark_value`.`kind_of_mark_id` = :kindOfMarkId  ORDER BY `date`) SELECT *, ROUND(AVG(`value_number`) OVER (PARTITION BY `user_id` ORDER BY `date` ROWS BETWEEN 2 PRECEDING AND 2 following), 0) AS moving_average FROM selected_data;', 
+    db.sequelize.query('WITH selected_data AS (SELECT `mark_value`.`id`, `mark_value`.`user_id`, `mark_value`.`kind_of_mark_id`, `mark_value`.`date`, `mark_value`.`situation`, `mark_value`.`value_number`, `mark_value`.`value_string`, `mark_value`.`value_enum`,`enumeration_value`.`value` AS `value` FROM `mark_value` LEFT OUTER JOIN `enumeration_value` AS `enumeration_value` ON `mark_value`.`value_enum` = `enumeration_value`.`id` WHERE `mark_value`.`user_id` = :userId AND `mark_value`.`kind_of_mark_id` = :kindOfMarkId  ORDER BY `date`) SELECT *, ROUND(AVG(`value_number`) OVER (PARTITION BY `user_id` ORDER BY `date` ROWS BETWEEN 1 PRECEDING AND 1 following), 1) AS moving_average FROM selected_data;', 
         { replacements: { userId: req.params.userId,  kindOfMarkId: req.params.kindOfMarkId}
         , type: db.sequelize.QueryTypes.SELECT })
         .then(objects => {
@@ -358,7 +358,7 @@ exports.MarksWithAverage= (req, res) => {
 
 exports.MarksWithAverageByDate= (req, res) => {
 
-    db.sequelize.query('WITH selected_data AS (SELECT `mark_value`.`id`, `mark_value`.`user_id`, `mark_value`.`kind_of_mark_id`, `mark_value`.`date`, `mark_value`.`situation`, `mark_value`.`value_number`, `mark_value`.`value_string`, `mark_value`.`value_enum`,`enumeration_value`.`value` AS `value` FROM `mark_value` LEFT OUTER JOIN `enumeration_value` AS `enumeration_value` ON `mark_value`.`value_enum` = `enumeration_value`.`id` WHERE `mark_value`.`user_id` = :userId AND `mark_value`.`kind_of_mark_id` = :kindOfMarkId AND `mark_value`.`date` <= :date2 AND `mark_value`.`date` >= :date1 ORDER BY `date`) SELECT *, ROUND(AVG(`value_number`) OVER (PARTITION BY `user_id` ORDER BY `date` ROWS BETWEEN 2 PRECEDING AND 2 following), 0) AS moving_average FROM selected_data;', 
+    db.sequelize.query('WITH selected_data AS (SELECT `mark_value`.`id`, `mark_value`.`user_id`, `mark_value`.`kind_of_mark_id`, `mark_value`.`date`, `mark_value`.`situation`, `mark_value`.`value_number`, `mark_value`.`value_string`, `mark_value`.`value_enum`,`enumeration_value`.`value` AS `value` FROM `mark_value` LEFT OUTER JOIN `enumeration_value` AS `enumeration_value` ON `mark_value`.`value_enum` = `enumeration_value`.`id` WHERE `mark_value`.`user_id` = :userId AND `mark_value`.`kind_of_mark_id` = :kindOfMarkId AND `mark_value`.`date` <= :date2 AND `mark_value`.`date` >= :date1 ORDER BY `date`) SELECT *, ROUND(AVG(`value_number`) OVER (PARTITION BY `user_id` ORDER BY `date` ROWS BETWEEN 1 PRECEDING AND 1 following),1) AS moving_average FROM selected_data;', 
         { replacements: { userId: req.params.userId,  kindOfMarkId: req.params.kindOfMarkId, date1: req.params.date1, date2: req.params.date2 }
         , type: db.sequelize.QueryTypes.SELECT })
         .then(objects => {
@@ -376,7 +376,7 @@ exports.MarksWithAverageByDateWithParametrs= (req, res) => {
 
     const p = parseInt(req.params.myparam, 10); 
 
-    db.sequelize.query('WITH selected_data AS (SELECT `mark_value`.`id`, `mark_value`.`user_id`, `mark_value`.`kind_of_mark_id`, `mark_value`.`date`, `mark_value`.`situation`, `mark_value`.`value_number`, `mark_value`.`value_string`, `mark_value`.`value_enum`,`enumeration_value`.`value` AS `value` FROM `mark_value` LEFT OUTER JOIN `enumeration_value` AS `enumeration_value` ON `mark_value`.`value_enum` = `enumeration_value`.`id` WHERE `mark_value`.`user_id` = :userId AND `mark_value`.`kind_of_mark_id` = :kindOfMarkId AND `mark_value`.`date` <= :date2 AND `mark_value`.`date` >= :date1 ORDER BY `date`) SELECT *, ROUND(AVG(`value_number`) OVER (PARTITION BY `user_id` ORDER BY `date` ROWS BETWEEN :myparam PRECEDING AND :myparam following), 0) AS moving_average FROM selected_data;', 
+    db.sequelize.query('WITH selected_data AS (SELECT `mark_value`.`id`, `mark_value`.`user_id`, `mark_value`.`kind_of_mark_id`, `mark_value`.`date`, `mark_value`.`situation`, `mark_value`.`value_number`, `mark_value`.`value_string`, `mark_value`.`value_enum`,`enumeration_value`.`value` AS `value` FROM `mark_value` LEFT OUTER JOIN `enumeration_value` AS `enumeration_value` ON `mark_value`.`value_enum` = `enumeration_value`.`id` WHERE `mark_value`.`user_id` = :userId AND `mark_value`.`kind_of_mark_id` = :kindOfMarkId AND `mark_value`.`date` <= :date2 AND `mark_value`.`date` >= :date1 ORDER BY `date`) SELECT *, ROUND(AVG(`value_number`) OVER (PARTITION BY `user_id` ORDER BY `date` ROWS BETWEEN :myparam PRECEDING AND :myparam following), 1) AS moving_average FROM selected_data;', 
         { replacements: { userId: req.params.userId,  kindOfMarkId: req.params.kindOfMarkId, date1: req.params.date1, date2: req.params.date2, myparam: p }
         , type: db.sequelize.QueryTypes.SELECT })
         .then(objects => {
@@ -412,7 +412,7 @@ exports.getAdvice= (req, res) => {
                 for(let  i = 0; i < objects.length; i++){
                     valAverage += objects[i].value_number;
                 }
-                valAverage = Math.round(valAverage/objects.length);
+                valAverage = Math.round(valAverage/objects.length * 10) / 10;
                 console.error(valAverage);
                
                 let age = calculateAge(user[0].date_birth)
@@ -432,8 +432,8 @@ exports.getAdvice= (req, res) => {
                             // console.error(norma.length);
                             // console.error(norma[0]);
                             
-                            let kritichniz = Math.round(norma[0].max_value/2)
-                            let kritichverh = norma[2].min_value + Math.round((norma[2].max_value - norma[2].min_value)/2)
+                            let kritichniz = Math.round(norma[0].max_value/2 * 10) / 10
+                            let kritichverh = norma[2].min_value + Math.round((norma[2].max_value - norma[2].min_value)/2 * 10) / 10
 
                             console.error(kritichniz + " " + norma[0].comment);
                             console.error(kritichverh+ " " + norma[2].comment);

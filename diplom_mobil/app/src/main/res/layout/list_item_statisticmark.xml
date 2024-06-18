@@ -22,7 +22,7 @@
         android:id="@+id/bthMatchFavoriteStatisticMarks"
         android:layout_width="30dp"
         android:layout_height="30dp"
-        android:layout_marginEnd="24dp"
+        android:layout_marginEnd="15dp"
         android:background="@drawable/baseline_favorite_24_grey"
         android:foreground="@drawable/baseline_favorite_24_grey"
         app:layout_constraintBottom_toBottomOf="@+id/listItemStatisticMarkButton"
